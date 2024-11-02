@@ -1,1 +1,1 @@
-# CMPT362-StockSim
+# CMPT362-StockSimPOLO
