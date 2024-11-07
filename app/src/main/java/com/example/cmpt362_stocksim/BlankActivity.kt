@@ -15,4 +15,5 @@ class BlankActivity : AppCompatActivity() {
             finish()
         }
     }
+
 }
