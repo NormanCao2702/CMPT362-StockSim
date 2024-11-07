@@ -8,8 +8,6 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.cmpt362_stocksim.databinding.FragmentHomeBinding
-import com.example.cmpt362_stocksim.ui.home.HomeViewModel
-import com.example.cmpt362_stocksim.ui.search.SearchViewModel
 
 class SocialFragment: Fragment() {
 

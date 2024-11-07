@@ -1,4 +1,4 @@
-package com.example.cmpt362_stocksim.ui.search
+package com.example.cmpt362_stocksim
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
