@@ -63,8 +63,6 @@ class SearchFragment: Fragment()  {
         _binding = null
     }
 
-
-
     private fun getRecyclerData() {
         for (i in list.indices){
             val dataClass = StockSearchDataClass(imageList[0], list[i], descList[0], detailImageList[0], listTickers[i])
@@ -79,7 +77,6 @@ class SearchFragment: Fragment()  {
     private fun createSearchRecycler(){
         stockViewModel.stockData.observe(viewLifecycleOwner, Observer { stockResponse ->
             stockResponse?.let {
-                println("xd: Total number of stock results: ${it.resultsCount}")
                 it.results.forEach { result ->
                     var stringtmp = "${result.T} Open: ${result.o}, Close: ${result.c}"
                     list.add(stringtmp)
@@ -104,13 +101,10 @@ class SearchFragment: Fragment()  {
             R.drawable.apple_logo
         )
 
-
         // HERE I WANT TO GET A VIEW ON Fragment_search.xml as findviewby id is red with an error
 
         recyclerView = binding.stockRecycleView
         searchView = binding.search
-
-
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
@@ -153,6 +147,7 @@ class SearchFragment: Fragment()  {
             val intent = Intent(requireContext(), StockDetailedEntry::class.java)
 
             intent.putExtra("android", clickedItem)
+            intent.putExtra("stockInfo", clickedItem.dataTitle)
             startActivity(intent)
 
             recentlyClickedList.add(0, clickedItem) // Add to the top of the list

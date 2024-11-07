@@ -49,5 +49,21 @@ class StockApiRepository {
         }
     }
 
+    suspend fun getStockData3(tick: String): StockResponseDataClassNews? = withContext(Dispatchers.IO) {
+        try {
+            val response: HttpResponse = client.get("https://api.polygon.io/v2/reference/news?ticker=${tick}&limit=3&sort=published_utc&apiKey=$apiKey")
+            val responseBody = response.bodyAsText()
 
+            return@withContext if (response.status.value == 200) {
+                Gson().fromJson(responseBody, StockResponseDataClassNews::class.java)
+            } else {
+                null // Handle non-200 status
+            }
+        } catch (e: Exception) {
+            println("Exception occurred: ${e.message}") // Print exception details
+            null // Handle exception
+        } finally {
+            client.close()
+        }
+    }
 }

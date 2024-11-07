@@ -17,13 +17,15 @@ class StockApiViewModel : ViewModel() {
 
     // Dynamically pass ticker string as a parameter to get stock data for that ticker
     fun getStockData2(ticker: String) = liveData(Dispatchers.IO) {
-        println("Testing Ticker: ${ticker}")
         val data = stockRepository.getStockData2(ticker)  // Pass ticker dynamically
-
-        println("Past the data")
-
         emit(data)
     }
 
+
+    // Dynamically pass ticker string as a parameter to get stock data for that ticker
+    fun getStockData3(ticker: String) = liveData(Dispatchers.IO) {
+        val data = stockRepository.getStockData3(ticker)  // Pass ticker dynamically
+        emit(data)
+    }
 }
 
