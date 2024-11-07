@@ -28,4 +28,10 @@
         android:name="com.example.cmpt362_stocksim.ui.portfolio.PortfolioFragment"
         android:label="Portfolio"
         tools:layout="@layout/fragment_portfolio" />
+
+    <fragment
+        android:id="@+id/blankFragment"
+        android:name="com.example.cmpt362_stocksim.BlankActivity"
+        android:label="Blank"
+        tools:layout="@layout/fragment_blank" />
 </navigation>

@@ -1,5 +1,6 @@
 package com.example.cmpt362_stocksim.ui.home
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.cmpt362_stocksim.BlankActivity
 import com.example.cmpt362_stocksim.databinding.FragmentHomeBinding
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.Entry
@@ -38,6 +40,7 @@ class HomeFragment : Fragment() {
         lineChart = binding.lineChart // Make sure you have this ID in your layout
         setupChart()
         setData()
+        setupButton()
 
 //        val textView: TextView = binding.textHome
 //        homeViewModel.text.observe(viewLifecycleOwner) {
@@ -120,6 +123,13 @@ class HomeFragment : Fragment() {
 
         // Refresh chart
         lineChart.invalidate()
+    }
+
+    private fun setupButton() {
+        binding.btnStock.setOnClickListener {
+            val intent = Intent(requireActivity(), BlankActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun onDestroyView() {
