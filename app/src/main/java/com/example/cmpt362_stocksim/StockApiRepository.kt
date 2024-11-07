@@ -19,10 +19,8 @@ class StockApiRepository {
             val responseBody = response.bodyAsText()
 
             return@withContext if (response.status.value == 200) {
-                println("IM HERE WTF222")
                 Gson().fromJson(responseBody, StockResponsDataClass::class.java)
             } else {
-                println("IM HERE WTF")
                 null // Handle non-200 status
             }
         } catch (e: Exception) {
@@ -32,5 +30,24 @@ class StockApiRepository {
             client.close()
         }
     }
+
+    suspend fun getStockData2(tick: String): StockResponseDataClassInfo? = withContext(Dispatchers.IO) {
+        try {
+            val response: HttpResponse = client.get("https://api.polygon.io/v3/reference/tickers/${tick}?apiKey=$apiKey")
+            val responseBody = response.bodyAsText()
+
+            return@withContext if (response.status.value == 200) {
+                Gson().fromJson(responseBody, StockResponseDataClassInfo::class.java)
+            } else {
+                null // Handle non-200 status
+            }
+        } catch (e: Exception) {
+            println("Exception occurred: ${e.message}") // Print exception details
+            null // Handle exception
+        } finally {
+            client.close()
+        }
+    }
+
 
 }

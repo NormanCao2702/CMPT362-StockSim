@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.cmpt362_stocksim.databinding.FragmentHomeBinding
 import android.content.Intent
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
@@ -78,9 +77,7 @@ class SearchFragment: Fragment()  {
     }
 
     private fun createSearchRecycler(){
-        println("Im Here!!!!!!!!")
         stockViewModel.stockData.observe(viewLifecycleOwner, Observer { stockResponse ->
-            println("Observer called!")
             stockResponse?.let {
                 println("xd: Total number of stock results: ${it.resultsCount}")
                 it.results.forEach { result ->

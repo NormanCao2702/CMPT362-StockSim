@@ -25,10 +25,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SearchFragment"
-            android:exported="false">
-        </activity>
-        <activity
             android:name=".StockDetailedEntry"
             android:exported="false">
         </activity>
