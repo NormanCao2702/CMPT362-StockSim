@@ -6,9 +6,6 @@
     android:layout_height="match_parent"
     android:padding="16dp">
 
-    <!-- Portfolio Value -->
-
-    <!-- Change Amount -->
     <TextView
         android:id="@+id/tvPortfolioValue"
         android:layout_width="wrap_content"
