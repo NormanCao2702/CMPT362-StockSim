@@ -8,11 +8,11 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.cmpt362_stocksim.databinding.FragmentHomeBinding
-import com.example.cmpt362_stocksim.ui.home.HomeViewModel
+import com.example.cmpt362_stocksim.databinding.FragmentPortfolioBinding
 
 class PortfolioFragment: Fragment() {
 
-    private var _binding: FragmentHomeBinding? = null
+    private var _binding: FragmentPortfolioBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -23,14 +23,14 @@ class PortfolioFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
+        val portfolioViewModel=
             ViewModelProvider(this).get(PortfolioViewModel::class.java)
 
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentPortfolioBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner) {
+        val textView: TextView = binding.textPortfolio
+        portfolioViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
         return root
