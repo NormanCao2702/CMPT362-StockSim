@@ -3,6 +3,7 @@ package com.example.cmpt362_stocksim
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -10,6 +11,8 @@ interface StockDatabaseDao {
 
     @Insert
     suspend fun insertStock(stock: Stock)
+
+
 
     @Query("SELECT * FROM Stock")
     fun getAllStocks(): Flow<List<Stock>>
@@ -37,6 +40,20 @@ interface StockDatabaseDao {
 
     @Query("SELECT cash_value FROM Stock WHERE id = :key")
     fun getStockCashValue(key: Long): Double
+
+
+    @Update
+    suspend fun updateStock(stock: Stock)
+
+    @Query("UPDATE Stock SET quantity = :newQuantity WHERE name = :name")
+    suspend fun setStockQuantity(name: String, newQuantity: Int)
+
+    @Query("UPDATE Stock SET total_value = :newTotalValue WHERE name = :name")
+    suspend fun setStockTotalValue(name: String, newTotalValue: Double)
+
+    @Query("UPDATE Stock SET cash_value = :newCashValue WHERE name = :name")
+    suspend fun setStockCashValue(name: String, newCashValue: Double)
+
 
     @Query("DELETE FROM Stock")
     suspend fun deleteAll()

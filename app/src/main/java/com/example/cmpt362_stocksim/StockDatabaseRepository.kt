@@ -27,6 +27,31 @@ class StockDatabaseRepository(private val stockDatabaseDao: StockDatabaseDao) {
     fun getStockCashValue(id: Long): Double{return stockDatabaseDao.getStockCashValue(id)}
     fun getStockCashValue(name: String): Double{return stockDatabaseDao.getStockCashValue(name)}
 
+
+    fun updateStock(stock: Stock){
+        CoroutineScope(IO).launch {
+            stockDatabaseDao.updateStock(stock)
+        }
+    }
+
+    fun setStockQuantity(name: String, newStockQuantity: Int){
+        CoroutineScope(IO).launch {
+            stockDatabaseDao.setStockQuantity(name, newStockQuantity)
+        }
+    }
+
+    fun setStockTotalValue(name: String, newTotalValue: Double){
+        CoroutineScope(IO).launch {
+            stockDatabaseDao.setStockTotalValue(name, newTotalValue)
+        }
+    }
+
+    fun setStockCashValue(name: String, newStockCashValue: Double){
+        CoroutineScope(IO).launch {
+            stockDatabaseDao.setStockCashValue(name, newStockCashValue)
+        }
+    }
+
     fun deleteStock(id: Long){
         CoroutineScope(IO).launch {
             stockDatabaseDao.deleteStock(id)
