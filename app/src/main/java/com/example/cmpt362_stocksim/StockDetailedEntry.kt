@@ -128,9 +128,6 @@ class StockDetailedEntry : AppCompatActivity() {
         //val editT = view.findViewById<EditText>(R.id.editTextDialog) This is used to get the result when database is implemented
         val builder = AlertDialog.Builder(this).setView(view)
 
-
-        //val editText = EditText(this)
-
         // With the dialog box, customize and set toasts for positive and negative button presses
         with(builder) {
             setTitle("Company Info")
@@ -150,9 +147,6 @@ class StockDetailedEntry : AppCompatActivity() {
             show()
         }
     }
-
-
-
 
     object dialogHelper {
         var whichDialog: Int = 0

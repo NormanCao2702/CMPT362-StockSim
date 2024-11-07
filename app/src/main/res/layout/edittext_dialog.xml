@@ -6,16 +6,21 @@
     android:layout_height = "match_parent"
     android:orientation="vertical"
     android:padding="16dp">
-    
-    <TextView
-        android:id="@+id/textvDialog"
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_marginHorizontal="20dp"
-        android:scrollHorizontally="false"
-        android:paddingBottom="16dp"
-        android:gravity="start|top"
-        android:text="Your text goes here...">
-    </TextView>
+        android:layout_marginHorizontal="20dp">
+        <TextView
+            android:id="@+id/textvDialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_marginHorizontal="20dp"
+            android:scrollHorizontally="false"
+            android:paddingBottom="16dp"
+            android:gravity="start|top"
+            android:text="Your text goes here...">
+        </TextView>
+    </ScrollView>
 </LinearLayout>

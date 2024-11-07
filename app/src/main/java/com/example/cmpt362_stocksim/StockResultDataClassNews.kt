@@ -1,6 +1,7 @@
 package com.example.cmpt362_stocksim
 
-data class StockResultDataClassInfo (    val address: Address,
+
+data class StockResultDataClassNews (    val address: Address,
                                          val currency_name: String,
                                          val description: String,
                                          val homepage_url: String,
@@ -8,10 +9,5 @@ data class StockResultDataClassInfo (    val address: Address,
                                          val market_cap: Double,
                                          val name: String,
                                          val phone_number: String,
-                                         val total_employees: Int)
+                                         val total_employees: Int )
 
-data class Address(
-    val address1: String,
-    val city: String,
-    val state: String
-)
