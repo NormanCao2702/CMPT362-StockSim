@@ -235,18 +235,12 @@ class StockDetailedEntry : AppCompatActivity() {
                 // GET THE BUY AMOUNT HERE
                 var value = text.toInt()
 
-                println("Hello boss")
-
                 stock.name="${ticker}"
                 stock.quantity=value
                 stock.total_value = 10000.0
                 stock.cash_value  = 10000.0 - value
 
-                println("We made it here")
-
                 stockVViewModel.insert(stock)
-
-                println("testing 123")
 
                 isShowingDialog = false
             }

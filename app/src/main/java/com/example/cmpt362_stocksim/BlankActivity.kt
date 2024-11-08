@@ -24,7 +24,6 @@ class BlankActivity : AppCompatActivity() {
             finish()
         }
 
-
         database = StockDatabase.getInstance(this)
         databaseDao = database.stockDatabaseDao
         repository = StockDatabaseRepository(databaseDao)
@@ -33,8 +32,6 @@ class BlankActivity : AppCompatActivity() {
 
 
         stockVViewModel.getStockQuantityByName("AAPL") // Trigger the fetch
-
-        // Assuming `this` is an Activity or Fragment
         stockVViewModel.stockQuantityByName.observe(this) { quantity ->
             println("XD: $quantity") // Access the updated value after LiveData changes
         }
