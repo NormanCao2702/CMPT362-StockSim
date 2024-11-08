@@ -2,6 +2,7 @@ package com.example.cmpt362_stocksim
 
 import android.os.Bundle
 import android.widget.ImageButton
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 
@@ -14,6 +15,7 @@ class BlankActivity : AppCompatActivity() {
     private lateinit var repository: StockDatabaseRepository
     private lateinit var viewModelFactory: StockDatabaseViewModel.stockViewModelFactory
     private lateinit var stockVViewModel: StockDatabaseViewModel
+    private lateinit var textViewStockQuantityInfo: TextView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,6 +25,7 @@ class BlankActivity : AppCompatActivity() {
         findViewById<ImageButton>(R.id.btnBack).setOnClickListener {
             finish()
         }
+
 
 
         database = StockDatabase.getInstance(this)
