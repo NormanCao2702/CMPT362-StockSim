@@ -30,7 +30,9 @@ class StockDatabaseViewModel(private val repository: StockDatabaseRepository): V
 
     fun getStockById(id: Long) {
         viewModelScope.launch {
-            val stock = repository.getStockById(id)
+            val stock = withContext(Dispatchers.IO){
+                repository.getStockById(id)
+            }
             stockByIdLiveData.value = stock
         }
     }
@@ -39,7 +41,9 @@ class StockDatabaseViewModel(private val repository: StockDatabaseRepository): V
 
     fun getStockByName(name: String) {
         viewModelScope.launch {
-            val stock = repository.getStockByName(name)
+            val stock = withContext(Dispatchers.IO){
+                repository.getStockByName(name)
+            }
             stockByNameLiveData.value = stock
         }
     }
@@ -49,7 +53,9 @@ class StockDatabaseViewModel(private val repository: StockDatabaseRepository): V
 
     fun getStockQuantityById(id: Long) {
         viewModelScope.launch {
-            val quantity = repository.getStockQuantity(id)
+            val quantity = withContext(Dispatchers.IO){
+                repository.getStockQuantity(id)
+            }
             stockQuantityByIdLiveData.value = quantity
         }
     }
@@ -71,7 +77,9 @@ class StockDatabaseViewModel(private val repository: StockDatabaseRepository): V
 
     fun getStockTotalValueById(id: Long) {
         viewModelScope.launch {
-            val totalValue = repository.getStockTotalValue(id)
+            val totalValue = withContext(Dispatchers.IO){
+                repository.getStockTotalValue(id)
+            }
             stockTotalValueByIdLiveData.value = totalValue
         }
     }
@@ -80,7 +88,9 @@ class StockDatabaseViewModel(private val repository: StockDatabaseRepository): V
 
     fun getStockTotalValueByName(name: String) {
         viewModelScope.launch {
-            val totalValue = repository.getStockTotalValue(name)
+            val totalValue = withContext(Dispatchers.IO){
+                repository.getStockTotalValue(name)
+            }
             stockTotalValueByNameLiveData.value = totalValue
         }
     }
@@ -90,7 +100,9 @@ class StockDatabaseViewModel(private val repository: StockDatabaseRepository): V
 
     fun getStockCashValueById(id: Long) {
         viewModelScope.launch {
-            val cashValue = repository.getStockCashValue(id)
+            val cashValue = withContext(Dispatchers.IO){
+                repository.getStockCashValue(id)
+            }
             stockCashValueByIdLiveData.value = cashValue
         }
     }
@@ -99,7 +111,9 @@ class StockDatabaseViewModel(private val repository: StockDatabaseRepository): V
 
     fun getStockCashValueByName(name: String) {
         viewModelScope.launch {
-            val cashValue = repository.getStockCashValue(name)
+            val cashValue = withContext(Dispatchers.IO){
+                repository.getStockCashValue(name)
+            }
             stockCashValueByNameLiveData.value = cashValue
         }
     }
