@@ -18,9 +18,13 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.ColumnInfo
 import com.example.cmpt362_stocksim.databinding.FragmentSearchBinding
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 
@@ -60,9 +64,26 @@ class StockDetailedEntry : AppCompatActivity() {
     private var closePart = ""
     var isShowingDialog: Boolean = false
 
+    // Initialize Database
+    private val stock = Stock()
+    private lateinit var database: StockDatabase
+    private lateinit var databaseDao: StockDatabaseDao
+    private lateinit var repository: StockDatabaseRepository
+    private lateinit var viewModelFactory: StockDatabaseViewModel.stockViewModelFactory
+    private lateinit var stockVViewModel: StockDatabaseViewModel
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_stock_detailed_entry)
+
+
+        database = StockDatabase.getInstance(this)
+        databaseDao = database.stockDatabaseDao
+        repository = StockDatabaseRepository(databaseDao)
+        viewModelFactory = StockDatabaseViewModel.stockViewModelFactory(repository)
+        stockVViewModel = ViewModelProvider(this, viewModelFactory).get(StockDatabaseViewModel::class.java)
+
 
         bckButton = findViewById(R.id.entryBackButton)
         infoBut = findViewById(R.id.button)
@@ -214,11 +235,18 @@ class StockDetailedEntry : AppCompatActivity() {
                 // GET THE BUY AMOUNT HERE
                 var value = text.toInt()
 
+                println("Hello boss")
 
-                // price var in global has the price of the ticker
-                // ALSO USE ticker variable to get the ticker name for database
+                stock.name="${ticker}"
+                stock.quantity=value
+                stock.total_value = 10000.0
+                stock.cash_value  = 10000.0 - value
 
+                println("We made it here")
 
+                stockVViewModel.insert(stock)
+
+                println("testing 123")
 
                 isShowingDialog = false
             }

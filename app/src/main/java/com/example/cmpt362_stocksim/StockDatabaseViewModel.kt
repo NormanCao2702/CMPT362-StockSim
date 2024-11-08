@@ -3,11 +3,15 @@ package com.example.cmpt362_stocksim
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.Serializable
 
-class StockDatabaseViewModel(private val repository: StockDatabaseRepository): ViewModel() {
+class StockDatabaseViewModel(private val repository: StockDatabaseRepository): ViewModel(), Serializable {
     val allStockLiveData: LiveData<List<Stock>> = repository.allStocks.asLiveData()
 
     fun insert(stock: Stock){
@@ -54,7 +58,10 @@ class StockDatabaseViewModel(private val repository: StockDatabaseRepository): V
 
     fun getStockQuantityByName(name: String) {
         viewModelScope.launch {
-            val quantity = repository.getStockQuantity(name)
+            // Perform the database query on the IO dispatcher to avoid main thread blocking
+            val quantity = withContext(Dispatchers.IO) {
+                repository.getStockQuantity(name)
+            }
             stockQuantityByNameLiveData.value = quantity
         }
     }
@@ -97,23 +104,23 @@ class StockDatabaseViewModel(private val repository: StockDatabaseRepository): V
         }
     }
 
-
     fun setStockQuantity(name: String, newStockQuantity: Int) {
         viewModelScope.launch {
             repository.setStockQuantity(name, newStockQuantity)
         }
     }
+
     fun setStockTotalValue(name: String, newTotalValue: Double) {
         viewModelScope.launch {
             repository.setStockTotalValue(name, newTotalValue)
         }
     }
+
     fun setStockCashValue(name: String, newStockCashValue: Double) {
         viewModelScope.launch {
             repository.setStockCashValue(name, newStockCashValue)
         }
     }
-
 
     fun deleteAll(){
         val stockList = allStockLiveData.value
@@ -127,4 +134,16 @@ class StockDatabaseViewModel(private val repository: StockDatabaseRepository): V
             repository.deleteStock(id)
         }
     }
+
+
+    // I ADDED THIS IDK IF WE NEED IT THO
+    class stockViewModelFactory(private val repository: StockDatabaseRepository): ViewModelProvider.Factory{
+        override  fun <T: ViewModel> create(modelClass:Class<T>): T {
+            if (modelClass.isAssignableFrom(StockDatabaseViewModel::class.java))
+                return StockDatabaseViewModel(repository) as T
+            throw IllegalArgumentException("Unknown ViewModel Class")
+        }
+    }
+
+
 }
