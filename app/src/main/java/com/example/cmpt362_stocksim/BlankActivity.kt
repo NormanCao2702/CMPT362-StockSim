@@ -2,6 +2,7 @@ package com.example.cmpt362_stocksim
 
 import android.os.Bundle
 import android.widget.ImageButton
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 
@@ -14,6 +15,7 @@ class BlankActivity : AppCompatActivity() {
     private lateinit var repository: StockDatabaseRepository
     private lateinit var viewModelFactory: StockDatabaseViewModel.stockViewModelFactory
     private lateinit var stockVViewModel: StockDatabaseViewModel
+    private lateinit var textViewStockQuantityInfo: TextView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,6 +26,8 @@ class BlankActivity : AppCompatActivity() {
             finish()
         }
 
+
+
         database = StockDatabase.getInstance(this)
         databaseDao = database.stockDatabaseDao
         repository = StockDatabaseRepository(databaseDao)
@@ -32,6 +36,8 @@ class BlankActivity : AppCompatActivity() {
 
 
         stockVViewModel.getStockQuantityByName("AAPL") // Trigger the fetch
+
+        // Assuming `this` is an Activity or Fragment
         stockVViewModel.stockQuantityByName.observe(this) { quantity ->
             println("XD: $quantity") // Access the updated value after LiveData changes
         }
