@@ -6,11 +6,15 @@
     android:layout_height="match_parent"
     android:padding="16dp">
 
+    <!-- Line Chart -->
+
+    <!-- Cash Balance Section -->
+
     <TextView
         android:id="@+id/tvPortfolioValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
         android:text="$10,000.00"
         android:textSize="32sp"
         android:textStyle="bold"
@@ -18,59 +22,75 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tvChangeAmount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="$0.0000(0.00%)"
-        android:textColor="@android:color/holo_green_dark"
-        android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@id/tvPortfolioValue"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+<!--    <TextView-->
+<!--        android:id="@+id/tvChangeAmount"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:text="$0.0000(0.00%)"-->
+<!--        android:textColor="@android:color/holo_green_dark"-->
+<!--        android:textSize="16sp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.966"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/tvPortfolioValue" />-->
 
-    <!-- Line Chart -->
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lineChart"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHeight_percent="0.4"
-        app:layout_constraintTop_toBottomOf="@id/tvChangeAmount"
-        app:layout_constraintVertical_bias="0.232"
+        app:layout_constraintTop_toBottomOf="@+id/tvCashBalance"
+        app:layout_constraintVertical_bias="0.069"
         tools:layout_editor_absoluteX="16dp" />
 
-    <!-- Cash Balance Section -->
-    <TextView
-        android:id="@+id/tvCashBalanceLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="CASH ACCOUNT"
-        android:textStyle="bold"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/lineChart"
-        app:layout_constraintStart_toStartOf="parent"/>
+    <!-- Start Journey Button -->
 
     <TextView
         android:id="@+id/tvCashBalance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="112dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="132dp"
+        android:layout_marginTop="8dp"
         android:text="$10,000.00"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="@id/tvCashBalanceLabel"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvPortfolioValue" />
 
-    <!-- Start Journey Button -->
     <Button
-        android:id="@+id/btnStock"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Stock Detail"
-        android:layout_marginTop="24dp"
-        android:padding="16dp"
+        android:id="@+id/btnStockInventory"
+        android:layout_width="178dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="84dp"
         android:backgroundTint="@android:color/holo_green_dark"
-        app:layout_constraintTop_toBottomOf="@id/tvCashBalanceLabel"/>
+        android:padding="16dp"
+        android:text="Stock Inventory"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lineChart" />
+
+    <Button
+        android:id="@+id/btnAchievements"
+        android:layout_width="178dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="84dp"
+        android:backgroundTint="@android:color/holo_green_dark"
+        android:padding="16dp"
+        android:text="Achievement"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/btnStockInventory"
+        app:layout_constraintTop_toBottomOf="@+id/lineChart" />
+
+    <ImageButton
+        android:id="@+id/notification_button"
+        android:layout_width="50dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toEndOf="@+id/tvPortfolioValue"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/bell_icon" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
