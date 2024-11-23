@@ -21,20 +21,19 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArrayBuilder
+import java.net.URLEncoder
 
 class BackendRepository {
     private val HOST = "stocksim.breadmod.info"
     private val API_PATH = "api"
     private val client = HttpClient(CIO)
 
-    @Serializable
     data class ErrorResponse(val error: String)
 
-    @Serializable
-    data class RegisterResponse(val JWT: String)
+    data class RegisterResponse(val token: String)
 
     suspend fun handleError(response: HttpResponse): String {
-        val responseData = Json.decodeFromString<ErrorResponse>(response.bodyAsText())
+        val responseData = Gson().fromJson(response.bodyAsText(), ErrorResponse::class.java)
         throw IllegalArgumentException(responseData.error)
     }
 
@@ -42,18 +41,18 @@ class BackendRepository {
         val builder = HttpRequestBuilder()
         val params = ParametersBuilder(0)
         builder.url.protocol = URLProtocol.HTTPS
-        params.append("username", username)
-        params.append("email", email)
-        params.append("password", password)
-        params.append("birthday", birthday)
+        params.append("username", URLEncoder.encode(username, "UTF-8"))
+        params.append("email", URLEncoder.encode(email, "UTF-8"))
+        params.append("password", URLEncoder.encode(password, "UTF-8"))
+        params.append("birthday", URLEncoder.encode(birthday, "UTF-8"))
         builder.url.encodedParameters = params
         builder.url.host = HOST
         builder.url.path(API_PATH, "user", "register")
 
         val response = client.post(builder)
         if(response.status == HttpStatusCode.Created) {
-            val responseData = Json.decodeFromString<RegisterResponse>(response.bodyAsText())
-            return responseData.JWT
+            val responseData = Gson().fromJson(response.bodyAsText(), RegisterResponse::class.java)
+            return responseData.token
         } else {
             handleError(response)
         }
