@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.cmpt362_stocksim.AchievementFragment
 import com.example.cmpt362_stocksim.BlankActivity
 import com.example.cmpt362_stocksim.databinding.FragmentHomeBinding
 import com.github.mikephil.charting.charts.LineChart
@@ -126,9 +127,17 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupButton() {
-        binding.btnStock.setOnClickListener {
+        binding.notificationButton.setOnClickListener{
+            // notification button click event
+        }
+
+        binding.btnStockInventory.setOnClickListener {
             val intent = Intent(requireActivity(), BlankActivity::class.java)
             startActivity(intent)
+        }
+
+        binding.btnAchievements.setOnClickListener{
+            //open Achievement fragment here
         }
     }
 

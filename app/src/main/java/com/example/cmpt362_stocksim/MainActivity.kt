@@ -8,6 +8,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.cmpt362_stocksim.databinding.ActivityMainBinding
+import com.example.cmpt362_stocksim.ui.home.HomeFragment
 
 class MainActivity : AppCompatActivity() {
 

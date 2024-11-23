@@ -26,7 +26,7 @@ class BlankActivity : AppCompatActivity() {
             finish()
         }
 
-
+        
 
         database = StockDatabase.getInstance(this)
         databaseDao = database.stockDatabaseDao
