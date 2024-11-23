@@ -1,12 +1,9 @@
 package com.example.cmpt362_stocksim.api
 
-import com.example.cmpt362_stocksim.StockResponsDataClass
 import com.google.gson.Gson
-import com.google.gson.JsonArray
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.request.HttpRequestBuilder
-import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
@@ -14,13 +11,8 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.ParametersBuilder
 import io.ktor.http.URLProtocol
 import io.ktor.http.path
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonArrayBuilder
+import kotlinx.coroutines.withContext
 import java.net.URLEncoder
 
 class BackendRepository {
@@ -41,10 +33,21 @@ class BackendRepository {
         val builder = HttpRequestBuilder()
         val params = ParametersBuilder(0)
         builder.url.protocol = URLProtocol.HTTPS
-        params.append("username", URLEncoder.encode(username, "UTF-8"))
-        params.append("email", URLEncoder.encode(email, "UTF-8"))
-        params.append("password", URLEncoder.encode(password, "UTF-8"))
-        params.append("birthday", URLEncoder.encode(birthday, "UTF-8"))
+        params.append("username",
+            withContext(IO) {
+                URLEncoder.encode(username, "UTF-8")
+            })
+        params.append("email", withContext(IO) {
+            URLEncoder.encode(email, "UTF-8")
+        })
+        params.append("password",
+            withContext(IO) {
+                URLEncoder.encode(password, "UTF-8")
+            })
+        params.append("birthday",
+            withContext(IO) {
+                URLEncoder.encode(birthday, "UTF-8")
+            })
         builder.url.encodedParameters = params
         builder.url.host = HOST
         builder.url.path(API_PATH, "user", "register")
