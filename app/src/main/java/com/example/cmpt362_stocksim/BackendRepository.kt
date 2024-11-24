@@ -88,6 +88,34 @@ class BackendRepository {
         return "";
     }
 
+    data class LoginResponse(val token: String)
+
+    suspend fun login(username: String, password: String): String {
+        val builder = HttpRequestBuilder()
+        val params = ParametersBuilder(0)
+        builder.url.protocol = URLProtocol.HTTPS
+        params.append("username",
+            withContext(IO) {
+                URLEncoder.encode(username, "UTF-8")
+            })
+        params.append("password",
+            withContext(IO) {
+                URLEncoder.encode(password, "UTF-8")
+            })
+        builder.url.encodedParameters = params
+        builder.url.host = HOST
+        builder.url.path(API_PATH, "user", "login")
+
+        val response = client.post(builder)
+        if(response.status == HttpStatusCode.OK) {
+            val responseData = Gson().fromJson(response.bodyAsText(), LoginResponse::class.java)
+            return responseData.token
+        } else {
+            handleError(response)
+        }
+        return ""
+    }
+
     suspend fun getPrice(ticker: String): getPriceResponse? {
         val builder = HttpRequestBuilder()
         builder.url.protocol = URLProtocol.HTTPS

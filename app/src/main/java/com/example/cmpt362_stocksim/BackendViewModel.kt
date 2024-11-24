@@ -14,6 +14,10 @@ class BackendViewModel(private val backendRepository: BackendRepository) : ViewM
         return backendRepository.register(username, email, password, birthday)
     }
 
+    suspend fun login(username: String, password: String): String {
+        return backendRepository.login(username, password)
+    }
+
     suspend fun getInfo(ticker: String): GetInfoResponse? {
         return backendRepository.getInfo(ticker)
     }
