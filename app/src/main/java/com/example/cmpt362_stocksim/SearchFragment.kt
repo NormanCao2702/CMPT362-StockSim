@@ -6,13 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import android.content.Intent
-import android.widget.TextView
+import android.text.SpannableString
+import android.util.Log
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cmpt362_stocksim.databinding.FragmentSearchBinding
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 
@@ -43,6 +46,10 @@ class SearchFragment: Fragment()  {
     private lateinit var searchView: SearchView
     private lateinit var searchList: ArrayList<StockSearchDataClass>
 
+    val repository = BackendRepository()
+    val viewModelFactory = BackendViewModelFactory(repository)
+    val backendViewModel = viewModelFactory.create(BackendViewModel::class.java)
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -50,7 +57,6 @@ class SearchFragment: Fragment()  {
     ): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
 
         createSearchRecycler()
         setupRecentlyClickedRecyclerView()
@@ -66,41 +72,40 @@ class SearchFragment: Fragment()  {
 
     private fun getRecyclerData() {
         for (i in list.indices){
-            val dataClass = StockSearchDataClass(imageList[0], list[i], descList[0], detailImageList[0], listTickers[i])
+            val dataClass = StockSearchDataClass( list[i], descList[0], listTickers[i])
             dataList.add(dataClass)
         }
 
         searchList.addAll(dataList)
         recyclerView.adapter = StockSearchAdapterClass(searchList)
-
     }
+
 
     private fun createSearchRecycler(){
         stockViewModel.stockData.observe(viewLifecycleOwner, Observer { stockResponse ->
             stockResponse?.let {
                 it.results.forEach { result ->
-                    var stringtmp = "${result.T} Open: ${result.o}, Close: ${result.c}"
+                    val stringtmp = "${result.T}        Open: ${result.o}        Close: ${result.c}"
                     list.add(stringtmp)
                     listTickers.add(result.T)
                 }
                 if(list.isNotEmpty()){
                     setupRecyclerView() // Update the RecyclerView
-
                 }
             } ?: println("Error: Could not fetch stock data")
         })
     }
 
     private fun setupRecyclerView(){
-        imageList = arrayOf(R.drawable.apple_logo)
+        //imageList = arrayOf(R.drawable.invis)
 
         titleList = arrayOf("Blah 1", "Blah 2", "Blah 3",)
 
         descList = arrayOf(getString(R.string.testString))
 
-        detailImageList = arrayOf(
-            R.drawable.apple_logo
-        )
+        //detailImageList = arrayOf(
+        //    R.drawable.invis
+        //)
 
         // HERE I WANT TO GET A VIEW ON Fragment_search.xml as findviewby id is red with an error
 

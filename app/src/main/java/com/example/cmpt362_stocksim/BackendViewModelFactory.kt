@@ -1,4 +1,4 @@
-package com.example.cmpt362_stocksim.api
+package com.example.cmpt362_stocksim
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

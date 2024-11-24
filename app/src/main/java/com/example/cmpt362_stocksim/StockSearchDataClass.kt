@@ -5,21 +5,17 @@ import android.os.Parcelable
 
 
 
-data class StockSearchDataClass(var dataImage: Int, var dataTitle: String, var dataDesc: String, var dataDetailImage: Int, var ticker: String): Parcelable {
+data class StockSearchDataClass(var dataTitle: String, var dataDesc: String, var ticker: String): Parcelable {
     constructor(parcel: Parcel) : this(
-        parcel.readInt(),
         parcel.readString()!!,
         parcel.readString()!!,
-        parcel.readInt(),
         parcel.readString()!!
     ) {
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeInt(dataImage)
         parcel.writeString(dataTitle)
         parcel.writeString(dataDesc)
-        parcel.writeInt(dataDetailImage)
         parcel.writeString(ticker)
     }
 

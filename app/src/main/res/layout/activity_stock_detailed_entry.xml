@@ -1,129 +1,175 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
-<androidx.constraintlayout.widget.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".StockDetailedEntry"
-    android:background="@color/white">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/detailedTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="80dp"
-        android:text="Test123"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="28dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.45"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".StockDetailedEntry"
+        android:background="@color/white">
 
-    </TextView>
+        <ImageView
+            android:id="@+id/detailImage2"
+            android:layout_width="98dp"
+            android:layout_height="75dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="90dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/apple_logo"
+            app:layout_constraintEnd_toStartOf="@id/detailedTitle"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/entryBackButton"
-        android:text="Back"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="16dp">
-    </Button>
+        <TextView
+            android:id="@+id/detailedTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="Test123"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="26sp"
+            android:layout_marginTop="90dp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:shadowColor="@android:color/darker_gray"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="4"
+            app:layout_constraintStart_toEndOf="@id/detailImage2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias="0.5" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="200dp"
-        android:id="@+id/detailImage"
-        android:layout_marginTop="60dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/apple_logo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/detailedTitle">
-    </ImageView>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/detailedDescription"
-        android:layout_marginTop="20dp"
-        android:text="@string/testString"
-        android:textColor="@color/lavender"
-        android:textAlignment="viewStart"
-        android:textSize="20sp"
-        android:padding="12dp"
-        android:layout_marginStart="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/detailImage">
-    </TextView>
+        <TextView
+            android:id="@+id/detailedTitle2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="Test123"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:shadowColor="@android:color/darker_gray"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="4"
+            app:layout_constraintTop_toBottomOf="@id/detailedTitle"
+            app:layout_constraintStart_toEndOf="@id/detailImage2"
+            app:layout_constraintHorizontal_bias="0.5" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="166dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="40dp"
-        android:text="TextView"
-        android:textColor="@color/black"
-        android:textSize="25dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/detailedDescription">
-    </TextView>
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="8dp"
-        android:text="Info"
-        app:layout_constraintEnd_toStartOf="@id/button2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView" />
-
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="50dp"
-        android:text="News"
-        app:layout_constraintEnd_toStartOf="@id/button3"
-        app:layout_constraintStart_toEndOf="@id/button"
-        app:layout_constraintTop_toBottomOf="@id/textView" />
-
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="50dp"
-        android:text="Buy"
-        app:layout_constraintEnd_toStartOf="@id/button4"
-        app:layout_constraintStart_toEndOf="@id/button2"
-        app:layout_constraintTop_toBottomOf="@id/textView" />
-
-    <Button
-        android:id="@+id/button4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="50dp"
-        android:text="Sell"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/button3"
-        app:layout_constraintTop_toBottomOf="@id/textView" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/entryBackButton"
+            android:text="Back"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="80dp"
+            android:layout_marginEnd="10dp">
+        </Button>
 
 
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/lineChart2"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHeight_percent="0.4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/detailImage2"
+            app:layout_constraintVertical_bias="0"
+            tools:layout_editor_absoluteX="16dp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/detailedDescription"
+            android:layout_marginTop="20dp"
+            android:text="@string/testString"
+            android:textColor="@color/black"
+            android:textAlignment="viewStart"
+            android:textSize="20sp"
+            android:padding="12dp"
+            android:layout_marginStart="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewRec">
+        </TextView>
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="55dp"
+            android:layout_marginEnd="55dp"
+            android:layout_marginTop="30dp"
+            android:text="News"
+            app:layout_constraintTop_toBottomOf="@id/detailedDescription" />
+
+
+        <Button
+            android:id="@+id/button22"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:text="Recommend!"
+            app:layout_constraintStart_toEndOf="@id/textViewRec"
+            app:layout_constraintTop_toBottomOf="@id/buttonCombo" />
+
+        <TextView
+            android:id="@+id/textViewRec"
+            android:layout_width="250dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="30dp"
+            android:textAlignment="center"
+            android:text="20 People endorsed this stock"
+            android:textColor="@color/black"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/buttonCombo">
+
+        </TextView>
+
+        <LinearLayout
+            android:id="@+id/buttonCombo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/lineChart2">
+            <Button
+                android:id="@+id/button3"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_width="0dp"
+                android:layout_marginTop="40dp"
+                android:layout_weight="1"
+                android:text="Buy"/>
+            <Button
+                android:id="@+id/button4"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_width="0dp"
+                android:layout_marginTop="40dp"
+                android:layout_weight="1"
+                android:text="Sell"/>
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

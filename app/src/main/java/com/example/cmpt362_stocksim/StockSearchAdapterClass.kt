@@ -1,3 +1,4 @@
+
 package com.example.cmpt362_stocksim
 
 import android.view.LayoutInflater
@@ -18,7 +19,7 @@ class StockSearchAdapterClass(private val dataList: ArrayList<StockSearchDataCla
 
     override fun onBindViewHolder(holder: ViewHolderClass, position: Int) {
         val currentItem = dataList[position]
-        holder.rvImage.setImageResource(currentItem.dataImage)
+        //holder.rvImage.setImageResource(currentItem.dataImage)
         holder.rvTitle.text = currentItem.dataTitle
 
         holder.itemView.setOnClickListener{
@@ -32,7 +33,7 @@ class StockSearchAdapterClass(private val dataList: ArrayList<StockSearchDataCla
     }
 
     class ViewHolderClass(itemView: View): RecyclerView.ViewHolder(itemView){
-        val rvImage: ImageView = itemView.findViewById(R.id.image)
+       // val rvImage: ImageView = itemView.findViewById(R.id.image)
         val rvTitle: TextView = itemView.findViewById(R.id.stock_ticker)
     }
 }
