@@ -6,6 +6,10 @@ import com.example.cmpt362_stocksim.BackendRepository.getEndorseResponse
 import com.example.cmpt362_stocksim.BackendRepository.setEndorseResponse
 import com.example.cmpt362_stocksim.BackendRepository.getHistoryEndorsement
 import com.example.cmpt362_stocksim.BackendRepository.getPriceResponse
+import com.example.cmpt362_stocksim.BackendRepository.getCashResponse
+import com.example.cmpt362_stocksim.BackendRepository.getBuyResponse
+import com.example.cmpt362_stocksim.BackendRepository.getSellResponse
+import com.example.cmpt362_stocksim.BackendRepository.getInvResponse
 
 
 class BackendViewModel(private val backendRepository: BackendRepository) : ViewModel() {
@@ -37,5 +41,20 @@ class BackendViewModel(private val backendRepository: BackendRepository) : ViewM
         return backendRepository.getPrice(ticker)
     }
 
+    suspend fun getCash(user: String): getCashResponse? {
+        return backendRepository.getCash(user)
+    }
+
+    suspend fun buyStock(ticker: String, amount: String): getBuyResponse? {
+        return backendRepository.buyStock(ticker, amount)
+    }
+
+    suspend fun sellStock(ticker: String, amount: String): getSellResponse? {
+        return backendRepository.sellStock(ticker, amount)
+    }
+
+    suspend fun getInv(user: String): getInvResponse? {
+        return backendRepository.getInv(user)
+    }
 
 }

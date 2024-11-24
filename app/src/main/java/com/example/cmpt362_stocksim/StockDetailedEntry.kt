@@ -42,7 +42,6 @@ import okhttp3.OkHttpClient
 import java.util.Locale
 import com.github.mikephil.charting.charts.LineChart
 
-
 class StockDetailedEntry : AppCompatActivity() {
 
     private lateinit var bckButton: Button
@@ -94,7 +93,7 @@ class StockDetailedEntry : AppCompatActivity() {
     val viewModelFactory2 = BackendViewModelFactory(repository2)
     val backendViewModel = viewModelFactory2.create(BackendViewModel::class.java)
 
-    val api = "bztYHvYoYC_nhrXcpEa3S4Q7SiFaCc6i"
+    val api = ""
 
     private lateinit var lineChart: LineChart
     val entries2 = ArrayList<Entry>()
@@ -216,7 +215,6 @@ class StockDetailedEntry : AppCompatActivity() {
 
                 try {
                     val sendEndorse = getData?.let { it1 -> backendViewModel.setEndorse(it1.ticker) }
-                    println("sent endo")
                 } catch (e: IllegalArgumentException) {
                     Log.d("MJR", e.message!!)
                 }
@@ -227,7 +225,6 @@ class StockDetailedEntry : AppCompatActivity() {
 
                         val endoCount = response.endorsements
                         endoText.text = "${endoCount} People endorsed this stock"
-                        println("got endo")
                     }
                 } catch (e: IllegalArgumentException) {
                     Log.d("MJR", e.message!!)
@@ -334,16 +331,53 @@ class StockDetailedEntry : AppCompatActivity() {
                 if (text.isEmpty()) {
                     text = "0"
                 }
-
                 // GET THE BUY AMOUNT HERE
-                var value = text.toInt()
 
-                stock.name = "${ticker}"
-                stock.quantity = value
-                stock.total_value = 10000.0
-                stock.cash_value = 10000.0 - value
 
-                stockVViewModel.insert(stock)
+                lifecycleScope.launch {
+                    try {
+                        val response = backendViewModel.buyStock(ticker, text)
+                        if (response != null) {
+                           println("BOUGHT STONKS")
+
+                        }
+                    } catch (e: IllegalArgumentException) {
+                        Log.d("MJR", e.message!!)
+                    }
+                }
+
+
+                lifecycleScope.launch {
+                    try {
+                        val response = backendViewModel.getInv("15")
+                        if (response != null) {
+
+                            for (stock in response.stocks) {
+                                println("Stock: ${stock.symbol}, Quantity: ${stock.amount}")
+                            }
+
+                        }
+                    } catch (e: IllegalArgumentException) {
+                        Log.d("MJR", e.message!!)
+                    }
+                }
+
+
+                lifecycleScope.launch {
+                    try {
+                        val response = backendViewModel.getCash("15")
+                        if (response != null) {
+                            println("CASH: ${response.cash}")
+                        }
+                    } catch (e: IllegalArgumentException) {
+                        Log.d("MJR", e.message!!)
+                    }
+                }
+
+
+
+
+                // Send this value to buy and decrease cash amount
 
                 isShowingDialog = false
             }
@@ -377,10 +411,47 @@ class StockDetailedEntry : AppCompatActivity() {
                     text = "0"
                 }
 
-                // GET THE BUY AMOUNT HERE
-                var value = text.toInt()
-                // price var in global has the price of the ticker
-                // ALSO USE ticker variable to get the ticker name for database
+                //var value = text.toInt()
+
+                // Post sell amount and get that difference in cash
+                lifecycleScope.launch {
+                    try {
+                        val response = backendViewModel.sellStock(ticker, text)
+                        if (response != null) {
+                            println("SOLD STONKS")
+
+                        }
+                    } catch (e: IllegalArgumentException) {
+                        Log.d("MJR", e.message!!)
+                    }
+                }
+
+                lifecycleScope.launch {
+                    try {
+                        val response = backendViewModel.getInv("15")
+                        if (response != null) {
+
+                            for (stock in response.stocks) {
+                                println("Stock: ${stock.symbol}, Quantity: ${stock.amount}")
+                            }
+
+                        }
+                    } catch (e: IllegalArgumentException) {
+                        Log.d("MJR", e.message!!)
+                    }
+                }
+
+
+                lifecycleScope.launch {
+                    try {
+                        val response = backendViewModel.getCash("15")
+                        if (response != null) {
+                            println("CASH: ${response.cash}")
+                        }
+                    } catch (e: IllegalArgumentException) {
+                        Log.d("MJR", e.message!!)
+                    }
+                }
 
                 isShowingDialog = false
             }
