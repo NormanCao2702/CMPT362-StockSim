@@ -402,35 +402,10 @@ class BackendRepository {
         return null
     }
 
-
-    data class UserAchievements(
-        val achievements: List<Achievement>
-    )
-
-    data class Achievement(
-        val id: Int,
-        val unlock_date: Long
-    )
-
     data class UserFavorites(
         val favorites: List<String>  // List of stock symbols
     )
 
-    suspend fun getUserAchievements(userId: String): UserAchievements {
-        val builder = HttpRequestBuilder()
-        builder.url.protocol = URLProtocol.HTTPS
-        builder.url.host = HOST
-        builder.url.path(API_PATH, "user", "achievement")
-        builder.url.parameters.append("uid", userId)
-
-        val response = client.get(builder)
-        if(response.status == HttpStatusCode.OK) {
-            return Gson().fromJson(response.bodyAsText(), UserAchievements::class.java)
-        } else {
-            handleError(response)
-        }
-        throw IllegalStateException("Failed to get achievements")
-    }
 
     suspend fun getUserFavorites(userId: String): UserFavorites {
         val builder = HttpRequestBuilder()

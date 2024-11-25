@@ -31,8 +31,9 @@ class PortfolioViewModel: ViewModel() {
 
     suspend fun loadUserStats(userId: String, repository: BackendRepository) {
         try {
-            val achievements = repository.getUserAchievements(userId)
-            Log.d("PortfolioVM", "Achievements: ${achievements.achievements.size}")
+            val achievements = repository.getUsersAchievement(userId)
+            val achievementCount = achievements?.achievements?.size ?: 0
+            Log.d("PortfolioVM", "Achievements: ${achievementCount}")
 
             val stocks = repository.getInv(userId)
             val stocksCount = stocks?.stocks?.size ?: 0
@@ -43,7 +44,7 @@ class PortfolioViewModel: ViewModel() {
 
             // Update LiveData with counts
             val newStats = StatsData(
-                achievementCount = achievements.achievements.size,
+                achievementCount = achievementCount,
                 stocksCount = stocksCount,
                 favoritesCount = favorites.favorites.size
             )
