@@ -72,5 +72,8 @@ class BackendViewModel(private val backendRepository: BackendRepository) : ViewM
         return backendRepository.getAllAchievements()
     }
 
+    suspend fun getUserInfo(userId: String): BackendRepository.UserInfoResponse {
+        return backendRepository.getUserInfo(userId)
+    }
 
 }

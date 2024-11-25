@@ -1,16 +1,32 @@
 package com.example.cmpt362_stocksim.userDataManager
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import com.example.cmpt362_stocksim.BackendRepository
+import com.example.cmpt362_stocksim.BackendViewModel
+import com.example.cmpt362_stocksim.BackendViewModelFactory
 import com.example.cmpt362_stocksim.utils.JwtUtils
+import java.io.ByteArrayOutputStream
+import android.util.Base64
+
 
 class UserDataManager(private val context: Context) {
     private val sharedPref = context.getSharedPreferences("AUTH", Context.MODE_PRIVATE)
-    private val backendRepository = BackendRepository()  // You'll need to handle dependency injection properly
+    private val backendViewModel: BackendViewModel  // You'll need to handle dependency injection properly
 
-    // Existing functions
+    init {
+        val repository = BackendRepository()
+        val viewModelFactory = BackendViewModelFactory(repository)
+        backendViewModel = viewModelFactory.create(BackendViewModel::class.java)
+    }
+
+    // For login/register - saves JWT data
     fun saveUserData(token: String) {
+        // Save JWT token
         sharedPref.edit().putString("JWT_TOKEN", token).apply()
+
+        // Decode and save user data from JWT
         val userData = JwtUtils.decodeJwt(token)
         userData?.let {
             sharedPref.edit()
@@ -20,90 +36,58 @@ class UserDataManager(private val context: Context) {
         }
     }
 
+    // For additional user info
+    fun saveUserInfo(email: String, birthday: String, netWorth: Double) {
+        sharedPref.edit()
+            .putString("USER_EMAIL", email)
+            .putString("USER_BIRTHDAY", birthday)
+            .putString("USER_NET_WORTH", netWorth.toString())
+            .apply()
+    }
+
+    fun saveProfileImage(bitmap: Bitmap) {
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
+        val byteArray = byteArrayOutputStream.toByteArray()
+        val base64Image = Base64.encodeToString(byteArray, Base64.DEFAULT)
+
+        sharedPref.edit()
+            .putString("PROFILE_IMAGE", base64Image)
+            .apply()
+    }
+
     fun getUserId(): String? = sharedPref.getString("USER_ID", null)
     fun getUsername(): String? = sharedPref.getString("USERNAME", null)
     fun getJwtToken(): String? = sharedPref.getString("JWT_TOKEN", null)
+    fun getEmail(): String? = sharedPref.getString("USER_EMAIL", null)
+    fun getBirthday(): String? = sharedPref.getString("USER_BIRTHDAY", null)
+    fun getNetWorth(): Double = sharedPref.getString("USER_NET_WORTH", "0.0")?.toDoubleOrNull() ?: 0.0
+
+    // Refresh user info from API
+    suspend fun refreshUserInfo(): Boolean {
+        return try {
+            val userId = getUserId() ?: return false
+            val userInfo = backendViewModel.getUserInfo(userId)
+            saveUserInfo(userInfo.email, userInfo.birthday, userInfo.net_worth)
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    fun getProfileImage(): Bitmap? {
+        val base64Image = sharedPref.getString("PROFILE_IMAGE", null)
+        return if (base64Image != null) {
+            try {
+                val imageBytes = Base64.decode(base64Image, Base64.DEFAULT)
+                BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+            } catch (e: Exception) {
+                null
+            }
+        } else null
+    }
+
     fun clearUserData() {
         sharedPref.edit().clear().apply()
     }
-
-    // New functions
-//    suspend fun getUserInfo(): UserInfo? {
-//        return try {
-//            val userId = getUserId() ?: return null
-//            // Implement API call to /api/user/info?uid=USER_ID
-//            // Return UserInfo object
-//        } catch (e: Exception) {
-//            null
-//        }
-//    }
-//
-//    suspend fun getUserStocks(): UserStocks? {
-//        return try {
-//            val userId = getUserId() ?: return null
-//            // Implement API call to /api/user/stocks?uid=USER_ID
-//            // Return UserStocks object
-//        } catch (e: Exception) {
-//            null
-//        }
-//    }
-//
-//    suspend fun getUserFavorites(): UserFavorites? {
-//        return try {
-//            val userId = getUserId() ?: return null
-//            // Implement API call to /api/user/favorites?uid=USER_ID
-//            // Return UserFavorites object
-//        } catch (e: Exception) {
-//            null
-//        }
-//    }
-//
-//    suspend fun getUserTrades(): UserTrades? {
-//        return try {
-//            val userId = getUserId() ?: return null
-//            // Implement API call to /api/user/trades?uid=USER_ID
-//            // Return UserTrades object
-//        } catch (e: Exception) {
-//            null
-//        }
-//    }
-//
-//    suspend fun getUserAchievements(): UserAchievements? {
-//        return try {
-//            val userId = getUserId() ?: return null
-//            // Implement API call to /api/user/achievement?uid=USER_ID
-//            // Return UserAchievements object
-//        } catch (e: Exception) {
-//            null
-//        }
-//    }
-//
-//    suspend fun getUserNetWorth(): Double? {
-//        return try {
-//            val userId = getUserId() ?: return null
-//            // Implement API call to /api/user/net_worth?uid=USER_ID
-//            // Return net worth as Double
-//        } catch (e: Exception) {
-//            null
-//        }
-//    }
-//
-//    fun getCachedUserEmail(): String? = sharedPref.getString("USER_EMAIL", null)
-//    fun getCachedUserBirthday(): String? = sharedPref.getString("USER_BIRTHDAY", null)
-//    fun getCachedUserCash(): Double = sharedPref.getFloat("USER_CASH", 0f).toDouble()
-//
-//    fun updateCachedUserInfo(userInfo: UserInfo) {
-//        sharedPref.edit()
-//            .putString("USER_EMAIL", userInfo.email)
-//            .putString("USER_BIRTHDAY", userInfo.birthday)
-//            .putFloat("USER_CASH", userInfo.cash.toFloat())
-//            .apply()
-//    }
-//
-//    fun clearUserData() {
-//        sharedPref.edit().clear().apply()
-//    }
-//
-//    // Helper function to check if user is logged in
-//    fun isLoggedIn(): Boolean = !getJwtToken().isNullOrEmpty()
 }

@@ -6,8 +6,13 @@ import androidx.lifecycle.ViewModel
 
 class PortfolioViewModel: ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is portfolio Fragment"
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
+
+    private val _error = MutableLiveData<String>()
+    val error: LiveData<String> = _error
+
+    init {
+        _isLoading.value = false
     }
-    val text: LiveData<String> = _text
 }

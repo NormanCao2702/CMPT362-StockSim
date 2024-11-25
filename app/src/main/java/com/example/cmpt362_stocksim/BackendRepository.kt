@@ -235,6 +235,48 @@ class BackendRepository {
         return ""
     }
 
+    data class UserInfoResponse(
+        val username: String,
+        val email: String,
+        val birthday: String,
+        val net_worth: Double
+    )
+
+    data class NetWorthResponse(
+        val net_worth: Double
+    )
+
+    suspend fun getUserInfo(userId: String): UserInfoResponse {
+        val builder = HttpRequestBuilder()
+        builder.url.protocol = URLProtocol.HTTPS
+        builder.url.host = HOST
+        builder.url.path(API_PATH, "user", "info")
+        builder.url.parameters.append("uid", userId)
+
+        // Get basic user info
+        val infoResponse = client.get(builder)
+        if(infoResponse.status != HttpStatusCode.OK) {
+            handleError(infoResponse)
+        }
+
+        // Get net worth
+        builder.url.path(API_PATH, "user", "net_worth")
+        val netWorthResponse = client.get(builder)
+        if(netWorthResponse.status != HttpStatusCode.OK) {
+            handleError(netWorthResponse)
+        }
+
+        val userInfo = Gson().fromJson(infoResponse.bodyAsText(), UserInfoResponse::class.java)
+        val netWorth = Gson().fromJson(netWorthResponse.bodyAsText(), NetWorthResponse::class.java)
+
+        return UserInfoResponse(
+            username = userInfo.username,
+            email = userInfo.email,
+            birthday = userInfo.birthday,
+            net_worth = netWorth.net_worth
+        )
+    }
+
     suspend fun getPrice(ticker: String): getPriceResponse? {
         val builder = HttpRequestBuilder()
         builder.url.protocol = URLProtocol.HTTPS
