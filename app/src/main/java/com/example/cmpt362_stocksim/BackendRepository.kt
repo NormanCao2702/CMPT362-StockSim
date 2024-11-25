@@ -59,7 +59,7 @@ class BackendRepository {
     data class stockInv(val symbol: String, val amount: String)
     data class getInvResponse(val stocks: ArrayList<stockInv>)
 
-    data class achieves(val id: Int, val date: Long)
+    data class achieves(val id: Int, val date: Long, val name: String, val description: String)
     data class getUserAchResponse(val achievements: ArrayList<achieves>)
     data class setUserAchResponse(val token5: String)
     data class allAchieves(val name: String, val description: String, val id: String)
@@ -479,7 +479,7 @@ class BackendRepository {
         val params = ParametersBuilder(0)
         builder.url.protocol = URLProtocol.HTTPS
         builder.header("Authorization", "Bearer " + token)
-        params.append("symbol",
+        params.append("to",
             withContext(IO) {
                 URLEncoder.encode(to, "UTF-8")
             })

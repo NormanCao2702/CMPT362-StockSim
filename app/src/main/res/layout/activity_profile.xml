@@ -6,18 +6,17 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProfileActivity">
+    tools:context=".ui.social.profile.ProfileActivity">
 
 
-    <TextView
+    <ListView
         android:id="@+id/user_stockinventory_textview"
-        android:layout_width="289dp"
-        android:layout_height="38dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:hint="Stock inventory goes here"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/stock_inventory" />
+        app:layout_constraintTop_toBottomOf="@+id/stock_inventory"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"/>
 
     <ImageView
         android:id="@+id/profile_icon"
@@ -35,7 +34,9 @@
         android:layout_height="37dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="28dp"
-        android:hint="Username"
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        android:text="Username"
         app:layout_constraintStart_toEndOf="@+id/profile_icon"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -79,15 +80,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/birthday" />
 
-    <TextView
+    <ListView
         android:id="@+id/user_achievementnumber_textview"
-        android:layout_width="289dp"
-        android:layout_height="38dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:hint="number of achievement goes here"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/number_of_achievements" />
+        app:layout_constraintTop_toBottomOf="@+id/number_of_achievements"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"/>
+
 
     <TextView
         android:id="@+id/stock_inventory"
@@ -127,6 +128,7 @@
         android:layout_marginTop="64dp"
         android:text="Chat"
         app:layout_constraintStart_toEndOf="@+id/addFriendButton"
-        app:layout_constraintTop_toBottomOf="@+id/user_totalworth_textview" />
+        app:layout_constraintTop_toBottomOf="@+id/user_totalworth_textview"
+        android:visibility="invisible"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

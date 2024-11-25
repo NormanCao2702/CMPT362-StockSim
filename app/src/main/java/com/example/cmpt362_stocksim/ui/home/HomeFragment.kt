@@ -3,6 +3,8 @@ package com.example.cmpt362_stocksim.ui.home
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -157,17 +159,20 @@ class HomeFragment : Fragment() {
             fillColor = ContextCompat.getColor(requireContext(), R.color.purple_200)
             fillAlpha = 50
         }
+        Handler(Looper.getMainLooper()).post {
+            lineChart.apply {
+                axisLeft.apply {
+                    axisMinimum = value - padding
+                    axisMaximum = value + padding
+                }
 
-        lineChart.apply {
-            axisLeft.apply {
-                axisMinimum = value - padding
-                axisMaximum = value + padding
+                data = LineData(dataSet)
+                animateX(1000)
+                invalidate()
             }
-
-            data = LineData(dataSet)
-            animateX(1000)
-            invalidate()
         }
+
+
     }
 
     private fun fetchNetWorthAndUpdateChart() {

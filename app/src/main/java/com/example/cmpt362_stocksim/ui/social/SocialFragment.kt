@@ -12,11 +12,13 @@ import android.widget.ListView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.example.cmpt362_stocksim.AchievementActivity
 import com.example.cmpt362_stocksim.BackendRepository
 import com.example.cmpt362_stocksim.BackendViewModel
 import com.example.cmpt362_stocksim.BackendViewModelFactory
 import com.example.cmpt362_stocksim.FriendListActivity
 import com.example.cmpt362_stocksim.databinding.FragmentSocialBinding
+import com.example.cmpt362_stocksim.ui.social.profile.ProfileActivity
 import kotlinx.coroutines.launch
 
 
@@ -63,6 +65,16 @@ class SocialFragment: Fragment() {
         backendViewModel = BackendViewModelFactory(BackendRepository()).create(BackendViewModel::class.java)
         feedAdapter = FeedArrayListAdapter(requireActivity(), ArrayList())
         feedListView.adapter = feedAdapter
+
+        feedListView.setOnItemClickListener { adapterView, view, index, l ->
+            val item = adapterView.getItemAtPosition(index) as BackendRepository.feedItem
+            val user_id = item.uid
+            val args = Bundle()
+            val intent = Intent(requireActivity(), ProfileActivity::class.java)
+            args.putInt("USER_ID", user_id)
+            intent.putExtras(args)
+            startActivity(intent)
+        }
 
 //        val textView: TextView = binding.textSocial
 //        socialViewModel.text.observe(viewLifecycleOwner) {

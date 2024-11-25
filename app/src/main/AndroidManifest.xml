@@ -53,6 +53,9 @@
         <activity
             android:name=".FriendListActivity"
             android:exported="false"/>
+        <activity
+            android:name=".ui.social.profile.ProfileActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>
