@@ -26,6 +26,9 @@ class AchievementFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_achievement_list, container, false)
 
 
+
+
+
         return view
     }
 }

@@ -10,6 +10,9 @@ import com.example.cmpt362_stocksim.BackendRepository.getCashResponse
 import com.example.cmpt362_stocksim.BackendRepository.getBuyResponse
 import com.example.cmpt362_stocksim.BackendRepository.getSellResponse
 import com.example.cmpt362_stocksim.BackendRepository.getInvResponse
+import com.example.cmpt362_stocksim.BackendRepository.setUserAchResponse
+import com.example.cmpt362_stocksim.BackendRepository.getUserAchResponse
+import com.example.cmpt362_stocksim.BackendRepository.getAllAchResponse
 
 
 class BackendViewModel(private val backendRepository: BackendRepository) : ViewModel() {
@@ -56,5 +59,18 @@ class BackendViewModel(private val backendRepository: BackendRepository) : ViewM
     suspend fun getInv(user: String): getInvResponse? {
         return backendRepository.getInv(user)
     }
+
+    suspend fun getUsersAchievement(user: String): getUserAchResponse? {
+        return backendRepository.getUsersAchievement(user)
+    }
+
+    suspend fun setUsersAchievement(id: String): setUserAchResponse? {
+        return backendRepository.setUsersAchievement(id)
+    }
+
+    suspend fun getAllAchievements(): getAllAchResponse? {
+        return backendRepository.getAllAchievements()
+    }
+
 
 }

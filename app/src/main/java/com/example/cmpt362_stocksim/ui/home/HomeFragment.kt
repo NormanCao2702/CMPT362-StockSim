@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.example.cmpt362_stocksim.AchievementFragment
 import com.example.cmpt362_stocksim.BackendRepository
 import com.example.cmpt362_stocksim.BackendViewModel
 import com.example.cmpt362_stocksim.BackendViewModelFactory
@@ -175,7 +176,8 @@ class HomeFragment : Fragment() {
         }
 
         binding.btnAchievements.setOnClickListener{
-            //open Achievement fragment here
+            val intent = Intent(requireActivity(), AchievementFragment::class.java)
+            startActivity(intent)
         }
     }
 

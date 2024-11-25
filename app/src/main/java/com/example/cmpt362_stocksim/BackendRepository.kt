@@ -55,11 +55,72 @@ class BackendRepository {
     data class stockInv(val symbol: String, val amount: String)
     data class getInvResponse(val stocks: ArrayList<stockInv>)
 
+    data class achieves(val id: String, val unlockDate: String)
+    data class getUserAchResponse(val achievements: ArrayList<achieves>)
+    data class setUserAchResponse(val token5: String)
+    data class allAchieves(val name: String, val description: String, val id: String)
+    data class getAllAchResponse(val achievements: ArrayList<allAchieves>)
+
     suspend fun handleError(response: HttpResponse): String {
         val responseData = Gson().fromJson(response.bodyAsText(), ErrorResponse::class.java)
         throw IllegalArgumentException(responseData.error)
     }
 
+    suspend fun setUsersAchievement(id: String): setUserAchResponse? {
+        val builder = HttpRequestBuilder()
+        val params = ParametersBuilder(0)
+        builder.url.protocol = URLProtocol.HTTPS
+        builder.header("Authorization", "Bearer " + token)
+        params.append("id",
+            withContext(IO) {
+                URLEncoder.encode(id, "UTF-8")
+            })
+        builder.url.encodedParameters = params
+        builder.url.host = HOST
+        builder.url.path(API_PATH, "user", "achievement")
+        val response = client.post(builder)
+        if(response.status == HttpStatusCode.Created) {
+            val responseData = Gson().fromJson(response.bodyAsText(), setUserAchResponse::class.java)
+            return responseData
+        } else {
+            handleError(response)
+        }
+        return null
+    }
+
+
+    suspend fun getAllAchievements(): getAllAchResponse? {
+        val builder = HttpRequestBuilder()
+        builder.url.protocol = URLProtocol.HTTPS
+        builder.url.host = HOST
+        builder.url.path(API_PATH, "achievement")
+
+        val response = client.get(builder)
+        if(response.status == HttpStatusCode.OK) {
+            val responseData = Gson().fromJson(response.bodyAsText(), getAllAchResponse::class.java)
+            return responseData
+        } else {
+            handleError(response)
+        }
+        return null
+    }
+
+    suspend fun getUsersAchievement(user: String): getUserAchResponse? {
+        val builder = HttpRequestBuilder()
+        builder.url.protocol = URLProtocol.HTTPS
+        builder.url.host = HOST
+        builder.url.path(API_PATH, "user", "achievement")
+        builder.url.parameters.append("uid", user)
+
+        val response = client.get(builder)
+        if(response.status == HttpStatusCode.OK) {
+            val responseData = Gson().fromJson(response.bodyAsText(), getUserAchResponse::class.java)
+            return responseData
+        } else {
+            handleError(response)
+        }
+        return null
+    }
 
     suspend fun buyStock(ticker: String, amount: String): getBuyResponse? {
         val builder = HttpRequestBuilder()
