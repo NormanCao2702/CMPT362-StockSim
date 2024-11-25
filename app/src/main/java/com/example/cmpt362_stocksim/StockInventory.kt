@@ -34,8 +34,6 @@ class StockInventory : AppCompatActivity() {
 
         container = findViewById(R.id.stockContainer)
 
-        // NEED TO GET USER ID HERE ASWELL
-        // DONT FORGETTTTTTT
         lifecycleScope.launch {
             try {
                 val userId = userDataManager.getUserId()

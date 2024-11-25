@@ -13,6 +13,20 @@ import com.example.cmpt362_stocksim.BackendRepository.getInvResponse
 import com.example.cmpt362_stocksim.BackendRepository.setUserAchResponse
 import com.example.cmpt362_stocksim.BackendRepository.getUserAchResponse
 import com.example.cmpt362_stocksim.BackendRepository.getAllAchResponse
+import com.example.cmpt362_stocksim.BackendRepository.friendRequestResponse
+import com.example.cmpt362_stocksim.BackendRepository.friendCancelResponse
+import com.example.cmpt362_stocksim.BackendRepository.friendAcceptResponse
+import com.example.cmpt362_stocksim.BackendRepository.friendDeclineResponse
+import com.example.cmpt362_stocksim.BackendRepository.getFriendsResponse
+import com.example.cmpt362_stocksim.BackendRepository.getRecievedResponse
+import com.example.cmpt362_stocksim.BackendRepository.getSentResponse
+import com.example.cmpt362_stocksim.BackendRepository.setRemoveResponse
+import com.example.cmpt362_stocksim.BackendRepository.setPostResponse
+import com.example.cmpt362_stocksim.BackendRepository.getUserPostResponse
+import com.example.cmpt362_stocksim.BackendRepository.getMessageResponse
+import com.example.cmpt362_stocksim.BackendRepository.setMessageResponse
+import com.example.cmpt362_stocksim.BackendRepository.getCheckResponse
+import com.example.cmpt362_stocksim.BackendRepository.getUsersResponse
 
 
 class BackendViewModel(private val backendRepository: BackendRepository) : ViewModel() {
@@ -78,6 +92,62 @@ class BackendViewModel(private val backendRepository: BackendRepository) : ViewM
 
     suspend fun getFeed(): ArrayList<BackendRepository.feedItem> {
         return backendRepository.getFeed()
+    }
+
+    suspend fun setFriendRequest(to: String, token: String): friendRequestResponse? {
+        return backendRepository.setFriendRequest(to, token)
+    }
+
+    suspend fun friendRequestCancel(to: String, token: String): friendCancelResponse? {
+        return backendRepository.friendRequestCancel(to, token)
+    }
+
+    suspend fun friendRequestAccept(to: String, token: String): friendAcceptResponse? {
+        return backendRepository.friendRequestAccept(to, token)
+    }
+
+    suspend fun friendRequestDecline(from: String, token: String): friendDeclineResponse? {
+        return backendRepository.friendRequestDecline(from, token)
+    }
+
+    suspend fun getFriends(user: String): getFriendsResponse? {
+        return backendRepository.getFriends(user)
+    }
+
+    suspend fun getRecieved(token: String): getRecievedResponse? {
+        return backendRepository.getRecieved(token)
+    }
+
+    suspend fun getSent(token: String): getSentResponse? {
+        return backendRepository.getSent(token)
+    }
+
+    suspend fun setRemove(uid: String, token: String): setRemoveResponse? {
+        return backendRepository.setRemove(uid, token)
+    }
+
+    suspend fun setPost(content: String, token: String): setPostResponse? {
+        return backendRepository.setPost(content, token)
+    }
+
+    suspend fun getUserPosts(user: String): getUserPostResponse? {
+        return backendRepository.getUserPosts(user)
+    }
+
+    suspend fun getMessages(user: String, token: String): getMessageResponse? {
+        return backendRepository.getMessages(user, token)
+    }
+
+    suspend fun setSendMessage(to: String, content: String, token: String): setMessageResponse? {
+        return backendRepository.setSendMessage(to, content, token)
+    }
+
+    suspend fun getCheckMessages(user: String, parent: String, token: String): getCheckResponse? {
+        return backendRepository.getCheckMessages(user, parent, token)
+    }
+
+    suspend fun getUsers(user: String): getUsersResponse? {
+        return backendRepository.getUsers(user)
     }
 
 }

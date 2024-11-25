@@ -27,8 +27,6 @@ class BackendRepository {
     private val API_PATH = "api"
     private val client = HttpClient(CIO)
 
-   // private val token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzIxMTI5OTgsImV4cCI6MTczNzI5Njk5OCwidWlkIjoxNSwidXNlcm5hbWUiOiJhZG1pbiJ9.RNaWkEsx0UlrgbxqZirG1xXz7CfMa5hhXyjCLNmPGHo"
-
     data class ErrorResponse(val error: String)
     data class RegisterResponse(val token: String)
 
@@ -69,6 +67,36 @@ class BackendRepository {
 
     data class feedItem(val content: String, val date: Long, val post_id: Int, val uid: Int, val username: String)
     data class feed(val feed: ArrayList<feedItem>)
+
+    data class friendRequestResponse(val token6: String)
+    data class friendCancelResponse(val token7: String)
+    data class friendAcceptResponse(val token8: String)
+    data class friendDeclineResponse(val token8: String)
+
+    data class friend(val uid: Int, val username: String, val added_date: String)
+    data class getFriendsResponse(val friends: ArrayList<friend>)
+
+    data class request(val uid: Int, val username: String, val sent_date: Long)
+    data class getRecievedResponse(val requests: ArrayList<request>)
+    data class getSentResponse(val requests: ArrayList<request>)
+
+    data class setRemoveResponse(val token9: String)
+    data class setPostResponse(val token10: String)
+
+
+    data class post(val content: String, val date: Long, val post_id: Int)
+    data class getUserPostResponse(val posts: ArrayList<post>)
+
+    data class message(val content: String, val date: Long, val from: Int, val username: String, val message_id: Int)
+    data class getMessageResponse(val messages: ArrayList<message>)
+
+    data class setMessageResponse(val token11: String)
+
+    data class getCheckResponse(val messages: ArrayList<message>)
+
+    data class user(val uid: Int, val username: String)
+    data class getUsersResponse(val users: ArrayList<user>)
+
 
     suspend fun handleError(response: HttpResponse): String {
         val responseData = Gson().fromJson(response.bodyAsText(), ErrorResponse::class.java)
@@ -445,4 +473,301 @@ class BackendRepository {
         }
         throw IllegalStateException("Failed to get favorites")
     }
+
+    suspend fun setFriendRequest(to: String, token: String): friendRequestResponse? {
+        val builder = HttpRequestBuilder()
+        val params = ParametersBuilder(0)
+        builder.url.protocol = URLProtocol.HTTPS
+        builder.header("Authorization", "Bearer " + token)
+        params.append("symbol",
+            withContext(IO) {
+                URLEncoder.encode(to, "UTF-8")
+            })
+        builder.url.encodedParameters = params
+        builder.url.host = HOST
+        builder.url.path(API_PATH, "social", "friend_request")
+        val response = client.post(builder)
+        if(response.status == HttpStatusCode.Created) {
+            val responseData = Gson().fromJson(response.bodyAsText(), friendRequestResponse::class.java)
+            return responseData
+        } else {
+            handleError(response)
+        }
+        return null
+    }
+
+    suspend fun friendRequestCancel(to: String, token: String): friendCancelResponse? {
+        val builder = HttpRequestBuilder()
+        val params = ParametersBuilder(0)
+        builder.url.protocol = URLProtocol.HTTPS
+        builder.header("Authorization", "Bearer " + token)
+        params.append("symbol",
+            withContext(IO) {
+                URLEncoder.encode(to, "UTF-8")
+            })
+        builder.url.encodedParameters = params
+        builder.url.host = HOST
+        builder.url.path(API_PATH, "social", "friend_request", "cancel")
+        val response = client.post(builder)
+        if(response.status == HttpStatusCode.Created) {
+            val responseData = Gson().fromJson(response.bodyAsText(), friendCancelResponse::class.java)
+            return responseData
+        } else {
+            handleError(response)
+        }
+        return null
+    }
+
+    suspend fun friendRequestAccept(to: String, token: String): friendAcceptResponse? {
+        val builder = HttpRequestBuilder()
+        val params = ParametersBuilder(0)
+        builder.url.protocol = URLProtocol.HTTPS
+        builder.header("Authorization", "Bearer " + token)
+        params.append("symbol",
+            withContext(IO) {
+                URLEncoder.encode(to, "UTF-8")
+            })
+        builder.url.encodedParameters = params
+        builder.url.host = HOST
+        builder.url.path(API_PATH, "social", "friend_request", "accept")
+        val response = client.post(builder)
+        if(response.status == HttpStatusCode.Created) {
+            val responseData = Gson().fromJson(response.bodyAsText(), friendAcceptResponse::class.java)
+            return responseData
+        } else {
+            handleError(response)
+        }
+        return null
+    }
+
+    suspend fun friendRequestDecline(from: String, token: String): friendDeclineResponse? {
+        val builder = HttpRequestBuilder()
+        val params = ParametersBuilder(0)
+        builder.url.protocol = URLProtocol.HTTPS
+        builder.header("Authorization", "Bearer " + token)
+        params.append("symbol",
+            withContext(IO) {
+                URLEncoder.encode(from, "UTF-8")
+            })
+        builder.url.encodedParameters = params
+        builder.url.host = HOST
+        builder.url.path(API_PATH, "social", "friend_request", "decline")
+        val response = client.post(builder)
+        if(response.status == HttpStatusCode.Created) {
+            val responseData = Gson().fromJson(response.bodyAsText(), friendDeclineResponse::class.java)
+            return responseData
+        } else {
+            handleError(response)
+        }
+        return null
+    }
+
+
+    suspend fun getFriends(user: String): getFriendsResponse? {
+        val builder = HttpRequestBuilder()
+        builder.url.protocol = URLProtocol.HTTPS
+        builder.url.host = HOST
+        builder.url.path(API_PATH, "social", "friends")
+        builder.url.parameters.append("uid", user)
+
+        val response = client.get(builder)
+        if(response.status == HttpStatusCode.OK) {
+            val responseData = Gson().fromJson(response.bodyAsText(), getFriendsResponse::class.java)
+            return responseData
+        } else {
+            handleError(response)
+        }
+        return null
+    }
+
+    suspend fun getRecieved(token: String): getRecievedResponse? {
+        val builder = HttpRequestBuilder()
+        builder.header("Authorization", "Bearer " + token)
+        builder.url.protocol = URLProtocol.HTTPS
+        builder.url.host = HOST
+        builder.url.path(API_PATH, "social", "friend_request", "recieved")
+        //builder.url.parameters.append("uid", user)
+
+        val response = client.get(builder)
+        if(response.status == HttpStatusCode.OK) {
+            val responseData = Gson().fromJson(response.bodyAsText(), getRecievedResponse::class.java)
+            return responseData
+        } else {
+            handleError(response)
+        }
+        return null
+    }
+
+    suspend fun getSent(token: String): getSentResponse? {
+        val builder = HttpRequestBuilder()
+        builder.header("Authorization", "Bearer " + token)
+        builder.url.protocol = URLProtocol.HTTPS
+        builder.url.host = HOST
+        builder.url.path(API_PATH, "social", "friend_request", "sent")
+        //builder.url.parameters.append("uid", user)
+
+        val response = client.get(builder)
+        if(response.status == HttpStatusCode.OK) {
+            val responseData = Gson().fromJson(response.bodyAsText(), getSentResponse::class.java)
+            return responseData
+        } else {
+            handleError(response)
+        }
+        return null
+    }
+
+    suspend fun setRemove(uid: String, token: String): setRemoveResponse? {
+        val builder = HttpRequestBuilder()
+        val params = ParametersBuilder(0)
+        builder.url.protocol = URLProtocol.HTTPS
+        builder.header("Authorization", "Bearer " + token)
+        params.append("symbol",
+            withContext(IO) {
+                URLEncoder.encode(uid, "UTF-8")
+            })
+        builder.url.encodedParameters = params
+        builder.url.host = HOST
+        builder.url.path(API_PATH, "social", "friends", "remove")
+        val response = client.post(builder)
+        if(response.status == HttpStatusCode.Created) {
+            val responseData = Gson().fromJson(response.bodyAsText(), setRemoveResponse::class.java)
+            return responseData
+        } else {
+            handleError(response)
+        }
+        return null
+    }
+
+
+
+    suspend fun setPost(content: String, token: String): setPostResponse? {
+        val builder = HttpRequestBuilder()
+        val params = ParametersBuilder(0)
+        builder.url.protocol = URLProtocol.HTTPS
+        builder.header("Authorization", "Bearer " + token)
+        params.append("symbol",
+            withContext(IO) {
+                URLEncoder.encode(content, "UTF-8")
+            })
+        builder.url.encodedParameters = params
+        builder.url.host = HOST
+        builder.url.path(API_PATH, "social", "post")
+        val response = client.post(builder)
+        if(response.status == HttpStatusCode.Created) {
+            val responseData = Gson().fromJson(response.bodyAsText(), setPostResponse::class.java)
+            return responseData
+        } else {
+            handleError(response)
+        }
+        return null
+    }
+
+    suspend fun getUserPosts(user: String): getUserPostResponse? {
+        val builder = HttpRequestBuilder()
+        builder.url.protocol = URLProtocol.HTTPS
+        builder.url.host = HOST
+        builder.url.path(API_PATH, "user", "posts")
+        builder.url.parameters.append("uid", user)
+
+        val response = client.get(builder)
+        if(response.status == HttpStatusCode.OK) {
+            val responseData = Gson().fromJson(response.bodyAsText(), getUserPostResponse::class.java)
+            return responseData
+        } else {
+            handleError(response)
+        }
+        return null
+    }
+
+
+
+    suspend fun getMessages(user: String, token: String): getMessageResponse? {
+        val builder = HttpRequestBuilder()
+        builder.url.protocol = URLProtocol.HTTPS
+        builder.header("Authorization", "Bearer " + token)
+        builder.url.host = HOST
+        builder.url.path(API_PATH, "social", "messages")
+        builder.url.parameters.append("uid", user)
+
+        val response = client.get(builder)
+        if(response.status == HttpStatusCode.OK) {
+            val responseData = Gson().fromJson(response.bodyAsText(), getMessageResponse::class.java)
+            return responseData
+        } else {
+            handleError(response)
+        }
+        return null
+    }
+
+
+
+
+    suspend fun setSendMessage(to: String, content: String, token: String): setMessageResponse? {
+        val builder = HttpRequestBuilder()
+        val params = ParametersBuilder(0)
+        builder.url.protocol = URLProtocol.HTTPS
+        builder.header("Authorization", "Bearer " + token)
+        params.append("to",
+            withContext(IO) {
+                URLEncoder.encode(to, "UTF-8")
+            })
+        params.append("content",
+            withContext(IO) {
+                URLEncoder.encode(content, "UTF-8")
+            })
+        builder.url.encodedParameters = params
+        builder.url.host = HOST
+        builder.url.path(API_PATH, "social", "messages")
+        val response = client.post(builder)
+        if(response.status == HttpStatusCode.Created) {
+            val responseData = Gson().fromJson(response.bodyAsText(), setMessageResponse::class.java)
+            return responseData
+        } else {
+            handleError(response)
+        }
+        return null
+    }
+
+
+
+
+    suspend fun getCheckMessages(user: String, parent: String, token: String): getCheckResponse? {
+        val builder = HttpRequestBuilder()
+        builder.url.protocol = URLProtocol.HTTPS
+        builder.header("Authorization", "Bearer " + token)
+        builder.url.host = HOST
+        builder.url.path(API_PATH, "social", "get_messages_after")
+        builder.url.parameters.append("uid", user)
+        builder.url.parameters.append("parent", parent)
+
+
+        val response = client.get(builder)
+        if(response.status == HttpStatusCode.OK) {
+            val responseData = Gson().fromJson(response.bodyAsText(), getCheckResponse::class.java)
+            return responseData
+        } else {
+            handleError(response)
+        }
+        return null
+    }
+
+    suspend fun getUsers(user: String): getUsersResponse? {
+        val builder = HttpRequestBuilder()
+        builder.url.protocol = URLProtocol.HTTPS
+        builder.url.host = HOST
+        builder.url.path(API_PATH, "user", "search")
+        builder.url.parameters.append("username", user)
+
+
+        val response = client.get(builder)
+        if(response.status == HttpStatusCode.OK) {
+            val responseData = Gson().fromJson(response.bodyAsText(), getUsersResponse::class.java)
+            return responseData
+        } else {
+            handleError(response)
+        }
+        return null
+    }
+
+
 }
