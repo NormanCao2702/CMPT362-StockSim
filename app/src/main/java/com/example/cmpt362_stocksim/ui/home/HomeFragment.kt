@@ -74,34 +74,33 @@ class HomeFragment : Fragment() {
 
         lifecycleScope.launch {
             try {
-                val netWorth = userDataManager.getNetWorth()
-
-                println("AHHHHH")
-                println("XD: $netWorth")
-                if (netWorth != null) {
-                    tvNetWorth.text = "$${netWorth}"
+                // First refresh user info to get latest net worth
+                val success = userDataManager.refreshUserInfo()
+                if (success) {
+                    // Now get and display net worth
+                    val netWorth = userDataManager.getNetWorth()
+                    tvNetWorth.text = "$${String.format("%.2f", netWorth)}"
                 }
             } catch (e: IllegalArgumentException) {
-                Log.d("Networh", e.message!!)
+                Log.d("Networth", "Error: ${e.message}")
             }
         }
 
-
         lifecycleScope.launch {
             try {
-                val userId = userDataManager.getUserId()
-                val response = userId?.let { backendViewModel.getCash(it) }
+                val userId = userDataManager.getUserId() ?: "15"
+                val response = backendViewModel.getCash(userId)
                 if (response != null) {
-                    tvCashBalance.text = "$${response.cash}"
+                    tvCashBalance.text = "$${String.format("%.2f", response.cash)}"
                 }
             } catch (e: IllegalArgumentException) {
-                Log.d("Cash", e.message!!)
+                Log.d("Cash", "Error: ${e.message}")
             }
         }
 
         lineChart = binding.lineChart // Make sure you have this ID in your layout
         setupChart()
-        updateChartWithLatestNetWorth()
+        fetchNetWorthAndUpdateChart()
         setupButton()
 
 //        val textView: TextView = binding.textHome
@@ -181,6 +180,28 @@ class HomeFragment : Fragment() {
             Log.d("ChartDebug", "Chart updated with ${entries.size} entries")
         } catch (e: Exception) {
             Log.e("ChartDebug", "Error setting chart data: ${e.message}", e)
+        }
+    }
+
+    private fun fetchNetWorthAndUpdateChart() {
+        lifecycleScope.launch {
+            try {
+                // First, ensure we have fresh user info
+                val userDataManager = UserDataManager(requireContext())
+                val userId = userDataManager.getUserId()
+
+                if (userId != null) {
+                    // Force refresh user info to get latest net worth
+                    val success = userDataManager.refreshUserInfo()
+                    if (success) {
+                        val currentNetWorth = userDataManager.getNetWorth()
+                        netWorthHistoryManager.saveNetWorthValue(currentNetWorth)
+                        updateChartData(netWorthHistoryManager.getNetWorthHistory())
+                    }
+                }
+            } catch (e: Exception) {
+                Toast.makeText(context, "Failed to update net worth", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

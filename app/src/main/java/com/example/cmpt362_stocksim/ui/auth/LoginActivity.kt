@@ -53,7 +53,6 @@ class LoginActivity : AppCompatActivity() {
             finish()
         }
 
-        // Navigate to Main screen (temporarily without authentication)
         loginButton.setOnClickListener {
             val email = emailInput.text.toString()
             val password = passwordInput.text.toString()
