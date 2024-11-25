@@ -12,6 +12,7 @@ import com.example.cmpt362_stocksim.R
 import com.example.cmpt362_stocksim.BackendRepository
 import com.example.cmpt362_stocksim.BackendViewModel
 import com.example.cmpt362_stocksim.BackendViewModelFactory
+import com.example.cmpt362_stocksim.userDataManager.UserDataManager
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.launch
@@ -20,10 +21,12 @@ import java.util.Calendar
 class RegisterActivity : AppCompatActivity() {
 
     private lateinit var backendViewModel: BackendViewModel
+    private lateinit var userDataManager: UserDataManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
+        userDataManager = UserDataManager(this)
 
         // Hide action bar
         supportActionBar?.hide()
@@ -89,7 +92,8 @@ class RegisterActivity : AppCompatActivity() {
                     val jwt = backendViewModel.register(username, email, password, birthday)
 
                     // Save JWT token (you'll need to implement this)
-                    saveJwtToken(jwt)
+//                    saveJwtToken(jwt)
+                    userDataManager.saveUserData(jwt)
 
                     // Navigate to MainActivity
                     startActivity(Intent(this@RegisterActivity, MainActivity::class.java))
