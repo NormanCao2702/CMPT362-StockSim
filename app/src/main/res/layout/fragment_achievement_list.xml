@@ -18,10 +18,9 @@
         android:textStyle="bold" />
 
     <androidx.recyclerview.widget.RecyclerView
-
         android:id="@+id/achievement_list"
         android:name="com.example.cmpt362_stocksim.AchievementFragment"
-        android:layout_width="match_parent"
+        android:layout_width="397dp"
         android:layout_height="match_parent"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
