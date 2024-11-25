@@ -2,7 +2,6 @@ package com.example.cmpt362_stocksim.ui.home
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -88,8 +87,8 @@ class HomeFragment : Fragment() {
 
         lifecycleScope.launch {
             try {
-                val userId = userDataManager.getUserId() ?: "15"
-                val response = backendViewModel.getCash(userId)
+                val userId = userDataManager.getUserId()
+                val response = userId?.let { backendViewModel.getCash(it) }
                 if (response != null) {
                     tvCashBalance.text = "$${String.format("%.2f", response.cash)}"
                 }
@@ -260,7 +259,8 @@ class HomeFragment : Fragment() {
 
         lifecycleScope.launch {
             try {
-                val response = backendViewModel.getInv("15")
+                val userId = userDataManager.getUserId()
+                val response = userId?.let { backendViewModel.getInv(it) }
                 if (response != null) {
                     for (stock in response.stocks) {
 
@@ -278,7 +278,12 @@ class HomeFragment : Fragment() {
 
                     lifecycleScope.launch {
                         try {
-                            val response = backendViewModel.setUsersAchievement("1")
+                            val token = userDataManager.getJwtToken()
+                            val response = token?.let {
+                                backendViewModel.setUsersAchievement("1",
+                                    it
+                                )
+                            }
                         } catch (e: IllegalArgumentException) {
                             Log.d("MJR", e.message!!)
                         }

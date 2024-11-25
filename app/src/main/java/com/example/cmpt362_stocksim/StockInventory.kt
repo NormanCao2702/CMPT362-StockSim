@@ -9,6 +9,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.example.cmpt362_stocksim.userDataManager.UserDataManager
 import kotlinx.coroutines.launch
 
 
@@ -24,6 +25,9 @@ class StockInventory : AppCompatActivity() {
     val viewModelFactory2 = BackendViewModelFactory(repository2)
     val backendViewModel = viewModelFactory2.create(BackendViewModel::class.java)
 
+    private val userDataManager by lazy { UserDataManager(this) }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_stockinventory)
@@ -34,7 +38,8 @@ class StockInventory : AppCompatActivity() {
         // DONT FORGETTTTTTT
         lifecycleScope.launch {
             try {
-                val response = backendViewModel.getInv("15")
+                val userId = userDataManager.getUserId()
+                val response = userId?.let { backendViewModel.getInv(it) }
                 if (response != null) {
                     for (stock in response.stocks) {
 

@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.ColumnInfo
 import com.example.cmpt362_stocksim.databinding.FragmentSearchBinding
+import com.example.cmpt362_stocksim.userDataManager.UserDataManager
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
@@ -94,6 +95,9 @@ class StockDetailedEntry : AppCompatActivity() {
     val backendViewModel = viewModelFactory2.create(BackendViewModel::class.java)
 
     val api = ""
+
+    private val userDataManager by lazy { UserDataManager(this) }
+
 
     private lateinit var lineChart: LineChart
     val entries2 = ArrayList<Entry>()
@@ -214,7 +218,12 @@ class StockDetailedEntry : AppCompatActivity() {
             lifecycleScope.launch {
 
                 try {
-                    val sendEndorse = getData?.let { it1 -> backendViewModel.setEndorse(it1.ticker) }
+                    val token = userDataManager.getJwtToken()
+                    val sendEndorse = getData?.let { it1 ->
+                        if (token != null) {
+                            backendViewModel.setEndorse(it1.ticker, token)
+                        }
+                    }
                 } catch (e: IllegalArgumentException) {
                     Log.d("MJR", e.message!!)
                 }
@@ -336,7 +345,8 @@ class StockDetailedEntry : AppCompatActivity() {
 
                 lifecycleScope.launch {
                     try {
-                        val response = backendViewModel.buyStock(ticker, text)
+                        val token = userDataManager.getJwtToken()
+                        val response = token?.let { backendViewModel.buyStock(ticker, text, it) }
                         if (response != null) {
                            println("BOUGHT STONKS")
 
@@ -382,7 +392,8 @@ class StockDetailedEntry : AppCompatActivity() {
                 // Post sell amount and get that difference in cash
                 lifecycleScope.launch {
                     try {
-                        val response = backendViewModel.sellStock(ticker, text)
+                        val token = userDataManager.getJwtToken()
+                        val response = token?.let { backendViewModel.sellStock(ticker, text, it) }
                         if (response != null) {
                             println("SOLD STONKS")
 

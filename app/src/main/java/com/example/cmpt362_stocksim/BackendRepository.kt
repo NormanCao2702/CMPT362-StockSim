@@ -1,6 +1,8 @@
 package com.example.cmpt362_stocksim
 
+import android.content.Context
 import android.util.Log
+import com.example.cmpt362_stocksim.userDataManager.UserDataManager
 import com.google.gson.Gson
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
@@ -10,6 +12,7 @@ import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
+import io.ktor.client.utils.EmptyContent.headers
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.ParametersBuilder
 import io.ktor.http.URLProtocol
@@ -18,11 +21,13 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 import java.net.URLEncoder
 
+
 class BackendRepository {
     private val HOST = "stocksim.breadmod.info"
     private val API_PATH = "api"
     private val client = HttpClient(CIO)
-    private val token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzIxMTI5OTgsImV4cCI6MTczNzI5Njk5OCwidWlkIjoxNSwidXNlcm5hbWUiOiJhZG1pbiJ9.RNaWkEsx0UlrgbxqZirG1xXz7CfMa5hhXyjCLNmPGHo"
+
+   // private val token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzIxMTI5OTgsImV4cCI6MTczNzI5Njk5OCwidWlkIjoxNSwidXNlcm5hbWUiOiJhZG1pbiJ9.RNaWkEsx0UlrgbxqZirG1xXz7CfMa5hhXyjCLNmPGHo"
 
     data class ErrorResponse(val error: String)
     data class RegisterResponse(val token: String)
@@ -67,7 +72,7 @@ class BackendRepository {
         throw IllegalArgumentException(responseData.error)
     }
 
-    suspend fun setUsersAchievement(id: String): setUserAchResponse? {
+    suspend fun setUsersAchievement(id: String, token: String): setUserAchResponse? {
         val builder = HttpRequestBuilder()
         val params = ParametersBuilder(0)
         builder.url.protocol = URLProtocol.HTTPS
@@ -123,7 +128,7 @@ class BackendRepository {
         return null
     }
 
-    suspend fun buyStock(ticker: String, amount: String): getBuyResponse? {
+    suspend fun buyStock(ticker: String, amount: String, token: String): getBuyResponse? {
         val builder = HttpRequestBuilder()
         val params = ParametersBuilder(0)
         builder.url.protocol = URLProtocol.HTTPS
@@ -149,7 +154,7 @@ class BackendRepository {
         return null
     }
 
-    suspend fun sellStock(ticker: String, amount: String): getSellResponse? {
+    suspend fun sellStock(ticker: String, amount: String, token: String): getSellResponse? {
         val builder = HttpRequestBuilder()
         val params = ParametersBuilder(0)
         builder.url.protocol = URLProtocol.HTTPS
@@ -363,7 +368,7 @@ class BackendRepository {
         return null
     }
 
-    suspend fun setEndorse(ticker: String): setEndorseResponse? {
+    suspend fun setEndorse(ticker: String, token: String): setEndorseResponse? {
         val builder = HttpRequestBuilder()
         val params = ParametersBuilder(0)
         builder.url.protocol = URLProtocol.HTTPS
@@ -421,8 +426,4 @@ class BackendRepository {
         }
         throw IllegalStateException("Failed to get favorites")
     }
-
-
-
-
 }

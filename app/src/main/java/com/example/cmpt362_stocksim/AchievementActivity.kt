@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.example.cmpt362_stocksim.userDataManager.UserDataManager
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.time.Instant
@@ -30,15 +31,17 @@ class AchievementActivity : AppCompatActivity() {
     val viewModelFactory2 = BackendViewModelFactory(repository2)
     val backendViewModel = viewModelFactory2.create(BackendViewModel::class.java)
 
+    private val userDataManager by lazy { UserDataManager(this) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_achievement)
 
-
+        val userId = userDataManager.getUserId()
 
         lifecycleScope.launch {
             try {
-                val response = backendViewModel.getUsersAchievement("15")
+                val response = userId?.let { backendViewModel.getUsersAchievement(it) }
                 if (response != null) {
                     for (achievement in response.achievements){
 
@@ -46,8 +49,6 @@ class AchievementActivity : AppCompatActivity() {
                             val checkbox1 = findViewById<CheckBox>(R.id.achievement_checkbox)
                             val textv1 = findViewById<TextView>(R.id.achievement_item3)
                             checkbox1.isChecked = true
-                            println("AHHHH")
-                            println(achievement.date)
                             val date = formatEpochSeconds(achievement.date)
                             textv1.text = "Unlocked: ${date}"
                         }

@@ -32,8 +32,8 @@ class BackendViewModel(private val backendRepository: BackendRepository) : ViewM
         return backendRepository.getEndorse(ticker)
     }
 
-    suspend fun setEndorse(ticker: String): setEndorseResponse? {
-        return backendRepository.setEndorse(ticker)
+    suspend fun setEndorse(ticker: String, token: String): setEndorseResponse? {
+        return backendRepository.setEndorse(ticker, token)
     }
 
     suspend fun getHistory(ticker: String): getHistoryEndorsement? {
@@ -48,12 +48,12 @@ class BackendViewModel(private val backendRepository: BackendRepository) : ViewM
         return backendRepository.getCash(user)
     }
 
-    suspend fun buyStock(ticker: String, amount: String): getBuyResponse? {
-        return backendRepository.buyStock(ticker, amount)
+    suspend fun buyStock(ticker: String, amount: String, token: String): getBuyResponse? {
+        return backendRepository.buyStock(ticker, amount, token)
     }
 
-    suspend fun sellStock(ticker: String, amount: String): getSellResponse? {
-        return backendRepository.sellStock(ticker, amount)
+    suspend fun sellStock(ticker: String, amount: String, token: String): getSellResponse? {
+        return backendRepository.sellStock(ticker, amount, token)
     }
 
     suspend fun getInv(user: String): getInvResponse? {
@@ -64,8 +64,8 @@ class BackendViewModel(private val backendRepository: BackendRepository) : ViewM
         return backendRepository.getUsersAchievement(user)
     }
 
-    suspend fun setUsersAchievement(id: String): setUserAchResponse? {
-        return backendRepository.setUsersAchievement(id)
+    suspend fun setUsersAchievement(id: String, token: String): setUserAchResponse? {
+        return backendRepository.setUsersAchievement(id, token)
     }
 
     suspend fun getAllAchievements(): getAllAchResponse? {
