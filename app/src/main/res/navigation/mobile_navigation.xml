@@ -31,7 +31,7 @@
 
     <fragment
         android:id="@+id/blankFragment"
-        android:name="com.example.cmpt362_stocksim.BlankActivity"
+        android:name="com.example.cmpt362_stocksim.StockInventory"
         android:label="Blank"
         tools:layout="@layout/fragment_blank" />
 </navigation>

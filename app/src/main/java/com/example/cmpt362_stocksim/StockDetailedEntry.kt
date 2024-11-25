@@ -345,40 +345,6 @@ class StockDetailedEntry : AppCompatActivity() {
                         Log.d("MJR", e.message!!)
                     }
                 }
-
-
-                lifecycleScope.launch {
-                    try {
-                        val response = backendViewModel.getInv("15")
-                        if (response != null) {
-
-                            for (stock in response.stocks) {
-                                println("Stock: ${stock.symbol}, Quantity: ${stock.amount}")
-                            }
-
-                        }
-                    } catch (e: IllegalArgumentException) {
-                        Log.d("MJR", e.message!!)
-                    }
-                }
-
-
-                lifecycleScope.launch {
-                    try {
-                        val response = backendViewModel.getCash("15")
-                        if (response != null) {
-                            println("CASH: ${response.cash}")
-                        }
-                    } catch (e: IllegalArgumentException) {
-                        Log.d("MJR", e.message!!)
-                    }
-                }
-
-
-
-
-                // Send this value to buy and decrease cash amount
-
                 isShowingDialog = false
             }
             setNegativeButton("Cancel") { _, _ ->
@@ -425,34 +391,6 @@ class StockDetailedEntry : AppCompatActivity() {
                         Log.d("MJR", e.message!!)
                     }
                 }
-
-                lifecycleScope.launch {
-                    try {
-                        val response = backendViewModel.getInv("15")
-                        if (response != null) {
-
-                            for (stock in response.stocks) {
-                                println("Stock: ${stock.symbol}, Quantity: ${stock.amount}")
-                            }
-
-                        }
-                    } catch (e: IllegalArgumentException) {
-                        Log.d("MJR", e.message!!)
-                    }
-                }
-
-
-                lifecycleScope.launch {
-                    try {
-                        val response = backendViewModel.getCash("15")
-                        if (response != null) {
-                            println("CASH: ${response.cash}")
-                        }
-                    } catch (e: IllegalArgumentException) {
-                        Log.d("MJR", e.message!!)
-                    }
-                }
-
                 isShowingDialog = false
             }
             setNegativeButton("Cancel") { _, _ ->
