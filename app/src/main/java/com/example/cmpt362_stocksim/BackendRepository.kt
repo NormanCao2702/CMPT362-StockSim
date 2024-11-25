@@ -645,7 +645,7 @@ class BackendRepository {
         val params = ParametersBuilder(0)
         builder.url.protocol = URLProtocol.HTTPS
         builder.header("Authorization", "Bearer " + token)
-        params.append("symbol",
+        params.append("content",
             withContext(IO) {
                 URLEncoder.encode(content, "UTF-8")
             })

@@ -7,8 +7,10 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.EditText
 import android.widget.ListView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -19,6 +21,7 @@ import com.example.cmpt362_stocksim.BackendViewModelFactory
 import com.example.cmpt362_stocksim.FriendListActivity
 import com.example.cmpt362_stocksim.databinding.FragmentSocialBinding
 import com.example.cmpt362_stocksim.ui.social.profile.ProfileActivity
+import com.example.cmpt362_stocksim.userDataManager.UserDataManager
 import kotlinx.coroutines.launch
 
 
@@ -31,6 +34,7 @@ class SocialFragment: Fragment() {
 
     private lateinit var feedAdapter: FeedArrayListAdapter
 
+    private val userDataManager by lazy { UserDataManager(requireActivity()) }
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -57,9 +61,7 @@ class SocialFragment: Fragment() {
             startActivity(intent)
         }
 
-        binding.buttonCreatePost.setOnClickListener{
-            //create post button click event
-        }
+
 
 
         backendViewModel = BackendViewModelFactory(BackendRepository()).create(BackendViewModel::class.java)
@@ -74,6 +76,26 @@ class SocialFragment: Fragment() {
             args.putInt("USER_ID", user_id)
             intent.putExtras(args)
             startActivity(intent)
+        }
+        requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+
+        binding.buttonCreatePost.setOnClickListener{
+            //create post button click event
+            lifecycleScope.launch {
+                val token = userDataManager.getJwtToken()!!
+                try {
+                    backendViewModel.setPost(postTextBox.text.toString(), token)
+                    requireActivity().runOnUiThread {
+                        Toast.makeText(requireActivity(), "Post created!", Toast.LENGTH_LONG).show()
+                    }
+                    getNewFeed()
+                }catch(e: IllegalArgumentException) {
+                    requireActivity().runOnUiThread {
+                        Toast.makeText(requireActivity(), e.message, Toast.LENGTH_LONG).show()
+                    }
+                }
+
+            }
         }
 
 //        val textView: TextView = binding.textSocial
