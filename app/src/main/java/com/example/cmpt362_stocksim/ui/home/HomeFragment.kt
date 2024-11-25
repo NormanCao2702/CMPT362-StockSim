@@ -133,53 +133,41 @@ class HomeFragment : Fragment() {
     }
 
     private fun updateChartData(history: List<NetWorthHistoryManager.NetWorthEntry>) {
-        if (history.isEmpty()) {
-            Log.d("ChartDebug", "No data to display")
-            return
+        val entries = if (history.size == 1) {
+            // If only one entry, create two points with same value for visible line
+            listOf(
+                Entry(history[0].timestamp.toFloat(), history[0].value.toFloat()),
+                Entry((history[0].timestamp + 3600000).toFloat(), history[0].value.toFloat()) // Add 1 hour
+            )
+        } else {
+            history.map { Entry(it.timestamp.toFloat(), it.value.toFloat()) }
         }
 
-        Log.d("ChartDebug", "Creating entries...")
+        // Set min/max values
+        val value = history[0].value.toFloat()
+        val padding = value * 0.1f // 10% padding
 
-        // Create entries with normalized x values (0, 1, 2, etc.)
-        val entries = history.mapIndexed { index, entry ->
-            Log.d("ChartDebug", "Entry: time=${entry.timestamp}, value=${entry.value}")
-            Entry(index.toFloat(), entry.value.toFloat())
+        val dataSet = LineDataSet(entries, "Net Worth").apply {
+            color = ContextCompat.getColor(requireContext(), R.color.purple_500)
+            lineWidth = 2f
+            setDrawCircles(false)
+            setDrawValues(false)
+            mode = LineDataSet.Mode.LINEAR
+
+            setDrawFilled(true)
+            fillColor = ContextCompat.getColor(requireContext(), R.color.purple_200)
+            fillAlpha = 50
         }
 
-        val minValue = history.minOfOrNull { it.value }?.toFloat() ?: 0f
-        val maxValue = history.maxOfOrNull { it.value }?.toFloat() ?: 0f
-        val padding = (maxValue - minValue) * 0.1f
-
-        try {
-            val dataSet = LineDataSet(entries, "Net Worth").apply {
-                color = ContextCompat.getColor(requireContext(), R.color.purple_500)
-                lineWidth = 2f
-                setDrawCircles(true) // Enable circles to see data points
-                circleRadius = 4f
-                setCircleColor(ContextCompat.getColor(requireContext(), R.color.purple_500))
-                setDrawValues(false)
-                mode = LineDataSet.Mode.LINEAR
-                setDrawFilled(true)
-                fillColor = ContextCompat.getColor(requireContext(), R.color.purple_200)
-                fillAlpha = 50
+        lineChart.apply {
+            axisLeft.apply {
+                axisMinimum = value - padding
+                axisMaximum = value + padding
             }
 
-            lineChart.apply {
-                xAxis.labelCount = entries.size // Show all points
-
-                axisLeft.apply {
-                    // Set min and max with padding
-                    axisMinimum = minValue - padding
-                    axisMaximum = maxValue + padding
-                }
-
-                data = LineData(dataSet)
-                animateY(1000)
-                invalidate()
-            }
-            Log.d("ChartDebug", "Chart updated with ${entries.size} entries")
-        } catch (e: Exception) {
-            Log.e("ChartDebug", "Error setting chart data: ${e.message}", e)
+            data = LineData(dataSet)
+            animateX(1000)
+            invalidate()
         }
     }
 
@@ -195,12 +183,28 @@ class HomeFragment : Fragment() {
                     val success = userDataManager.refreshUserInfo()
                     if (success) {
                         val currentNetWorth = userDataManager.getNetWorth()
+                        Log.d("ChartDebug", "Current net worth: $currentNetWorth")
+
                         netWorthHistoryManager.saveNetWorthValue(currentNetWorth)
-                        updateChartData(netWorthHistoryManager.getNetWorthHistory())
+
+                        val history = netWorthHistoryManager.getNetWorthHistory()
+                        Log.d("ChartDebug", "History size: ${history.size}")
+
+                        if (history.isEmpty()) {
+                            // If no history, create initial data point
+                            val initialEntry = NetWorthHistoryManager.NetWorthEntry(
+                                timestamp = System.currentTimeMillis(),
+                                value = currentNetWorth
+                            )
+                            updateChartData(listOf(initialEntry))
+                        } else {
+                            updateChartData(history)
+                        }
                     }
                 }
             } catch (e: Exception) {
-                Toast.makeText(context, "Failed to update net worth", Toast.LENGTH_SHORT).show()
+                Log.e("ChartDebug", "Error in fetch: ${e.message}", e)
+                Toast.makeText(context, "Failed to fetch net worth", Toast.LENGTH_SHORT).show()
             }
         }
     }
