@@ -21,13 +21,13 @@ class NetWorthHistoryManager(private val context: Context) {
             if (history.isNotEmpty()) {
                 val lastEntry = history.maxByOrNull { it.timestamp }!!
                 if (abs(lastEntry.value - value) < 0.01) {
-                    Log.d("NetWorthDebug", "Value hasn't changed significantly, skipping save")
+                    // Log.d("NetWorthDebug", "Value hasn't changed significantly, skipping save")
                     return
                 }
             }
 
             val entry = "${System.currentTimeMillis()},${value}\n"
-            Log.d("NetWorthDebug", "Saving new value: $value")
+            // Log.d("NetWorthDebug", "Saving new value: $value")
 
             context.openFileOutput(fileName, Context.MODE_APPEND).use { stream ->
                 stream.write(entry.toByteArray())
@@ -38,7 +38,7 @@ class NetWorthHistoryManager(private val context: Context) {
             cleanupOldEntries()
 
         } catch (e: Exception) {
-            Log.e("NetWorthDebug", "Error saving net worth: ${e.message}", e)
+            // Log.e("NetWorthDebug", "Error saving net worth: ${e.message}", e)
             throw e
         }
     }
@@ -61,7 +61,7 @@ class NetWorthHistoryManager(private val context: Context) {
     fun getNetWorthHistory(): List<NetWorthEntry> {
         return try {
             if (!context.getFileStreamPath(fileName).exists()) {
-                Log.d("NetWorthDebug", "History file doesn't exist yet")
+                // Log.d("NetWorthDebug", "History file doesn't exist yet")
                 return emptyList()
             }
 
@@ -71,18 +71,18 @@ class NetWorthHistoryManager(private val context: Context) {
                         val (timestamp, value) = line.split(",")
                         NetWorthEntry(timestamp.toLong(), value.toDouble())
                     } catch (e: Exception) {
-                        Log.e("NetWorthDebug", "Error parsing line: $line", e)
+                        // Log.e("NetWorthDebug", "Error parsing line: $line", e)
                         null
                     }
                 }.toList()
             }.also { entries ->
-                Log.d("NetWorthDebug", "Read ${entries.size} entries from history")
+                // Log.d("NetWorthDebug", "Read ${entries.size} entries from history")
                 entries.forEach { entry ->
-                    Log.d("NetWorthDebug", "Entry: time=${entry.timestamp}, value=${entry.value}")
+                    // Log.d("NetWorthDebug", "Entry: time=${entry.timestamp}, value=${entry.value}")
                 }
             }
         } catch (e: Exception) {
-            Log.e("NetWorthDebug", "Error reading history: ${e.message}", e)
+            // Log.e("NetWorthDebug", "Error reading history: ${e.message}", e)
             emptyList()
         }
     }

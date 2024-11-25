@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ListView
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -19,6 +18,7 @@ import com.example.cmpt362_stocksim.BackendViewModelFactory
 import com.example.cmpt362_stocksim.FriendListActivity
 import com.example.cmpt362_stocksim.databinding.FragmentSocialBinding
 import kotlinx.coroutines.launch
+
 
 class SocialFragment: Fragment() {
     private lateinit var backendViewModel: BackendViewModel
@@ -70,6 +70,7 @@ class SocialFragment: Fragment() {
 //        }
         return root
     }
+
 
     fun getNewFeed() {
         lifecycleScope.launch {
