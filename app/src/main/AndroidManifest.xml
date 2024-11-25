@@ -50,6 +50,9 @@
         <activity
             android:name=".AchievementActivity"
             android:exported="false" />
+        <activity
+            android:name=".FriendListActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>

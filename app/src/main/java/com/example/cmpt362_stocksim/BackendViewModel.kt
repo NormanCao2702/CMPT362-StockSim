@@ -76,4 +76,8 @@ class BackendViewModel(private val backendRepository: BackendRepository) : ViewM
         return backendRepository.getUserInfo(userId)
     }
 
+    suspend fun getFeed(): ArrayList<BackendRepository.feedItem> {
+        return backendRepository.getFeed()
+    }
+
 }

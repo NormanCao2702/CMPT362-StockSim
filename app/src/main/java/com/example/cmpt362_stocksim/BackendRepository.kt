@@ -67,6 +67,9 @@ class BackendRepository {
     data class allAchieves(val name: String, val description: String, val id: String)
     data class getAllAchResponse(val achievements: ArrayList<allAchieves>)
 
+    data class feedItem(val content: String, val date: Long, val post_id: Int, val uid: Int, val username: String)
+    data class feed(val feed: ArrayList<feedItem>)
+
     suspend fun handleError(response: HttpResponse): String {
         val responseData = Gson().fromJson(response.bodyAsText(), ErrorResponse::class.java)
         throw IllegalArgumentException(responseData.error)
@@ -421,6 +424,22 @@ class BackendRepository {
         val response = client.get(builder)
         if(response.status == HttpStatusCode.OK) {
             return Gson().fromJson(response.bodyAsText(), UserFavorites::class.java)
+        } else {
+            handleError(response)
+        }
+        throw IllegalStateException("Failed to get favorites")
+    }
+
+    suspend fun getFeed(): ArrayList<feedItem> {
+        val builder = HttpRequestBuilder()
+        builder.url.protocol = URLProtocol.HTTPS
+        builder.url.host = HOST
+        builder.url.path(API_PATH, "social", "feed")
+        builder.url.parameters.append("limit", "1000")
+
+        val response = client.get(builder)
+        if(response.status == HttpStatusCode.OK) {
+            return Gson().fromJson(response.bodyAsText(), feed::class.java).feed
         } else {
             handleError(response)
         }
