@@ -46,10 +46,6 @@ class SocialFragment: Fragment() {
             //create post button click event
         }
 
-        binding.buttonSendPost.setOnClickListener{
-            //send post button click event
-        }
-
 //        val textView: TextView = binding.textSocial
 //        socialViewModel.text.observe(viewLifecycleOwner) {
 //            textView.text = it
