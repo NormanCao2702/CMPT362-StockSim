@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.example.cmpt362_stocksim.BackendRepository
 import com.example.cmpt362_stocksim.R
 import com.example.cmpt362_stocksim.databinding.FragmentPortfolioBinding
 import com.example.cmpt362_stocksim.ui.auth.LoginActivity
@@ -93,6 +94,25 @@ class PortfolioFragment: Fragment() {
                 binding.profileImage.setImageBitmap(bitmap)
             } catch (e: Exception) {
                 Toast.makeText(context, "Failed to load image", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Observe stats data
+        portfolioViewModel.statsData.observe(viewLifecycleOwner) { stats ->
+            binding.tvAchievementsCount.text = stats.achievementCount.toString()
+            binding.tvStocksCount.text = stats.stocksCount.toString()
+            binding.tvFavoritesCount.text = stats.favoritesCount.toString()
+        }
+
+        // Load stats
+        val userId = UserDataManager(requireContext()).getUserId()
+        userId?.let {
+            lifecycleScope.launch {
+                portfolioViewModel.loadUserStats(it, BackendRepository())
             }
         }
     }
