@@ -9,18 +9,18 @@
     tools:context=".FriendListActivity">
 
     <TextView
+        android:id="@+id/userSearchTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:padding="8dp"
         android:text="Search Users"
         android:textSize="18dp"
-        android:padding="8dp"
-        android:layout_marginTop="50dp"
         android:textStyle="bold"
-        android:id="@+id/userSearchTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-    </TextView>
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.appcompat.widget.SearchView
         android:layout_width="0dp"
@@ -45,28 +45,54 @@
     <ListView
         android:id="@+id/userSearchListview"
         android:layout_width="match_parent"
-        android:layout_height="280dp"
+        android:layout_height="120dp"
         android:layout_marginTop="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/userSearch"
         app:layout_constraintVertical_bias="0.0"
-        tools:listitem="@layout/friend_list_search_item">
-    </ListView>
+        tools:listitem="@layout/friend_list_search_item"/>
+
+    <ListView
+        android:id="@+id/friendListView"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userSearchListview"
+        app:layout_constraintVertical_bias="0.193"
+        tools:listitem="@layout/friend_list_search_item" />
+
+
     <TextView
+        android:id="@+id/friendRequestsTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="40dp"
+        android:padding="8dp"
         android:text="Friend Requests"
         android:textSize="16dp"
-        android:padding="8dp"
-        android:id="@+id/friendRequestsTextView"
-        android:layout_marginStart="25dp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/userSearchListview"
-        app:layout_constraintStart_toStartOf="parent">
-    </TextView>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/friendListView" />
+
+    <TextView
+        android:id="@+id/friends"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:padding="8dp"
+        android:text="Friends :"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userSearchListview" />
 
     <ListView
         android:id="@+id/friendRequestListView"
@@ -78,8 +104,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/friendRequestsTextView"
-        app:layout_constraintVertical_bias="0.0"
-        tools:listitem="@layout/friend_request_list_item">
-    </ListView>
+        app:layout_constraintVertical_bias="0.145"
+        tools:listitem="@layout/friend_request_list_item"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
