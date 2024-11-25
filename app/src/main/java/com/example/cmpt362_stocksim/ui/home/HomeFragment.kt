@@ -3,25 +3,38 @@ package com.example.cmpt362_stocksim.ui.home
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.example.cmpt362_stocksim.AchievementFragment
-import com.example.cmpt362_stocksim.BlankActivity
+import com.example.cmpt362_stocksim.BackendRepository
+import com.example.cmpt362_stocksim.BackendViewModel
+import com.example.cmpt362_stocksim.BackendViewModelFactory
+import com.example.cmpt362_stocksim.StockInventory
 import com.example.cmpt362_stocksim.databinding.FragmentHomeBinding
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
+import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
 
+    private lateinit var tvCashBalance: TextView
+
     private var _binding: FragmentHomeBinding? = null
     private lateinit var lineChart: LineChart
+
+    val repository2 = BackendRepository()
+    val viewModelFactory2 = BackendViewModelFactory(repository2)
+    val backendViewModel = viewModelFactory2.create(BackendViewModel::class.java)
+
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -37,6 +50,32 @@ class HomeFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+
+
+
+
+
+
+        tvCashBalance = binding.tvCashBalance
+
+        // NEED TO GET USER ID DYNAMICALLY AND PUT IT IN HERE         VVVVVVVVVV
+        // DONT FORGETTTTT
+
+        lifecycleScope.launch {
+            try {
+                val response = backendViewModel.getCash("15")
+                if (response != null) {
+                   tvCashBalance.text = "$${response.cash}"
+                }
+            } catch (e: IllegalArgumentException) {
+                Log.d("MJR", e.message!!)
+            }
+        }
+
+
+
+
 
         lineChart = binding.lineChart // Make sure you have this ID in your layout
         setupChart()
@@ -132,12 +171,13 @@ class HomeFragment : Fragment() {
         }
 
         binding.btnStockInventory.setOnClickListener {
-            val intent = Intent(requireActivity(), BlankActivity::class.java)
+            val intent = Intent(requireActivity(), StockInventory::class.java)
             startActivity(intent)
         }
 
         binding.btnAchievements.setOnClickListener{
-            //open Achievement fragment here
+            val intent = Intent(requireActivity(), AchievementFragment::class.java)
+            startActivity(intent)
         }
     }
 

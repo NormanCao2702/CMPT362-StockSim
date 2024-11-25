@@ -13,11 +13,10 @@ import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-
 class StockApiRepository {
 
     private var client = HttpClient(CIO)
-    private val apiKey = "bztYHvYoYC_nhrXcpEa3S4Q7SiFaCc6i"
+    private val apiKey = ""
 
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun getStockData(): StockResponsDataClass? = withContext(Dispatchers.IO) {
