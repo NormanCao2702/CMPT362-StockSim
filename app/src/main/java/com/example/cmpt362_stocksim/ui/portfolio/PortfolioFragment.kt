@@ -72,8 +72,44 @@ class PortfolioFragment: Fragment() {
         setupUI()
         loadUserData()
         loadProfileImage()
+        setupObservers()
 
         return binding.root
+    }
+
+    private fun setupObservers() {
+        // Observe stats data
+        portfolioViewModel.statsData.observe(viewLifecycleOwner) { stats ->
+            binding.apply {
+                tvAchievementsCount.text = stats.achievementCount.toString()
+                tvStocksCount.text = stats.stocksCount.toString()
+                tvFavoritesCount.text = stats.favoritesCount.toString()
+            }
+        }
+    }
+
+    // This will be called every time the fragment becomes visible
+    override fun onResume() {
+        super.onResume()
+        refreshUserData()
+    }
+
+    private fun refreshUserData() {
+        val userId = UserDataManager(requireContext()).getUserId()
+        userId?.let {
+            lifecycleScope.launch {
+                try {
+                    // Refresh basic user info
+                    UserDataManager(requireContext()).refreshUserInfo()
+
+                    // Refresh stats (achievements, stocks, favorites)
+                    portfolioViewModel.loadUserStats(it, BackendRepository())
+
+                } catch (e: Exception) {
+                    Toast.makeText(context, "Failed to refresh data", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     private val pickImage = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->

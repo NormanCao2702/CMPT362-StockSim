@@ -1,5 +1,6 @@
 package com.example.cmpt362_stocksim.ui.portfolio
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -30,27 +31,27 @@ class PortfolioViewModel: ViewModel() {
 
     suspend fun loadUserStats(userId: String, repository: BackendRepository) {
         try {
-            // Launch coroutines in a structured scope
-            coroutineScope {
-                // Fetch all data in parallel
-                val achievementsDeferred = async { repository.getUserAchievements(userId) }
-                val stocksDeferred = async { repository.getUserStocks(userId) }
-                val favoritesDeferred = async { repository.getUserFavorites(userId) }
+            val achievements = repository.getUserAchievements(userId)
+            Log.d("PortfolioVM", "Achievements: ${achievements.achievements.size}")
 
-                // Await results from deferred objects
-                val achievements = achievementsDeferred.await()
-                val stocks = stocksDeferred.await()
-                val favorites = favoritesDeferred.await()
+            val stocks = repository.getInv(userId)
+            val stocksCount = stocks?.stocks?.size ?: 0
+            Log.d("PortfolioVM", "Stocks: ${stocksCount}")
 
-                // Update LiveData with counts
-                _statsData.value = StatsData(
-                    achievementCount = achievements.achievements.size,
-                    stocksCount = stocks.stocks.size,
-                    favoritesCount = favorites.favorites.size
-                )
-            }
+            val favorites = repository.getUserFavorites(userId)
+            Log.d("PortfolioVM", "Favorites: ${favorites.favorites.size}")
+
+            // Update LiveData with counts
+            val newStats = StatsData(
+                achievementCount = achievements.achievements.size,
+                stocksCount = stocksCount,
+                favoritesCount = favorites.favorites.size
+            )
+            Log.d("PortfolioVM", "Setting new stats: $newStats")
+            _statsData.postValue(newStats)
+
         } catch (e: Exception) {
-            // Handle error
+            Log.e("PortfolioVM", "Error loading stats", e)
             e.printStackTrace()
         }
     }

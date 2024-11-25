@@ -1,5 +1,6 @@
 package com.example.cmpt362_stocksim
 
+import android.util.Log
 import com.google.gson.Gson
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
@@ -411,10 +412,6 @@ class BackendRepository {
         val unlock_date: Long
     )
 
-    data class UserStocks(
-        val stocks: Map<String, Int>  // Symbol to Amount mapping
-    )
-
     data class UserFavorites(
         val favorites: List<String>  // List of stock symbols
     )
@@ -433,22 +430,6 @@ class BackendRepository {
             handleError(response)
         }
         throw IllegalStateException("Failed to get achievements")
-    }
-
-    suspend fun getUserStocks(userId: String): UserStocks {
-        val builder = HttpRequestBuilder()
-        builder.url.protocol = URLProtocol.HTTPS
-        builder.url.host = HOST
-        builder.url.path(API_PATH, "user", "stocks")
-        builder.url.parameters.append("uid", userId)
-
-        val response = client.get(builder)
-        if(response.status == HttpStatusCode.OK) {
-            return Gson().fromJson(response.bodyAsText(), UserStocks::class.java)
-        } else {
-            handleError(response)
-        }
-        throw IllegalStateException("Failed to get stocks")
     }
 
     suspend fun getUserFavorites(userId: String): UserFavorites {
