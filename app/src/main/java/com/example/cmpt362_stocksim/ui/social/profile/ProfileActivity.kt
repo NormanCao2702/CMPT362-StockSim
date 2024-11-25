@@ -5,6 +5,7 @@ import android.icu.util.Currency
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.View
 import android.widget.Button
 import android.widget.ListView
 import android.widget.TextView
@@ -26,6 +27,7 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var stockInventoryLw: ListView
 
     private lateinit var addFriendButton: Button
+    private lateinit var removeFriendButton: Button
     private lateinit var chatButton: Button
 
     private lateinit var backendViewModel: BackendViewModel
@@ -45,9 +47,11 @@ class ProfileActivity : AppCompatActivity() {
         stockInventoryLw = findViewById(R.id.user_stockinventory_textview)
 
         addFriendButton = findViewById(R.id.addFriendButton)
+        removeFriendButton = findViewById(R.id.removeFriendButton)
         chatButton = findViewById(R.id.chatFriendButton)
         uid = intent.extras?.getInt("USER_ID").toString()
         backendViewModel = BackendViewModelFactory(BackendRepository()).create(BackendViewModel::class.java)
+
 
 
         addFriendButton.setOnClickListener{
@@ -63,8 +67,39 @@ class ProfileActivity : AppCompatActivity() {
                 }
 
             }
-
         }
+        removeFriendButton.setOnClickListener {
+            val token = userDataManager.getJwtToken()
+            lifecycleScope.launch {
+                try {
+                    backendViewModel.setRemove(uid, token!!)
+                    Toast.makeText(this@ProfileActivity, "Friend removed!", Toast.LENGTH_LONG).show()
+                }catch(e: IllegalArgumentException) {
+                    runOnUiThread {
+                        Toast.makeText(this@ProfileActivity, e.message, Toast.LENGTH_LONG).show()
+                    }
+                }
+
+            }
+        }
+
+        // Check if you're looking at yourself
+        if(userDataManager.getUserId()!! == uid) {
+            addFriendButton.visibility = View.GONE
+        } else {
+            // Check if users are friends, if so remove the add button
+            lifecycleScope.launch {
+                val token = userDataManager.getJwtToken()!!
+                if(backendViewModel.getIsUserFriend(uid, token)) {
+                    runOnUiThread {
+                        addFriendButton.visibility = View.GONE
+                        removeFriendButton.visibility = View.VISIBLE
+                    }
+                }
+            }
+        }
+
+
         val stockAdapter = StockListAdapter(this, ArrayList())
         stockInventoryLw.adapter = stockAdapter
         val achievementAdapater = AchievementListAdapter(this, ArrayList())

@@ -150,4 +150,8 @@ class BackendViewModel(private val backendRepository: BackendRepository) : ViewM
         return backendRepository.getUsers(user)
     }
 
+    suspend fun getIsUserFriend(user: String, token: String): Boolean {
+        return backendRepository.getIsUserFriend(user, token)
+    }
+
 }

@@ -93,6 +93,8 @@ class BackendRepository {
     data class user(val uid: Int, val username: String)
     data class getUsersResponse(val users: ArrayList<user>)
 
+    data class isFriendResponse(val is_friend: Boolean)
+
 
     suspend fun handleError(response: HttpResponse): String {
         val responseData = Gson().fromJson(response.bodyAsText(), ErrorResponse::class.java)
@@ -617,7 +619,7 @@ class BackendRepository {
         val params = ParametersBuilder(0)
         builder.url.protocol = URLProtocol.HTTPS
         builder.header("Authorization", "Bearer " + token)
-        params.append("symbol",
+        params.append("uid",
             withContext(IO) {
                 URLEncoder.encode(uid, "UTF-8")
             })
@@ -763,6 +765,23 @@ class BackendRepository {
             handleError(response)
         }
         return null
+    }
+
+    suspend fun getIsUserFriend(user: String, token: String): Boolean {
+        val builder = HttpRequestBuilder()
+        builder.header("Authorization", "Bearer " + token)
+        builder.url.protocol = URLProtocol.HTTPS
+        builder.url.host = HOST
+        builder.url.path(API_PATH, "social", "is_friend")
+        builder.url.parameters.append("uid", user)
+        val response = client.get(builder)
+        if(response.status == HttpStatusCode.OK) {
+            val responseData = Gson().fromJson(response.bodyAsText(), isFriendResponse::class.java)
+            return responseData.is_friend
+        } else {
+            handleError(response)
+        }
+        return false
     }
 
 
