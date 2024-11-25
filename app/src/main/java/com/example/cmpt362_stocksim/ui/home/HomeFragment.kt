@@ -19,6 +19,7 @@ import com.example.cmpt362_stocksim.BackendViewModel
 import com.example.cmpt362_stocksim.BackendViewModelFactory
 import com.example.cmpt362_stocksim.StockInventory
 import com.example.cmpt362_stocksim.databinding.FragmentHomeBinding
+import com.example.cmpt362_stocksim.userDataManager.UserDataManager
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -29,6 +30,7 @@ import kotlinx.coroutines.launch
 class HomeFragment : Fragment() {
 
     private lateinit var tvCashBalance: TextView
+    private val userDataManager by lazy { UserDataManager(requireContext()) }
 
     private var _binding: FragmentHomeBinding? = null
     private lateinit var lineChart: LineChart
@@ -65,7 +67,8 @@ class HomeFragment : Fragment() {
 
         lifecycleScope.launch {
             try {
-                val response = backendViewModel.getCash("15")
+                val userId = userDataManager.getUserId() ?: "15"
+                val response = backendViewModel.getCash(userId)
                 if (response != null) {
                    tvCashBalance.text = "$${response.cash}"
                 }

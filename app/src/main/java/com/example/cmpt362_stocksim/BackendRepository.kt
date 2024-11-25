@@ -235,6 +235,48 @@ class BackendRepository {
         return ""
     }
 
+    data class UserInfoResponse(
+        val username: String,
+        val email: String,
+        val birthday: String,
+        val net_worth: Double
+    )
+
+    data class NetWorthResponse(
+        val net_worth: Double
+    )
+
+    suspend fun getUserInfo(userId: String): UserInfoResponse {
+        val builder = HttpRequestBuilder()
+        builder.url.protocol = URLProtocol.HTTPS
+        builder.url.host = HOST
+        builder.url.path(API_PATH, "user", "info")
+        builder.url.parameters.append("uid", userId)
+
+        // Get basic user info
+        val infoResponse = client.get(builder)
+        if(infoResponse.status != HttpStatusCode.OK) {
+            handleError(infoResponse)
+        }
+
+        // Get net worth
+        builder.url.path(API_PATH, "user", "net_worth")
+        val netWorthResponse = client.get(builder)
+        if(netWorthResponse.status != HttpStatusCode.OK) {
+            handleError(netWorthResponse)
+        }
+
+        val userInfo = Gson().fromJson(infoResponse.bodyAsText(), UserInfoResponse::class.java)
+        val netWorth = Gson().fromJson(netWorthResponse.bodyAsText(), NetWorthResponse::class.java)
+
+        return UserInfoResponse(
+            username = userInfo.username,
+            email = userInfo.email,
+            birthday = userInfo.birthday,
+            net_worth = netWorth.net_worth
+        )
+    }
+
     suspend fun getPrice(ticker: String): getPriceResponse? {
         val builder = HttpRequestBuilder()
         builder.url.protocol = URLProtocol.HTTPS
@@ -360,6 +402,69 @@ class BackendRepository {
     }
 
 
+    data class UserAchievements(
+        val achievements: List<Achievement>
+    )
 
+    data class Achievement(
+        val id: Int,
+        val unlock_date: Long
+    )
+
+    data class UserStocks(
+        val stocks: Map<String, Int>  // Symbol to Amount mapping
+    )
+
+    data class UserFavorites(
+        val favorites: List<String>  // List of stock symbols
+    )
+
+    suspend fun getUserAchievements(userId: String): UserAchievements {
+        val builder = HttpRequestBuilder()
+        builder.url.protocol = URLProtocol.HTTPS
+        builder.url.host = HOST
+        builder.url.path(API_PATH, "user", "achievement")
+        builder.url.parameters.append("uid", userId)
+
+        val response = client.get(builder)
+        if(response.status == HttpStatusCode.OK) {
+            return Gson().fromJson(response.bodyAsText(), UserAchievements::class.java)
+        } else {
+            handleError(response)
+        }
+        throw IllegalStateException("Failed to get achievements")
+    }
+
+    suspend fun getUserStocks(userId: String): UserStocks {
+        val builder = HttpRequestBuilder()
+        builder.url.protocol = URLProtocol.HTTPS
+        builder.url.host = HOST
+        builder.url.path(API_PATH, "user", "stocks")
+        builder.url.parameters.append("uid", userId)
+
+        val response = client.get(builder)
+        if(response.status == HttpStatusCode.OK) {
+            return Gson().fromJson(response.bodyAsText(), UserStocks::class.java)
+        } else {
+            handleError(response)
+        }
+        throw IllegalStateException("Failed to get stocks")
+    }
+
+    suspend fun getUserFavorites(userId: String): UserFavorites {
+        val builder = HttpRequestBuilder()
+        builder.url.protocol = URLProtocol.HTTPS
+        builder.url.host = HOST
+        builder.url.path(API_PATH, "user", "favorites")
+        builder.url.parameters.append("uid", userId)
+
+        val response = client.get(builder)
+        if(response.status == HttpStatusCode.OK) {
+            return Gson().fromJson(response.bodyAsText(), UserFavorites::class.java)
+        } else {
+            handleError(response)
+        }
+        throw IllegalStateException("Failed to get favorites")
+    }
 
 }

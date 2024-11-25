@@ -19,6 +19,6 @@
     <item
         android:id="@+id/navigation_portfolio"
         android:icon="@drawable/ic_portfolio_24dp"
-        android:title="Portfolio" />
+        android:title="Settings" />
 
 </menu>

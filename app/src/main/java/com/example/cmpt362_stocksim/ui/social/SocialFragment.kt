@@ -1,5 +1,6 @@
 package com.example.cmpt362_stocksim.ui.social
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.cmpt362_stocksim.FriendListActivity
 import com.example.cmpt362_stocksim.databinding.FragmentSocialBinding
 
 class SocialFragment: Fragment() {
@@ -35,6 +37,9 @@ class SocialFragment: Fragment() {
 
         binding.friendListButton.setOnClickListener{
             //friend list button click event
+
+            val intent = Intent(requireContext(), FriendListActivity::class.java)
+            startActivity(intent)
         }
 
         binding.buttonCreatePost.setOnClickListener{
