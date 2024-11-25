@@ -101,5 +101,6 @@ class ProfileActivity : AppCompatActivity() {
                 achievementLw.invalidateViews()
             }
         }
+        setTitle("User")
     }
 }

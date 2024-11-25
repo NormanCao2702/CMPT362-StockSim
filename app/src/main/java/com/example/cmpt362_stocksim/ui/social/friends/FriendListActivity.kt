@@ -14,6 +14,7 @@ import com.example.cmpt362_stocksim.BackendRepository
 import com.example.cmpt362_stocksim.BackendViewModel
 import com.example.cmpt362_stocksim.BackendViewModelFactory
 import com.example.cmpt362_stocksim.R
+import com.example.cmpt362_stocksim.ui.social.chat.ChatActivity
 import com.example.cmpt362_stocksim.ui.social.profile.ProfileActivity
 import com.example.cmpt362_stocksim.userDataManager.UserDataManager
 import kotlinx.coroutines.launch
@@ -61,6 +62,19 @@ class FriendListActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
                 updateFriendRequests()
             }
         }
+
+        friendsList.setOnItemClickListener { adapterView, view, index, l ->
+            val item = adapterView.getItemAtPosition(index) as BackendRepository.friend
+            val user_id = item.uid
+            val username = item.username
+            val args = Bundle()
+            val intent = Intent(this, ChatActivity::class.java)
+            args.putInt("USER_ID", user_id)
+            args.putString("USERNAME", username)
+            intent.putExtras(args)
+            startActivity(intent)
+        }
+
         searchList.adapter = friendSearchAdapter
         friendsList.adapter = friendsAdapter
         friendRequestList.adapter = friendRequestAdapter
@@ -83,6 +97,7 @@ class FriendListActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
             intent.putExtras(args)
             startActivity(intent)
         }
+        setTitle("Friends")
 
     }
 

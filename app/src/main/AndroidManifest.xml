@@ -15,7 +15,7 @@
         android:theme="@style/Theme.CMPT362StockSim"
         tools:targetApi="31">
         <activity
-            android:name=".ChatActivity"
+            android:name=".ui.social.chat.ChatActivity"
             android:exported="false" />
         <activity
             android:name=".ui.auth.LoginActivity"
