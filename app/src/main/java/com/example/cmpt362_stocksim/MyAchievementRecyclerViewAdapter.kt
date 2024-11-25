@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 
-
+/*
 import com.example.cmpt362_stocksim.databinding.FragmentAchievementBinding
 
 
@@ -40,3 +40,5 @@ class MyAchievementRecyclerViewAdapter() : RecyclerView.Adapter<MyAchievementRec
     }
 
 }
+
+ */

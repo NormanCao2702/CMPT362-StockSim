@@ -55,7 +55,7 @@ class BackendRepository {
     data class stockInv(val symbol: String, val amount: String)
     data class getInvResponse(val stocks: ArrayList<stockInv>)
 
-    data class achieves(val id: String, val unlockDate: String)
+    data class achieves(val id: Int, val date: Long)
     data class getUserAchResponse(val achievements: ArrayList<achieves>)
     data class setUserAchResponse(val token5: String)
     data class allAchieves(val name: String, val description: String, val id: String)

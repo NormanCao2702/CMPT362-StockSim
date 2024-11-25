@@ -1,0 +1,824 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textViewStockQuantityInfo2"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="80dp"
+            android:textAlignment="center"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:text="Your Achievements"
+            app:layout_constraintStart_toEndOf="@+id/btnBack2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/btnBack2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="108dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Back"
+            android:padding="16dp"
+            android:src="@drawable/ic_arrow_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/ll1"
+            app:layout_constraintTop_toBottomOf="@+id/btnBack2">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="8dp">
+                <TextView
+                    android:id="@+id/achievement_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:textSize="22dp"
+                    android:text="Beginner Investor"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+
+                <TextView
+                    android:id="@+id/achievement_item2"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Buy 5 stocks"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+                <TextView
+                    android:id="@+id/achievement_item3"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Locked"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+            </LinearLayout>
+
+            <CheckBox
+                android:id="@+id/achievement_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:clickable="false"
+                android:layout_marginEnd="16dp" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/divider1"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#A9A9A9"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/ll1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/ll2"
+            app:layout_constraintTop_toBottomOf="@+id/ll1">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="8dp">
+                <TextView
+                    android:id="@+id/achievement_item4"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:textSize="22dp"
+                    android:text="Cashing Out"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+
+                <TextView
+                    android:id="@+id/achievement_item5"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Sell 5 stocks"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+                <TextView
+                    android:id="@+id/achievement_item6"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Locked"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+            </LinearLayout>
+
+            <CheckBox
+                android:id="@+id/achievement_checkbox2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:layout_gravity="center"
+                android:layout_marginEnd="16dp" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#A9A9A9"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/ll2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/ll3"
+            app:layout_constraintTop_toBottomOf="@+id/ll2">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="8dp">
+                <TextView
+                    android:id="@+id/achievement_item7"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:textSize="22dp"
+                    android:text="Five Figures"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+
+                <TextView
+                    android:id="@+id/achievement_item8"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Have $11,000 or more total value"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+                <TextView
+                    android:id="@+id/achievement_item9"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Locked"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+            </LinearLayout>
+
+            <CheckBox
+                android:id="@+id/achievement_checkbox3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:layout_gravity="center"
+                android:layout_marginEnd="16dp" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/divider3"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#A9A9A9"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/ll3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/ll4"
+            app:layout_constraintTop_toBottomOf="@+id/ll3">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="8dp">
+                <TextView
+                    android:id="@+id/achievement_item10"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:textSize="22dp"
+                    android:text="Variety Shopper"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+
+                <TextView
+                    android:id="@+id/achievement_item11"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Buy 5 different stocks "
+                    android:textAppearance="?attr/textAppearanceListItem" />
+                <TextView
+                    android:id="@+id/achievement_item12"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Locked"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+            </LinearLayout>
+
+            <CheckBox
+                android:id="@+id/achievement_checkbox4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:layout_gravity="center"
+                android:layout_marginEnd="16dp" />
+        </LinearLayout>
+        <View
+            android:id="@+id/divider4"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#A9A9A9"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/ll4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/ll5"
+            app:layout_constraintTop_toBottomOf="@+id/ll4">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="8dp">
+                <TextView
+                    android:id="@+id/achievement_item13"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:textSize="22dp"
+                    android:text="Bulk Buyer"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+
+                <TextView
+                    android:id="@+id/achievement_item14"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Have 25 of the same stock"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+                <TextView
+                    android:id="@+id/achievement_item15"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Locked"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+            </LinearLayout>
+
+            <CheckBox
+                android:id="@+id/achievement_checkbox5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:layout_gravity="center"
+                android:layout_marginEnd="16dp" />
+        </LinearLayout>
+        <View
+            android:id="@+id/divider5"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#A9A9A9"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/ll5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/ll6"
+            app:layout_constraintTop_toBottomOf="@+id/ll5">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="8dp">
+                <TextView
+                    android:id="@+id/achievement_item16"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:textSize="22dp"
+                    android:text="Social Broker"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+
+                <TextView
+                    android:id="@+id/achievement_item17"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Add a user to your friend list"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+                <TextView
+                    android:id="@+id/achievement_item18"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Locked"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+            </LinearLayout>
+
+            <CheckBox
+                android:id="@+id/achievement_checkbox6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:layout_gravity="center"
+                android:layout_marginEnd="16dp" />
+        </LinearLayout>
+        <View
+            android:id="@+id/divider6"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#A9A9A9"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/ll6"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/ll7"
+            app:layout_constraintTop_toBottomOf="@+id/ll6">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="8dp">
+                <TextView
+                    android:id="@+id/achievement_item19"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:textSize="22dp"
+                    android:text="Portfolio Builder"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+
+                <TextView
+                    android:id="@+id/achievement_item20"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Buy 10 different stock"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+                <TextView
+                    android:id="@+id/achievement_item21"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Locked"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+            </LinearLayout>
+            <CheckBox
+                android:id="@+id/achievement_checkbox7"
+                android:layout_width="wrap_content"
+                android:clickable="false"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="16dp" />
+        </LinearLayout>
+        <View
+            android:id="@+id/divider7"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#A9A9A9"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/ll7"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/ll8"
+            app:layout_constraintTop_toBottomOf="@+id/ll7">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="8dp">
+                <TextView
+                    android:id="@+id/achievement_item22"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:textSize="22dp"
+                    android:text="Quarter Milestone"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+
+                <TextView
+                    android:id="@+id/achievement_item23"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Have $25,000 or more total value"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+                <TextView
+                    android:id="@+id/achievement_item24"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Locked"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+            </LinearLayout>
+            <CheckBox
+                android:id="@+id/achievement_checkbox8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:layout_gravity="center"
+                android:layout_marginEnd="16dp" />
+        </LinearLayout>
+        <View
+            android:id="@+id/divider8"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#A9A9A9"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/ll8"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/ll9"
+            app:layout_constraintTop_toBottomOf="@+id/ll8">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="8dp">
+                <TextView
+                    android:id="@+id/achievement_item25"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:textSize="22dp"
+                    android:text="Seasoned Trader"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+
+                <TextView
+                    android:id="@+id/achievement_item26"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Sell 50 stocks"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+                <TextView
+                    android:id="@+id/achievement_item27"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Locked"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+            </LinearLayout>
+            <CheckBox
+                android:id="@+id/achievement_checkbox9"
+                android:layout_width="wrap_content"
+                android:clickable="false"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="16dp" />
+        </LinearLayout>
+        <View
+            android:id="@+id/divider9"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#A9A9A9"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/ll9"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/ll10"
+            app:layout_constraintTop_toBottomOf="@+id/ll9">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="8dp">
+                <TextView
+                    android:id="@+id/achievement_item28"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:textSize="22dp"
+                    android:text="Cash King"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+
+                <TextView
+                    android:id="@+id/achievement_item29"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Hold $25,00 or more Cash"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+                <TextView
+                    android:id="@+id/achievement_item30"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Locked"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+            </LinearLayout>
+            <CheckBox
+                android:id="@+id/achievement_checkbox10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:layout_gravity="center"
+                android:layout_marginEnd="16dp" />
+        </LinearLayout>
+        <View
+            android:id="@+id/divider10"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#A9A9A9"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/ll10"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/ll11"
+            app:layout_constraintTop_toBottomOf="@+id/ll10">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="8dp">
+                <TextView
+                    android:id="@+id/achievement_item31"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:textSize="22dp"
+                    android:text="Big Player"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+
+                <TextView
+                    android:id="@+id/achievement_item32"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Have $45,500 or more total value"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+                <TextView
+                    android:id="@+id/achievement_item33"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Locked"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+            </LinearLayout>
+            <CheckBox
+                android:id="@+id/achievement_checkbox11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:clickable="false"
+                android:layout_marginEnd="16dp" />
+        </LinearLayout>
+        <View
+            android:id="@+id/divider11"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#A9A9A9"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/ll11"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/ll12"
+            app:layout_constraintTop_toBottomOf="@+id/ll11">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="8dp">
+                <TextView
+                    android:id="@+id/achievement_item34"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:textSize="22dp"
+                    android:text="Diversification"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+
+                <TextView
+                    android:id="@+id/achievement_item35"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Have 20 different stocks"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+                <TextView
+                    android:id="@+id/achievement_item36"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Locked"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+            </LinearLayout>
+            <CheckBox
+                android:id="@+id/achievement_checkbox12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:layout_gravity="center"
+                android:layout_marginEnd="16dp" />
+        </LinearLayout>
+        <View
+            android:id="@+id/divider12"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#A9A9A9"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/ll12"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/ll13"
+            app:layout_constraintTop_toBottomOf="@+id/ll12">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="8dp">
+                <TextView
+                    android:id="@+id/achievement_item37"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:textSize="22dp"
+                    android:text="Stock Swap"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+
+                <TextView
+                    android:id="@+id/achievement_item38"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Trade stocks with another user"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+                <TextView
+                    android:id="@+id/achievement_item39"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Locked"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+            </LinearLayout>
+            <CheckBox
+                android:id="@+id/achievement_checkbox13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:clickable="false"
+                android:layout_marginEnd="16dp" />
+        </LinearLayout>
+        <View
+            android:id="@+id/divider13"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#A9A9A9"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/ll13"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/ll14"
+            app:layout_constraintTop_toBottomOf="@+id/ll13">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="8dp">
+                <TextView
+                    android:id="@+id/achievement_item40"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:textSize="22dp"
+                    android:text="Market Blues"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+
+                <TextView
+                    android:id="@+id/achievement_item41"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="lose more than $10,000 total value"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+                <TextView
+                    android:id="@+id/achievement_item42"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Locked"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+            </LinearLayout>
+            <CheckBox
+                android:id="@+id/achievement_checkbox14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:layout_gravity="center"
+                android:layout_marginEnd="16dp" />
+        </LinearLayout>
+        <View
+            android:id="@+id/divider14"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#A9A9A9"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/ll14"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/ll15"
+            app:layout_constraintTop_toBottomOf="@+id/ll14">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="8dp">
+                <TextView
+                    android:id="@+id/achievement_item43"
+                    android:layout_width="match_parent"
+                    android:textSize="22dp"
+                    android:layout_height="40dp"
+                    android:text="Six Figures"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+
+                <TextView
+                    android:id="@+id/achievement_item44"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Have $100,000 or more total value"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+                <TextView
+                    android:id="@+id/achievement_item45"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Locked"
+                    android:textAppearance="?attr/textAppearanceListItem" />
+            </LinearLayout>
+            <CheckBox
+                android:id="@+id/achievement_checkbox15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:layout_gravity="center"
+                android:layout_marginEnd="16dp" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
+
+

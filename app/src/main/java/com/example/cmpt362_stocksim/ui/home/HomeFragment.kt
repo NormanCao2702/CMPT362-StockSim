@@ -1,5 +1,6 @@
 package com.example.cmpt362_stocksim.ui.home
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -8,10 +9,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.example.cmpt362_stocksim.AchievementFragment
+import com.example.cmpt362_stocksim.AchievementActivity
 import com.example.cmpt362_stocksim.BackendRepository
 import com.example.cmpt362_stocksim.BackendViewModel
 import com.example.cmpt362_stocksim.BackendViewModelFactory
@@ -30,6 +32,7 @@ class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private lateinit var lineChart: LineChart
+    private var isAchievementUnlocked = false
 
     val repository2 = BackendRepository()
     val viewModelFactory2 = BackendViewModelFactory(repository2)
@@ -52,9 +55,7 @@ class HomeFragment : Fragment() {
         val root: View = binding.root
 
 
-
-
-
+        checkAchievement()
 
 
         tvCashBalance = binding.tvCashBalance
@@ -165,6 +166,51 @@ class HomeFragment : Fragment() {
         lineChart.invalidate()
     }
 
+
+    private fun checkAchievement(){
+        var count = 0.0
+
+        // Do a lunach and check if the user has it...
+        val sharedPreferences = requireContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        isAchievementUnlocked = sharedPreferences.getBoolean("isAchievementUnlocked", false)
+
+
+        lifecycleScope.launch {
+            try {
+                val response = backendViewModel.getInv("15")
+                if (response != null) {
+                    for (stock in response.stocks) {
+
+                        count += stock.amount.toFloat()
+                    }
+                }
+                if (count >= 5.0 && !isAchievementUnlocked) {
+                    isAchievementUnlocked = true
+                    sharedPreferences.edit().putBoolean("isAchievementUnlocked", true).apply()
+                    Toast.makeText(
+                        requireContext(),
+                        "Beginner Investor Achievement Unlocked",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    lifecycleScope.launch {
+                        try {
+                            val response = backendViewModel.setUsersAchievement("1")
+                        } catch (e: IllegalArgumentException) {
+                            Log.d("MJR", e.message!!)
+                        }
+                    }
+                }
+
+            } catch (e: IllegalArgumentException) {
+                Log.d("MJR", e.message!!)
+            }
+        }
+    }
+
+
+
+
     private fun setupButton() {
         binding.notificationButton.setOnClickListener{
             // notification button click event
@@ -176,7 +222,7 @@ class HomeFragment : Fragment() {
         }
 
         binding.btnAchievements.setOnClickListener{
-            val intent = Intent(requireActivity(), AchievementFragment::class.java)
+            val intent = Intent(requireActivity(), AchievementActivity::class.java)
             startActivity(intent)
         }
     }

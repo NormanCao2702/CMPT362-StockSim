@@ -50,7 +50,12 @@
             android:name=".StockDetailedEntry"
             android:exported="false">
         </activity>
-        <activity android:name=".StockInventory" />
+        <activity
+            android:name=".StockInventory"
+            android:exported="false" />
+        <activity
+            android:name=".AchievementActivity"
+            android:exported="false"/>
 
     </application>
 
