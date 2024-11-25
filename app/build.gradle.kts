@@ -72,5 +72,5 @@ dependencies {
 
     implementation ("com.squareup.okhttp3:okhttp:4.9.3")
     implementation ("com.squareup.picasso:picasso:2.8")
-
+    implementation("com.auth0.android:jwtdecode:2.0.1") // Added JWT dependency
 }
