@@ -406,7 +406,6 @@ class BackendRepository {
         val favorites: List<String>  // List of stock symbols
     )
 
-
     suspend fun getUserFavorites(userId: String): UserFavorites {
         val builder = HttpRequestBuilder()
         builder.url.protocol = URLProtocol.HTTPS
@@ -422,5 +421,8 @@ class BackendRepository {
         }
         throw IllegalStateException("Failed to get favorites")
     }
+
+
+
 
 }

@@ -26,7 +26,7 @@
     <!-- Start Journey Button -->
 
     <TextView
-        android:id="@+id/tvNetWorth"
+        android:id="@+id/tvCashBalance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="56dp"
@@ -49,7 +49,7 @@
         tools:layout_editor_absoluteX="16dp" />
 
     <TextView
-        android:id="@+id/tvCashBalance"
+        android:id="@+id/tvNetWorth"
         android:layout_width="112dp"
         android:layout_height="32dp"
         android:layout_marginStart="132dp"
@@ -58,7 +58,7 @@
         android:textSize="25dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvPortfolioValue" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btnStockInventory"
@@ -89,7 +89,7 @@
         android:layout_width="50dp"
         android:layout_height="42dp"
         android:layout_marginStart="20dp"
-        app:layout_constraintStart_toEndOf="@+id/tvPortfolioValue"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/bell_icon" />
 

@@ -25,8 +25,14 @@ class StockApiRepository {
         val date = when (today.dayOfWeek) {
             DayOfWeek.SATURDAY -> today.minusDays(1) // If it's Saturday, go back to Friday
             DayOfWeek.SUNDAY -> today.minusDays(2) // If it's Sunday, go back to Friday
+            DayOfWeek.FRIDAY -> today.minusDays(1) //
+            DayOfWeek.THURSDAY -> today.minusDays(1) //
+            DayOfWeek.WEDNESDAY -> today.minusDays(1) //
+            DayOfWeek.TUESDAY -> today.minusDays(1) //
+            DayOfWeek.MONDAY -> today.minusDays(3) //
             else -> today // Otherwise, use today's date
         }
+
         val formattedDate = date.format(DateTimeFormatter.ISO_LOCAL_DATE)
 
         try {

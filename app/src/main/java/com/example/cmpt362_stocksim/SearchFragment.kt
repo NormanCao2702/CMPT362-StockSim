@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import android.content.Intent
+import android.os.Build
 import android.text.SpannableString
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -50,6 +52,8 @@ class SearchFragment: Fragment()  {
     val viewModelFactory = BackendViewModelFactory(repository)
     val backendViewModel = viewModelFactory.create(BackendViewModel::class.java)
 
+
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -60,8 +64,6 @@ class SearchFragment: Fragment()  {
 
         createSearchRecycler()
         setupRecentlyClickedRecyclerView()
-
-
         return root
     }
 
@@ -81,6 +83,7 @@ class SearchFragment: Fragment()  {
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun createSearchRecycler(){
         stockViewModel.stockData.observe(viewLifecycleOwner, Observer { stockResponse ->
             stockResponse?.let {

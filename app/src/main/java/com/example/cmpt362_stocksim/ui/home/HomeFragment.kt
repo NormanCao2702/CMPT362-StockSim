@@ -75,6 +75,9 @@ class HomeFragment : Fragment() {
         lifecycleScope.launch {
             try {
                 val netWorth = userDataManager.getNetWorth()
+
+                println("AHHHHH")
+                println("XD: $netWorth")
                 if (netWorth != null) {
                     tvNetWorth.text = "$${netWorth}"
                 }
@@ -83,12 +86,13 @@ class HomeFragment : Fragment() {
             }
         }
 
+
         lifecycleScope.launch {
             try {
-                val userId = userDataManager.getUserId() ?: "15"
-                val response = backendViewModel.getCash(userId)
+                val userId = userDataManager.getUserId()
+                val response = userId?.let { backendViewModel.getCash(it) }
                 if (response != null) {
-                   tvCashBalance.text = "$${response.cash}"
+                    tvCashBalance.text = "$${response.cash}"
                 }
             } catch (e: IllegalArgumentException) {
                 Log.d("Cash", e.message!!)
