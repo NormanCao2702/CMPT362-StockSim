@@ -14,11 +14,10 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.example.cmpt362_stocksim.AchievementActivity
 import com.example.cmpt362_stocksim.BackendRepository
 import com.example.cmpt362_stocksim.BackendViewModel
 import com.example.cmpt362_stocksim.BackendViewModelFactory
-import com.example.cmpt362_stocksim.FriendListActivity
+import com.example.cmpt362_stocksim.ui.social.friends.FriendListActivity
 import com.example.cmpt362_stocksim.databinding.FragmentSocialBinding
 import com.example.cmpt362_stocksim.ui.social.profile.ProfileActivity
 import com.example.cmpt362_stocksim.userDataManager.UserDataManager
@@ -86,6 +85,7 @@ class SocialFragment: Fragment() {
                 try {
                     backendViewModel.setPost(postTextBox.text.toString(), token)
                     requireActivity().runOnUiThread {
+                        postTextBox.setText("")
                         Toast.makeText(requireActivity(), "Post created!", Toast.LENGTH_LONG).show()
                     }
                     getNewFeed()
@@ -98,10 +98,6 @@ class SocialFragment: Fragment() {
             }
         }
 
-//        val textView: TextView = binding.textSocial
-//        socialViewModel.text.observe(viewLifecycleOwner) {
-//            textView.text = it
-//        }
         return root
     }
 
@@ -113,6 +109,7 @@ class SocialFragment: Fragment() {
                 feedAdapter.replace(feedItems)
                 feedAdapter.notifyDataSetChanged()
                 feedListView.invalidateViews()
+                feedListView.setSelectionAfterHeaderView()
             }
             Handler(Looper.getMainLooper()).post(runnable)
         }

@@ -114,8 +114,8 @@ class BackendViewModel(private val backendRepository: BackendRepository) : ViewM
         return backendRepository.getFriends(user)
     }
 
-    suspend fun getRecieved(token: String): getRecievedResponse? {
-        return backendRepository.getRecieved(token)
+    suspend fun getReceived(token: String): getRecievedResponse? {
+        return backendRepository.getReceived(token)
     }
 
     suspend fun getSent(token: String): getSentResponse? {

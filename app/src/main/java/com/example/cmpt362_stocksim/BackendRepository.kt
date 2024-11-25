@@ -1,8 +1,5 @@
 package com.example.cmpt362_stocksim
 
-import android.content.Context
-import android.util.Log
-import com.example.cmpt362_stocksim.userDataManager.UserDataManager
 import com.google.gson.Gson
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
@@ -12,7 +9,6 @@ import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
-import io.ktor.client.utils.EmptyContent.headers
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.ParametersBuilder
 import io.ktor.http.URLProtocol
@@ -523,7 +519,7 @@ class BackendRepository {
         val params = ParametersBuilder(0)
         builder.url.protocol = URLProtocol.HTTPS
         builder.header("Authorization", "Bearer " + token)
-        params.append("symbol",
+        params.append("from",
             withContext(IO) {
                 URLEncoder.encode(to, "UTF-8")
             })
@@ -531,7 +527,7 @@ class BackendRepository {
         builder.url.host = HOST
         builder.url.path(API_PATH, "social", "friend_request", "accept")
         val response = client.post(builder)
-        if(response.status == HttpStatusCode.Created) {
+        if(response.status == HttpStatusCode.OK) {
             val responseData = Gson().fromJson(response.bodyAsText(), friendAcceptResponse::class.java)
             return responseData
         } else {
@@ -545,7 +541,7 @@ class BackendRepository {
         val params = ParametersBuilder(0)
         builder.url.protocol = URLProtocol.HTTPS
         builder.header("Authorization", "Bearer " + token)
-        params.append("symbol",
+        params.append("from",
             withContext(IO) {
                 URLEncoder.encode(from, "UTF-8")
             })
@@ -553,7 +549,7 @@ class BackendRepository {
         builder.url.host = HOST
         builder.url.path(API_PATH, "social", "friend_request", "decline")
         val response = client.post(builder)
-        if(response.status == HttpStatusCode.Created) {
+        if(response.status == HttpStatusCode.OK) {
             val responseData = Gson().fromJson(response.bodyAsText(), friendDeclineResponse::class.java)
             return responseData
         } else {
@@ -580,12 +576,12 @@ class BackendRepository {
         return null
     }
 
-    suspend fun getRecieved(token: String): getRecievedResponse? {
+    suspend fun getReceived(token: String): getRecievedResponse? {
         val builder = HttpRequestBuilder()
         builder.header("Authorization", "Bearer " + token)
         builder.url.protocol = URLProtocol.HTTPS
         builder.url.host = HOST
-        builder.url.path(API_PATH, "social", "friend_request", "recieved")
+        builder.url.path(API_PATH, "social", "friend_requests", "received")
         //builder.url.parameters.append("uid", user)
 
         val response = client.get(builder)

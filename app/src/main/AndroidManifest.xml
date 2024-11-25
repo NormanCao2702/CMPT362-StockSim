@@ -51,7 +51,7 @@
             android:name=".AchievementActivity"
             android:exported="false" />
         <activity
-            android:name=".FriendListActivity"
+            android:name=".ui.social.friends.FriendListActivity"
             android:exported="false"/>
         <activity
             android:name=".ui.social.profile.ProfileActivity"
