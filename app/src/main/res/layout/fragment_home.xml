@@ -10,19 +10,7 @@
 
     <!-- Cash Balance Section -->
 
-    <TextView
-        android:id="@+id/tvPortfolioValue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="$10,000.00"
-        android:textSize="32sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-<!--    <TextView-->
+    <!--    <TextView-->
 <!--        android:id="@+id/tvChangeAmount"-->
 <!--        android:layout_width="wrap_content"-->
 <!--        android:layout_height="wrap_content"-->
@@ -35,6 +23,21 @@
 <!--        app:layout_constraintStart_toStartOf="parent"-->
 <!--        app:layout_constraintTop_toBottomOf="@id/tvPortfolioValue" />-->
 
+    <!-- Start Journey Button -->
+
+    <TextView
+        android:id="@+id/tvNetWorth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        android:text="$10,000.00"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.505"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lineChart"
         android:layout_width="match_parent"
@@ -42,19 +45,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHeight_percent="0.4"
         app:layout_constraintTop_toBottomOf="@+id/tvCashBalance"
-        app:layout_constraintVertical_bias="0.069"
+        app:layout_constraintVertical_bias="0.167"
         tools:layout_editor_absoluteX="16dp" />
-
-    <!-- Start Journey Button -->
 
     <TextView
         android:id="@+id/tvCashBalance"
         android:layout_width="112dp"
         android:layout_height="32dp"
         android:layout_marginStart="132dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="15dp"
         android:text="$10,000.00"
-        android:textSize="20sp"
+        android:textSize="25dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvPortfolioValue" />

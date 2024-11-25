@@ -37,6 +37,7 @@ import java.util.Locale
 class HomeFragment : Fragment() {
 
     private lateinit var tvCashBalance: TextView
+    private lateinit var tvNetWorth: TextView
     private val userDataManager by lazy { UserDataManager(requireContext()) }
 
     private var _binding: FragmentHomeBinding? = null
@@ -69,6 +70,18 @@ class HomeFragment : Fragment() {
         checkAchievement()
 
         tvCashBalance = binding.tvCashBalance
+        tvNetWorth = binding.tvNetWorth
+
+        lifecycleScope.launch {
+            try {
+                val netWorth = userDataManager.getNetWorth()
+                if (netWorth != null) {
+                    tvNetWorth.text = "$${netWorth}"
+                }
+            } catch (e: IllegalArgumentException) {
+                Log.d("Networh", e.message!!)
+            }
+        }
 
         lifecycleScope.launch {
             try {
@@ -78,7 +91,7 @@ class HomeFragment : Fragment() {
                    tvCashBalance.text = "$${response.cash}"
                 }
             } catch (e: IllegalArgumentException) {
-                Log.d("MJR", e.message!!)
+                Log.d("Cash", e.message!!)
             }
         }
 
