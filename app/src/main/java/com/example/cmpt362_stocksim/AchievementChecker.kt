@@ -2,11 +2,8 @@ package com.example.cmpt362_stocksim
 
 import android.content.Context
 import android.util.Log
-import android.widget.CheckBox
-import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
-import com.example.cmpt362_stocksim.utils.JwtUtils
 import kotlinx.coroutines.launch
 import androidx.lifecycle.lifecycleScope
 import com.example.cmpt362_stocksim.userDataManager.UserDataManager
@@ -19,29 +16,12 @@ class AchievementChecker(private val context: Context, private val lifecycleOwne
     private val userDataManager by lazy { UserDataManager(context)}
     val sharedPreferences = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
 
-    //private var isAchievementUnlocked1 = false
-    //private var isAchievementUnlocked2 = false
-   // private var isAchievementUnlocked3 = false
-//    private var isAchievementUnlocked4 = false
-//    private var isAchievementUnlocked5 = false
-//    private var isAchievementUnlocked6 = false
-//    private var isAchievementUnlocked7 = false
-//    private var isAchievementUnlocked8 = false
-//    private var isAchievementUnlocked9 = false
-//    private var isAchievementUnlocked10 = false
-//    private var isAchievementUnlocked11 = false
-//    private var isAchievementUnlocked12 = false
-//    private var isAchievementUnlocked13 = false
-
-    private var setupFinished = false
-
     init {
         val repository = BackendRepository()
         val viewModelFactory = BackendViewModelFactory(repository)
         backendViewModel = viewModelFactory.create(BackendViewModel::class.java)
         sharedPreferences.edit().putBoolean("hasSetup", false).apply()
     }
-
 
     fun setupChecker(){
         sharedPreferences.edit().putBoolean("settingUpDone", false).apply()
@@ -63,7 +43,6 @@ class AchievementChecker(private val context: Context, private val lifecycleOwne
         sharedPreferences.edit().putBoolean("isAchievementUnlocked13", false).apply()
         sharedPreferences.edit().putFloat("stockCount2", 0.0F).apply()
         sharedPreferences.edit().putFloat("stockCount3", 0.0F).apply()
-
 
         // Set the ones we have to true
 
@@ -129,7 +108,6 @@ class AchievementChecker(private val context: Context, private val lifecycleOwne
         sharedPreferences.edit().putBoolean("settingUpDone", true).apply()
     }
 
-
     fun checkForAchievements(){
         checkForAchievementOne()
         checkForAchievementTwo()
@@ -137,15 +115,363 @@ class AchievementChecker(private val context: Context, private val lifecycleOwne
         checkForAchievementFour()
         checkForAchievementFive()
         checkForAchievementSix()
+        checkForAchievementSeven()
+        checkForAchievementEight()
+        checkForAchievementNine()
+        checkForAchievementTen()
+        checkForAchievementEleven()
+        checkForAchievementTweleve()
+        checkForAchievementThirteen()
 
-      //  checkForAchievementSeven()
-       // checkForAchievementEight()
-       // checkForAchievementNine()
-      //  checkForAchievementTen()
-      //  checkForAchievementEleven()
-      //  checkForAchievementTweleve()
-      // checkForAchievementThirteen()
+    }
 
+    private fun checkForAchievementThirteen() {
+        val setupDone = sharedPreferences.getBoolean("settingUpDone", false)
+        if(setupDone == false){
+            return
+        }
+
+        val isAchievementUnlocked13 = sharedPreferences.getBoolean("isAchievementUnlocked13", false)
+        // If its already unlocked dont check it
+        if (isAchievementUnlocked13 == true){
+            return
+        }
+
+        //Six Figures  100k total value
+        val netWorth = userDataManager.getNetWorth()
+
+        if(netWorth >= 100000.00 && isAchievementUnlocked13 == false){
+            sharedPreferences.edit().putBoolean("isAchievementUnlocked13", true).apply()
+
+            GlobalScope.launch {
+                try {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(
+                            context,
+                            "Six Figures Achievement Unlocked",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    val token = userDataManager.getJwtToken()
+                    val response = token?.let {
+                        backendViewModel.setUsersAchievement("15",
+                            it
+                        )
+                    }
+                } catch (e: IllegalArgumentException) {
+                    Log.d("MJR", e.message!!)
+                }
+            }
+        }
+    }
+
+    private fun checkForAchievementTweleve() {
+        val setupDone = sharedPreferences.getBoolean("settingUpDone", false)
+        if(setupDone == false){
+            return
+        }
+
+        val isAchievementUnlocked12 = sharedPreferences.getBoolean("isAchievementUnlocked12", false)
+        // If its already unlocked dont check it
+        if (isAchievementUnlocked12 == true){
+            return
+        }
+
+        //Diversification 20 dif stocks
+        GlobalScope.launch {
+            try {
+                var count = 0
+                val userId = userDataManager.getUserId()
+                val response = userId?.let { backendViewModel.getInv(it) }
+                if (response != null) {
+                    for (stock in response.stocks) {
+                        count += 1
+                    }
+                }
+
+                val isAchievementUnlocked1212 = sharedPreferences.getBoolean("isAchievementUnlocked12", false)
+
+                if (count >= 20 && isAchievementUnlocked1212 == false) {
+                    sharedPreferences.edit().putBoolean("isAchievementUnlocked12", true).apply()
+
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(
+                            context,
+                            "Diversification Achievement Unlocked",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    GlobalScope.launch {
+                        try {
+                            val token = userDataManager.getJwtToken()
+                            val response = token?.let {
+                                backendViewModel.setUsersAchievement("12",
+                                    it
+                                )
+                            }
+                        } catch (e: IllegalArgumentException) {
+                            Log.d("MJR", e.message!!)
+                        }
+                    }
+                }
+
+            } catch (e: IllegalArgumentException) {
+                Log.d("MJR", e.message!!)
+
+            }
+        }
+
+    }
+
+    private fun checkForAchievementEleven() {
+        val setupDone = sharedPreferences.getBoolean("settingUpDone", false)
+        if(setupDone == false){
+            return
+        }
+
+        val isAchievementUnlocked11 = sharedPreferences.getBoolean("isAchievementUnlocked11", false)
+        // If its already unlocked dont check it
+        if (isAchievementUnlocked11 == true){
+            return
+        }
+
+        val netWorth = userDataManager.getNetWorth()
+
+        if(netWorth >= 45000.00 && isAchievementUnlocked11 == false){
+            sharedPreferences.edit().putBoolean("isAchievementUnlocked11", true).apply()
+
+            GlobalScope.launch {
+                try {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(
+                            context,
+                            "Big Player Achievement Unlocked",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    val token = userDataManager.getJwtToken()
+                    val response = token?.let {
+                        backendViewModel.setUsersAchievement("11",
+                            it
+                        )
+                    }
+                } catch (e: IllegalArgumentException) {
+                    Log.d("MJR", e.message!!)
+                }
+            }
+        }
+    }
+
+    private fun checkForAchievementTen() {
+        val setupDone = sharedPreferences.getBoolean("settingUpDone", false)
+        if(setupDone == false){
+            return
+        }
+
+        val isAchievementUnlocked10 = sharedPreferences.getBoolean("isAchievementUnlocked10", false)
+        // If its already unlocked dont check it
+        if (isAchievementUnlocked10 == true){
+            return
+        }
+
+        //Cash King hold 25k or more in cash
+        GlobalScope.launch {
+            try {
+                var count = 0
+                var flag = false
+                val userId = userDataManager.getUserId()
+                val response = userId?.let { backendViewModel.getCash(it) }
+                if (response != null) {
+                    if(response.cash >= 25000.00F){
+                        flag = true
+                    }
+                }
+
+                val isAchievementUnlocked1010 = sharedPreferences.getBoolean("isAchievementUnlocked10", false)
+
+                if (flag == true && isAchievementUnlocked1010 == false) {
+                    sharedPreferences.edit().putBoolean("isAchievementUnlocked10", true).apply()
+
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(
+                            context,
+                            "Cash King Achievement Unlocked",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    GlobalScope.launch {
+                        try {
+                            val token = userDataManager.getJwtToken()
+                            val response = token?.let {
+                                backendViewModel.setUsersAchievement("10",
+                                    it
+                                )
+                            }
+                        } catch (e: IllegalArgumentException) {
+                            Log.d("MJR", e.message!!)
+                        }
+                    }
+                }
+
+            } catch (e: IllegalArgumentException) {
+                Log.d("MJR", e.message!!)
+
+            }
+        }
+
+    }
+
+    private fun checkForAchievementNine() {
+        val setupDone = sharedPreferences.getBoolean("settingUpDone", false)
+        if(setupDone == false){
+            return
+        }
+
+        val isAchievementUnlocked9 = sharedPreferences.getBoolean("isAchievementUnlocked9", false)
+        // If its already unlocked dont check it
+        if (isAchievementUnlocked9 == true){
+            return
+        }
+
+        GlobalScope.launch {
+            try {
+                var count = 0.0F
+                val userId = userDataManager.getUserId()
+                val response = userId?.let { backendViewModel.getInv(it) }
+                if (response != null) {
+                    for (stock in response.stocks) {
+                        count += stock.amount.toFloat()
+                    }
+                }
+                val startStocks = sharedPreferences.getFloat("stockCount", 0.0F)
+                val startStocks2 = sharedPreferences.getFloat("stockCount2", 0.0F)
+                val startStocks3 = sharedPreferences.getFloat("stockCount3", 0.0F)
+
+                val isAchievementUnlocked99 = sharedPreferences.getBoolean("isAchievementUnlocked9", false)
+                if ((count == (startStocks-50.0F) && isAchievementUnlocked99 == false) || ((startStocks3 >= 50.0F) && isAchievementUnlocked99 == false)){
+                    sharedPreferences.edit().putBoolean("isAchievementUnlocked9", true).apply()
+
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(
+                            context,
+                            "Seasoned Trader Achievement Unlocked",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+                    GlobalScope.launch {
+                        try {
+                            val token = userDataManager.getJwtToken()
+                            val response = token?.let {
+                                backendViewModel.setUsersAchievement("9",
+                                    it
+                                )
+                            }
+                        } catch (e: IllegalArgumentException) {
+                            Log.d("MJR", e.message!!)
+                        }
+                    }
+                }
+
+            } catch (e: IllegalArgumentException) {
+                Log.d("MJR", e.message!!)
+            }
+        }
+    }
+
+    private fun checkForAchievementEight() {
+        val setupDone = sharedPreferences.getBoolean("settingUpDone", false)
+        if(setupDone == false){
+            return
+        }
+
+        val isAchievementUnlocked8 = sharedPreferences.getBoolean("isAchievementUnlocked8", false)
+        // If its already unlocked dont check it
+        if (isAchievementUnlocked8 == true){
+            return
+        }
+
+        val netWorth = userDataManager.getNetWorth()
+
+        if(netWorth >= 25000.00 && isAchievementUnlocked8 == false){
+            sharedPreferences.edit().putBoolean("isAchievementUnlocked8", true).apply()
+
+            GlobalScope.launch {
+                try {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(
+                            context,
+                            "Quarter Milestone Achievement Unlocked",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    val token = userDataManager.getJwtToken()
+                    val response = token?.let {
+                        backendViewModel.setUsersAchievement("8",
+                            it
+                        )
+                    }
+                } catch (e: IllegalArgumentException) {
+                    Log.d("MJR", e.message!!)
+                }
+            }
+        }
+    }
+
+    private fun checkForAchievementSeven() {
+        val setupDone = sharedPreferences.getBoolean("settingUpDone", false)
+        if(setupDone == false){
+            return
+        }
+
+        val isAchievementUnlocked7 = sharedPreferences.getBoolean("isAchievementUnlocked7", false)
+        // If its already unlocked dont check it
+        if (isAchievementUnlocked7 == true){
+            return
+        }
+
+        GlobalScope.launch {
+            try {
+                var count = 0
+                val userId = userDataManager.getUserId()
+                val response = userId?.let { backendViewModel.getInv(it) }
+                if (response != null) {
+                    for (stock in response.stocks) {
+                        count += 1
+                    }
+                }
+
+                val isAchievementUnlocked77 = sharedPreferences.getBoolean("isAchievementUnlocked7", false)
+
+                if (count >= 10 && isAchievementUnlocked77 == false) {
+                    sharedPreferences.edit().putBoolean("isAchievementUnlocked7", true).apply()
+
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(
+                            context,
+                            "Portfolio Builder Achievement Unlocked",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    GlobalScope.launch {
+                        try {
+                            val token = userDataManager.getJwtToken()
+                            val response = token?.let {
+                                backendViewModel.setUsersAchievement("7",
+                                    it
+                                )
+                            }
+                        } catch (e: IllegalArgumentException) {
+                            Log.d("MJR", e.message!!)
+                        }
+                    }
+                }
+
+            } catch (e: IllegalArgumentException) {
+                Log.d("MJR", e.message!!)
+
+            }
+        }
     }
 
     private fun checkForAchievementSix() {
@@ -160,9 +486,46 @@ class AchievementChecker(private val context: Context, private val lifecycleOwne
             return
         }
 
-        //Social Broker  add a user to friend list <- check if friendlist size is bigger than 0..
+        GlobalScope.launch {
+            try {
+                var flag = false
+                val userId = userDataManager.getUserId()
+                val response = userId?.let { backendViewModel.getFriends(it) }
+                if (response != null) {
+                    if (response.friends.size >= 1){
+                        flag = true
+                    }
+                }
 
+                val isAchievementUnlocked66 = sharedPreferences.getBoolean("isAchievementUnlocked6", false)
+                if (flag == true && isAchievementUnlocked66 == false) {
+                    sharedPreferences.edit().putBoolean("isAchievementUnlocked6", true).apply()
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(
+                            context,
+                            "Social Broker Achievement Unlocked",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    GlobalScope.launch {
+                        try {
+                            val token = userDataManager.getJwtToken()
+                            val response = token?.let {
+                                backendViewModel.setUsersAchievement("6",
+                                    it
+                                )
+                            }
+                        } catch (e: IllegalArgumentException) {
+                            Log.d("MJR", e.message!!)
+                        }
+                    }
+                }
 
+            } catch (e: IllegalArgumentException) {
+                Log.d("MJR", e.message!!)
+
+            }
+        }
 
     }
 
@@ -222,10 +585,7 @@ class AchievementChecker(private val context: Context, private val lifecycleOwne
 
             }
         }
-
     }
-
-
 
     private fun checkForAchievementFour() {
         val setupDone = sharedPreferences.getBoolean("settingUpDone", false)
@@ -324,8 +684,6 @@ class AchievementChecker(private val context: Context, private val lifecycleOwne
         }
     }
 
-
-
     fun checkForAchievementTwo() {
         val setupDone = sharedPreferences.getBoolean("settingUpDone", false)
         if(setupDone == false){
@@ -384,7 +742,6 @@ class AchievementChecker(private val context: Context, private val lifecycleOwne
         }
     }
 
-
     fun checkForAchievementOne(){
         val setupDone = sharedPreferences.getBoolean("settingUpDone", false)
         if(setupDone == false){
@@ -440,4 +797,5 @@ class AchievementChecker(private val context: Context, private val lifecycleOwne
             }
         }
     }
+
 }
