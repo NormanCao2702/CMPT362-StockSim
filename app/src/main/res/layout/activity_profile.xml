@@ -22,21 +22,22 @@
         android:id="@+id/profile_icon"
         android:layout_width="124dp"
         android:layout_height="115dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/profile" />
+        app:srcCompat="@drawable/profile"
+        android:background="@drawable/edittext_background"/>
 
     <TextView
         android:id="@+id/username_textview"
         android:layout_width="220dp"
         android:layout_height="37dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="90dp"
-        android:textSize="20dp"
-        android:textColor="@color/black"
+        android:layout_marginTop="44dp"
         android:text="Username"
+        android:textColor="@color/black"
+        android:textSize="20dp"
         app:layout_constraintStart_toEndOf="@+id/profile_icon"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -47,18 +48,18 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
         android:text="Birthday"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_icon" />
+        app:layout_constraintStart_toEndOf="@+id/profile_icon"
+        app:layout_constraintTop_toBottomOf="@+id/username_textview" />
 
     <TextView
         android:id="@+id/number_of_achievements"
         android:layout_width="wrap_content"
         android:layout_height="26dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="64dp"
         android:text="Achievements unlocked"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_birthday_textview" />
+        app:layout_constraintTop_toBottomOf="@+id/profile_icon" />
 
     <TextView
         android:id="@+id/user_totalworth_textview"
@@ -72,9 +73,9 @@
 
     <TextView
         android:id="@+id/user_birthday_textview"
-        android:layout_width="289dp"
-        android:layout_height="38dp"
-        android:layout_marginStart="24dp"
+        android:layout_width="215dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="164dp"
         android:layout_marginTop="16dp"
         android:hint="Birthday goes here"
         app:layout_constraintStart_toStartOf="parent"
@@ -115,7 +116,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="20dp"
         android:text="Add Friend"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user_totalworth_textview" />
@@ -125,7 +126,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="20dp"
         android:text="Remove Friend"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
@@ -136,7 +137,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="76dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="20dp"
         android:text="Chat"
         app:layout_constraintStart_toEndOf="@+id/addFriendButton"
         app:layout_constraintTop_toBottomOf="@+id/user_totalworth_textview"

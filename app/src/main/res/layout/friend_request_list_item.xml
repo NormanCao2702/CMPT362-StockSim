@@ -13,6 +13,7 @@
         android:layout_height="match_parent"
         android:padding="10dp"
         android:layout_weight="1"
+        android:background="@drawable/edittext_background"
         app:srcCompat="@drawable/profile" />
 
     <TextView
@@ -25,16 +26,18 @@
     <ImageButton
         android:id="@+id/friendRequestAcceptButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
+        android:background="@drawable/edittext_background"
         android:backgroundTint="@color/black"
         app:srcCompat="@drawable/baseline_check_24" />
 
     <ImageButton
         android:id="@+id/friendRequestCancelButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
+        android:background="@drawable/edittext_background"
         android:backgroundTint="@color/black"
         app:srcCompat="@drawable/baseline_red_clear_24" />
 
