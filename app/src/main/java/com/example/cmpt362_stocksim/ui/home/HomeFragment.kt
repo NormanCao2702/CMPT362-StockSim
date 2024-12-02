@@ -246,7 +246,6 @@ class HomeFragment : Fragment() {
         val sharedPreferences = requireContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
         isAchievementUnlocked = sharedPreferences.getBoolean("isAchievementUnlocked", false)
 
-
         lifecycleScope.launch {
             try {
                 val userId = userDataManager.getUserId()
@@ -259,7 +258,7 @@ class HomeFragment : Fragment() {
                 }
                 if (count >= 5.0 && !isAchievementUnlocked) {
                     isAchievementUnlocked = true
-                    sharedPreferences.edit().putBoolean("isAchievementUnlocked", true).apply()
+                    sharedPreferences.edit().putBoolean("isAchievementUnlocked", false).apply()
                     Toast.makeText(
                         requireContext(),
                         "Beginner Investor Achievement Unlocked",
