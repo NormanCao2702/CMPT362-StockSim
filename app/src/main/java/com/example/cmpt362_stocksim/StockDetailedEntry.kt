@@ -1,5 +1,6 @@
 package com.example.cmpt362_stocksim
 
+import android.content.Context
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
@@ -17,6 +18,7 @@ import android.net.Uri
 import android.util.Log
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
@@ -103,6 +105,7 @@ class StockDetailedEntry : AppCompatActivity() {
     var daysMax = 1000
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_stock_detailed_entry)
 
@@ -111,7 +114,6 @@ class StockDetailedEntry : AppCompatActivity() {
         repository = StockDatabaseRepository(databaseDao)
         viewModelFactory = StockDatabaseViewModel.stockViewModelFactory(repository)
         stockVViewModel = ViewModelProvider(this, viewModelFactory).get(StockDatabaseViewModel::class.java)
-
 
         bckButton = findViewById(R.id.entryBackButton)
         //infoBut = findViewById(R.id.button)
@@ -324,6 +326,8 @@ class StockDetailedEntry : AppCompatActivity() {
         val builder = AlertDialog.Builder(this).setView(view)
         val editText = EditText(this)
 
+        val sharedPreferences = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        val startStocks = sharedPreferences.getFloat("stockCount", 0.0F)
         // With the dialog box, customize and set toasts for positive and negative button presses
         with(builder) {
             setTitle("Buy Stock")
@@ -344,8 +348,8 @@ class StockDetailedEntry : AppCompatActivity() {
                         val response = token?.let { backendViewModel.buyStock(ticker, text, it) }
                         if (response != null) {
                            println("BOUGHT STONKS")
-
                         }
+                        sharedPreferences.edit().putFloat("stockCount2", (text.toFloat())).apply()
                     } catch (e: IllegalArgumentException) {
                         Log.d("MJR", e.message!!)
                     }
@@ -368,6 +372,10 @@ class StockDetailedEntry : AppCompatActivity() {
         val view = layoutInflater.inflate(R.layout.edittext_dialog_buysell, null)
         val builder = AlertDialog.Builder(this).setView(view)
 
+
+        val sharedPreferences = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        val startStocks = sharedPreferences.getFloat("stockCount", 0.0F)
+
         val editText = EditText(this)
         // With the dialog box, customize and set toasts for positive and negative button presses
         with(builder) {
@@ -382,6 +390,8 @@ class StockDetailedEntry : AppCompatActivity() {
                     text = "0"
                 }
 
+
+
                 //var value = text.toInt()
 
                 // Post sell amount and get that difference in cash
@@ -390,9 +400,9 @@ class StockDetailedEntry : AppCompatActivity() {
                         val token = userDataManager.getJwtToken()
                         val response = token?.let { backendViewModel.sellStock(ticker, text, it) }
                         if (response != null) {
-                            println("SOLD STONKS")
-
                         }
+                        sharedPreferences.edit().putFloat("stockCount3", (text.toFloat())).apply()
+
                     } catch (e: IllegalArgumentException) {
                         Log.d("MJR", e.message!!)
                     }

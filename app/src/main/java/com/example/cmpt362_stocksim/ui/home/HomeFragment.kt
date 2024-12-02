@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.cmpt362_stocksim.AchievementActivity
+import com.example.cmpt362_stocksim.AchievementChecker
 import com.example.cmpt362_stocksim.BackendRepository
 import com.example.cmpt362_stocksim.BackendViewModel
 import com.example.cmpt362_stocksim.BackendViewModelFactory
@@ -41,9 +42,12 @@ class HomeFragment : Fragment() {
     private lateinit var tvNetWorth: TextView
     private val userDataManager by lazy { UserDataManager(requireContext()) }
 
+    private val achievementChecker by lazy {AchievementChecker(requireContext(), viewLifecycleOwner)}
+
+    private var newUserChecker = true
     private var _binding: FragmentHomeBinding? = null
     private lateinit var lineChart: LineChart
-    private var isAchievementUnlocked = false
+    //private var isAchievementUnlocked = false
 
     val repository2 = BackendRepository()
     val viewModelFactory2 = BackendViewModelFactory(repository2)
@@ -68,7 +72,15 @@ class HomeFragment : Fragment() {
 
         netWorthHistoryManager = NetWorthHistoryManager(requireContext())
 
-        checkAchievement()
+
+
+        val sharedPreferences = requireContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+
+        if (newUserChecker == true){
+            sharedPreferences.edit().putBoolean("hasSetup", false).apply()
+            newUserChecker = false
+        }
+
 
         tvCashBalance = binding.tvCashBalance
         tvNetWorth = binding.tvNetWorth
@@ -103,6 +115,9 @@ class HomeFragment : Fragment() {
         setupChart()
         fetchNetWorthAndUpdateChart()
         setupButton()
+
+
+
 
         return binding.root
     }
@@ -238,58 +253,69 @@ class HomeFragment : Fragment() {
             minOffset = 20f
         }
     }
-
-    private fun checkAchievement(){
-        var count = 0.0
-
-        // Do a lunach and check if the user has it...
-        val sharedPreferences = requireContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-        isAchievementUnlocked = sharedPreferences.getBoolean("isAchievementUnlocked", false)
-
-        lifecycleScope.launch {
-            try {
-                val userId = userDataManager.getUserId()
-                val response = userId?.let { backendViewModel.getInv(it) }
-                if (response != null) {
-                    for (stock in response.stocks) {
-
-                        count += stock.amount.toFloat()
-                    }
-                }
-                if (count >= 5.0 && !isAchievementUnlocked) {
-                    isAchievementUnlocked = true
-                    sharedPreferences.edit().putBoolean("isAchievementUnlocked", false).apply()
-                    Toast.makeText(
-                        requireContext(),
-                        "Beginner Investor Achievement Unlocked",
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                    lifecycleScope.launch {
-                        try {
-                            val token = userDataManager.getJwtToken()
-                            val response = token?.let {
-                                backendViewModel.setUsersAchievement("1",
-                                    it
-                                )
-                            }
-                        } catch (e: IllegalArgumentException) {
-                            Log.d("MJR", e.message!!)
-                        }
-                    }
-                }
-
-            } catch (e: IllegalArgumentException) {
-                Log.d("MJR", e.message!!)
-            }
-        }
-    }
+//
+//    private fun checkAchievement(){
+//        var count = 0.0
+//
+//        // Do a lunach and check if the user has it...
+//        val sharedPreferences = requireContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+//        isAchievementUnlocked = sharedPreferences.getBoolean("isAchievementUnlocked", false)
+//
+//        lifecycleScope.launch {
+//            try {
+//                val userId = userDataManager.getUserId()
+//                val response = userId?.let { backendViewModel.getInv(it) }
+//                if (response != null) {
+//                    for (stock in response.stocks) {
+//
+//                        count += stock.amount.toFloat()
+//                    }
+//                }
+//                if (count >= 5.0 && !isAchievementUnlocked) {
+//                    isAchievementUnlocked = true
+//                    sharedPreferences.edit().putBoolean("isAchievementUnlocked", false).apply()
+//                    Toast.makeText(
+//                        requireContext(),
+//                        "Beginner Investor Achievement Unlocked",
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//
+//                    lifecycleScope.launch {
+//                        try {
+//                            val token = userDataManager.getJwtToken()
+//                            val response = token?.let {
+//                                backendViewModel.setUsersAchievement("1",
+//                                    it
+//                                )
+//                            }
+//                        } catch (e: IllegalArgumentException) {
+//                            Log.d("MJR", e.message!!)
+//                        }
+//                    }
+//                }
+//
+//            } catch (e: IllegalArgumentException) {
+//                Log.d("MJR", e.message!!)
+//            }
+//        }
+//    }
 
     override fun onResume() {
         super.onResume()
         // Reset and reinitialize the chart
         setupChart()
         fetchNetWorthAndUpdateChart()
+
+        val sharedPreferences = requireContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        val alreadySetUp = sharedPreferences.getBoolean("hasSetup", false)
+
+        if (!alreadySetUp) {
+            println("Setting up achievements...")
+            achievementChecker.setupChecker()
+            sharedPreferences.edit().putBoolean("hasSetup", true).apply()
+        } else {
+            achievementChecker.checkForAchievements()
+        }
     }
 
     private fun setupButton() {
