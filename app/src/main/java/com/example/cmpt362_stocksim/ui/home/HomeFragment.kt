@@ -104,41 +104,15 @@ class HomeFragment : Fragment() {
         fetchNetWorthAndUpdateChart()
         setupButton()
 
-//        val textView: TextView = binding.textHome
-//        homeViewModel.text.observe(viewLifecycleOwner) {
-//            textView.text = it
-//        }
         return binding.root
     }
 
-    private fun updateChartWithLatestNetWorth() {
-        lifecycleScope.launch {
-            try {
-                val currentNetWorth = UserDataManager(requireContext()).getNetWorth()
-                Log.d("ChartDebug", "Current net worth: $currentNetWorth")
-
-                netWorthHistoryManager.saveNetWorthValue(currentNetWorth)
-
-                val history = netWorthHistoryManager.getNetWorthHistory()
-                Log.d("ChartDebug", "History size: ${history.size}")
-
-                if (history.isNotEmpty()) {
-                    updateChartData(history)
-                }
-
-            } catch (e: Exception) {
-                Log.e("ChartDebug", "Error updating chart: ${e.message}", e)
-                Toast.makeText(context, "Failed to update chart: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
     private fun updateChartData(history: List<NetWorthHistoryManager.NetWorthEntry>) {
-        val entries = if (history.size == 1) {
-            // If only one entry, create two points with same value for visible line
+        val entries = if (history.all { it.value == history[0].value }) {
+            // If all values are the same (like 10000.0), create two points with slight difference
             listOf(
                 Entry(history[0].timestamp.toFloat(), history[0].value.toFloat()),
-                Entry((history[0].timestamp + 3600000).toFloat(), history[0].value.toFloat()) // Add 1 hour
+                Entry(history[0].timestamp.toFloat() + 3600000, history[0].value.toFloat() + 0.01f)
             )
         } else {
             history.map { Entry(it.timestamp.toFloat(), it.value.toFloat()) }
@@ -171,39 +145,43 @@ class HomeFragment : Fragment() {
                 invalidate()
             }
         }
-
-
     }
 
     private fun fetchNetWorthAndUpdateChart() {
         lifecycleScope.launch {
             try {
-                // First, ensure we have fresh user info
-                val userDataManager = UserDataManager(requireContext())
                 val userId = userDataManager.getUserId()
 
                 if (userId != null) {
-                    // Force refresh user info to get latest net worth
+                    // Always refresh user info when opening/resuming app
                     val success = userDataManager.refreshUserInfo()
                     if (success) {
                         val currentNetWorth = userDataManager.getNetWorth()
                         Log.d("ChartDebug", "Current net worth: $currentNetWorth")
 
-                        netWorthHistoryManager.saveNetWorthValue(currentNetWorth)
+                        // Save the current value
+                        netWorthHistoryManager.saveNetWorthValue(userId, currentNetWorth)
+                    }
 
-                        val history = netWorthHistoryManager.getNetWorthHistory()
-                        Log.d("ChartDebug", "History size: ${history.size}")
+                    // Get and display history
+                    val history = netWorthHistoryManager.getNetWorthHistory(userId)
+                    Log.d("ChartDebug", "History size: ${history.size}")
 
-                        if (history.isEmpty()) {
-                            // If no history, create initial data point
-                            val initialEntry = NetWorthHistoryManager.NetWorthEntry(
-                                timestamp = System.currentTimeMillis(),
-                                value = currentNetWorth
-                            )
-                            updateChartData(listOf(initialEntry))
-                        } else {
-                            updateChartData(history)
-                        }
+                    // Add this debug log
+                    history.forEach { entry ->
+                        Log.d("ChartDebug", "History entry: timestamp=${entry.timestamp}, value=${entry.value}")
+                    }
+
+                    if (history.isEmpty()) {
+                        Log.d("ChartDebug", "No history found, creating initial entry")
+                        val currentNetWorth = userDataManager.getNetWorth()
+                        val initialEntry = NetWorthHistoryManager.NetWorthEntry(
+                            timestamp = System.currentTimeMillis(),
+                            value = currentNetWorth
+                        )
+                        updateChartData(listOf(initialEntry))
+                    } else {
+                        updateChartData(history)
                     }
                 }
             } catch (e: Exception) {
@@ -215,42 +193,49 @@ class HomeFragment : Fragment() {
 
     private fun setupChart() {
         lineChart.apply {
+            // Disable description
             description.isEnabled = false
+
+            // Enable touch gestures
             setTouchEnabled(true)
             setPinchZoom(true)
+            isDragEnabled = false  // Disable drag since we might have single point
+
+            // Customize grid background
             setDrawGridBackground(false)
 
+            // Customize X axis (time)
             xAxis.apply {
                 setDrawAxisLine(true)
                 setDrawGridLines(false)
                 position = XAxis.XAxisPosition.BOTTOM
                 valueFormatter = object : ValueFormatter() {
-                    private val dateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+                    private val dateFormat = SimpleDateFormat("MM/dd HH:mm", Locale.getDefault())
                     override fun getFormattedValue(value: Float): String {
-                        // value is already normalized to position
-                        val history = netWorthHistoryManager.getNetWorthHistory()
-                        val index = value.toInt()
-                        if (index >= 0 && index < history.size) {
-                            return dateFormat.format(Date(history[index].timestamp))
-                        }
-                        return ""
+                        return dateFormat.format(Date(value.toLong()))
                     }
                 }
             }
 
+            // Customize Y axis (net worth)
             axisLeft.apply {
                 setDrawGridLines(true)
                 valueFormatter = object : ValueFormatter() {
                     override fun getFormattedValue(value: Float): String {
-                        return "$${value.toInt()}"
+                        return "$${String.format("%.2f", value)}"
                     }
                 }
-                // Remove fixed min/max
                 setDrawZeroLine(true)
             }
 
+            // Disable right Y axis
             axisRight.isEnabled = false
+
+            // Disable legend
             legend.isEnabled = false
+
+            // Set minimum height for better visibility
+            minOffset = 20f
         }
     }
 
@@ -301,8 +286,12 @@ class HomeFragment : Fragment() {
         }
     }
 
-
-
+    override fun onResume() {
+        super.onResume()
+        // Reset and reinitialize the chart
+        setupChart()
+        fetchNetWorthAndUpdateChart()
+    }
 
     private fun setupButton() {
         binding.notificationButton.setOnClickListener{

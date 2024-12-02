@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.cmpt362_stocksim.BackendRepository
+import com.example.cmpt362_stocksim.NetWorthHistoryManager
 import com.example.cmpt362_stocksim.R
 import com.example.cmpt362_stocksim.databinding.FragmentPortfolioBinding
 import com.example.cmpt362_stocksim.ui.auth.LoginActivity
@@ -210,8 +211,16 @@ class PortfolioFragment: Fragment() {
     }
 
     private fun logout() {
+        val userManager = UserDataManager(requireContext())
+        val userId = userManager.getUserId()
+
+        // Clear user-specific history if we have a userId
+        if (userId != null) {
+            NetWorthHistoryManager(requireContext()).clearUserHistory(userId)
+        }
+
         // Clear user data
-        UserDataManager(requireContext()).clearUserData()
+        userManager.clearUserData()
 
         // Navigate to LoginActivity
         val intent = Intent(requireContext(), LoginActivity::class.java)
