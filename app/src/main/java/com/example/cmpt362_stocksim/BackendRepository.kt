@@ -1,6 +1,8 @@
 package com.example.cmpt362_stocksim
 
+import android.util.Log
 import com.google.gson.Gson
+import com.google.gson.JsonSyntaxException
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.request.HttpRequestBuilder
@@ -104,8 +106,14 @@ class BackendRepository {
 
 
     suspend fun handleError(response: HttpResponse): String {
-        val responseData = Gson().fromJson(response.bodyAsText(), ErrorResponse::class.java)
-        throw IllegalArgumentException(responseData.error)
+        var errorMessage = "An error connecting to the backend has occurred! This may be caused by using SFU Wifi."
+        try {
+            errorMessage = Gson().fromJson(response.bodyAsText(), ErrorResponse::class.java).error
+        } catch(e: JsonSyntaxException) {
+
+        }
+
+        throw IllegalArgumentException(errorMessage)
     }
 
     suspend fun setUsersAchievement(id: String, token: String): setUserAchResponse? {
