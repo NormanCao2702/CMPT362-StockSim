@@ -91,9 +91,16 @@ class BackendRepository {
     data class getCheckResponse(val messages: ArrayList<message>)
 
     data class user(val uid: Int, val username: String)
+
     data class getUsersResponse(val users: ArrayList<user>)
 
     data class isFriendResponse(val is_friend: Boolean)
+
+
+    data class stock(val symbol: String, val name: String, val price: Float)
+    data class getStockResponse2(val tickers: ArrayList<stock>)
+
+
 
 
     suspend fun handleError(response: HttpResponse): String {
@@ -766,6 +773,27 @@ class BackendRepository {
         }
         return null
     }
+
+
+
+    suspend fun getStocks(sym: String): getStockResponse2? {
+        val builder = HttpRequestBuilder()
+        builder.url.protocol = URLProtocol.HTTPS
+        builder.url.host = HOST
+        builder.url.path(API_PATH, "ticker", "search")
+        builder.url.parameters.append("symbol", sym)
+
+        val response = client.get(builder)
+        if(response.status == HttpStatusCode.OK) {
+            val responseData = Gson().fromJson(response.bodyAsText(), getStockResponse2::class.java)
+            return responseData
+        } else {
+            handleError(response)
+        }
+        return null
+    }
+
+
 
     suspend fun getIsUserFriend(user: String, token: String): Boolean {
         val builder = HttpRequestBuilder()

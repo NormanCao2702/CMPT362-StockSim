@@ -27,6 +27,8 @@ import com.example.cmpt362_stocksim.BackendRepository.getMessageResponse
 import com.example.cmpt362_stocksim.BackendRepository.setMessageResponse
 import com.example.cmpt362_stocksim.BackendRepository.getCheckResponse
 import com.example.cmpt362_stocksim.BackendRepository.getUsersResponse
+import com.example.cmpt362_stocksim.BackendRepository.getStockResponse2
+
 
 
 class BackendViewModel(private val backendRepository: BackendRepository) : ViewModel() {
@@ -152,6 +154,10 @@ class BackendViewModel(private val backendRepository: BackendRepository) : ViewM
 
     suspend fun getIsUserFriend(user: String, token: String): Boolean {
         return backendRepository.getIsUserFriend(user, token)
+    }
+
+    suspend fun getStocks(sym: String): getStockResponse2? {
+        return backendRepository.getStocks(sym)
     }
 
 }

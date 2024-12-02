@@ -23,7 +23,7 @@
         android:layout_width="124dp"
         android:layout_height="115dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="80dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/profile" />
@@ -33,7 +33,7 @@
         android:layout_width="220dp"
         android:layout_height="37dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="90dp"
         android:textSize="20dp"
         android:textColor="@color/black"
         android:text="Username"

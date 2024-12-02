@@ -13,20 +13,14 @@ import com.example.cmpt362_stocksim.userDataManager.UserDataManager
 import kotlinx.coroutines.launch
 
 
-/*
-THIS ACTIVITY IS THE STOCK INVENTORY CHANGE NAME LATER..
- */
-
 class StockInventory : AppCompatActivity() {
 
     private lateinit var container: LinearLayout
+    private val userDataManager by lazy { UserDataManager(this) }
 
     val repository2 = BackendRepository()
     val viewModelFactory2 = BackendViewModelFactory(repository2)
     val backendViewModel = viewModelFactory2.create(BackendViewModel::class.java)
-
-    private val userDataManager by lazy { UserDataManager(this) }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +34,6 @@ class StockInventory : AppCompatActivity() {
                 val response = userId?.let { backendViewModel.getInv(it) }
                 if (response != null) {
                     for (stock in response.stocks) {
-
                         try {
                             val response2 = backendViewModel.getPrice(stock.symbol)
                             if (response2 != null) {
@@ -105,9 +98,6 @@ class StockInventory : AppCompatActivity() {
                 Log.d("MJR", e.message!!)
             }
         }
-
-
-
 
         findViewById<ImageButton>(R.id.btnBack).setOnClickListener {
             finish()

@@ -3,24 +3,24 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/main3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SearchFragment">
 
     <TextView
+        android:id="@+id/stockSearchTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Search for a Stock"
-        android:textSize="18dp"
-        android:padding="8dp"
         android:layout_marginTop="50dp"
+        android:padding="8dp"
+        android:text="Search For a Stock"
+        android:textSize="18dp"
         android:textStyle="bold"
-        android:id="@+id/tv_search"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-    </TextView>
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.appcompat.widget.SearchView
         android:layout_width="0dp"
@@ -28,55 +28,54 @@
         android:layout_marginStart="12dp"
         android:layout_marginEnd="12dp"
         android:layout_marginBottom="12dp"
-
-        android:id="@+id/search"
+        android:id="@+id/stockSearch"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_search"
+        app:layout_constraintTop_toBottomOf="@id/stockSearchTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:iconifiedByDefault="false"
         app:searchHintIcon="@null"
-        app:queryHint="Search..."
+        app:queryHint="AAPL..."
         android:focusable="false"
         app:closeIcon="@drawable/baseline_clear_24"
         app:searchIcon="@drawable/baseline_search_24"
         android:background="@drawable/search_bkg">
     </androidx.appcompat.widget.SearchView>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/stockRecycleView"
+    <ListView
+        android:id="@+id/stockSearchListview"
         android:layout_width="match_parent"
-        android:layout_height="280dp"
+        android:layout_height="300dp"
         android:layout_marginTop="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search"
-        app:layout_constraintVertical_bias="0.0">
-    </androidx.recyclerview.widget.RecyclerView>
+        app:layout_constraintTop_toBottomOf="@id/stockSearch"
+        app:layout_constraintVertical_bias="0.0"
+        tools:listitem="@layout/stock_search_item" />
+
     <TextView
+        android:id="@+id/recentSearchTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="40dp"
+        android:padding="8dp"
         android:text="Recent Searches"
         android:textSize="16dp"
-        android:padding="8dp"
-        android:id="@+id/tv_recentlysearches"
-        android:layout_marginStart="25dp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/stockRecycleView"
-        app:layout_constraintStart_toStartOf="parent">
-    </TextView>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/stockRecycleViewRecent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/stockSearchListview" />
+
+    <ListView
+        android:id="@+id/recentSearchListView"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_marginTop="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_recentlysearches"
-        app:layout_constraintVertical_bias="0.0">
-    </androidx.recyclerview.widget.RecyclerView>
+        app:layout_constraintTop_toBottomOf="@id/recentSearchTextView"
+        app:layout_constraintVertical_bias="0.0"
+        tools:listitem="@layout/stock_search_item" />
 </androidx.constraintlayout.widget.ConstraintLayout>
-

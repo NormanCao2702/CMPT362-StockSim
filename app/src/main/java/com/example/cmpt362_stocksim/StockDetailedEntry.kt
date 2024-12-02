@@ -98,11 +98,9 @@ class StockDetailedEntry : AppCompatActivity() {
 
     private val userDataManager by lazy { UserDataManager(this) }
 
-
     private lateinit var lineChart: LineChart
     val entries2 = ArrayList<Entry>()
     var daysMax = 1000
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -125,12 +123,9 @@ class StockDetailedEntry : AppCompatActivity() {
         endoText = findViewById(R.id.textViewRec)
         titletext2 = findViewById(R.id.detailedTitle2)
 
-        val getData2 = intent.getStringExtra("stockInfo")
 
-        //closePart = getData2?.split(", Close:")?.get(1)?.trim().toString()
-        //price = closePart.toDoubleOrNull()!!
+        val getData = intent.getStringExtra("tickerName")
 
-        val getData = intent.getParcelableExtra<StockSearchDataClass>("android")
         if (getData != null){
             val detailTitle: TextView = findViewById(R.id.detailedTitle)
             val detailDesc: TextView = findViewById(R.id.detailedDescription)
@@ -140,9 +135,9 @@ class StockDetailedEntry : AppCompatActivity() {
 
             lifecycleScope.launch {
                 try {
-                    val response = backendViewModel.getPrice(getData.ticker)
+                    val response = backendViewModel.getPrice(getData)
                     if (response != null) {
-                        detailTitle.text = "${getData.ticker} - ${response.price}"
+                        detailTitle.text = "${getData} - ${response.price}"
                         titletext2.text = "Daily Change: ${response.change}"
                     }
                 } catch (e: IllegalArgumentException) {
@@ -152,12 +147,12 @@ class StockDetailedEntry : AppCompatActivity() {
             }
 
             lineChart = findViewById(R.id.lineChart2) // Make sure you have this ID in your layout
-            setupChart(getData.ticker)
+            setupChart(getData)
 
 
             lifecycleScope.launch {
                 try {
-                    val response = backendViewModel.getInfo(getData.ticker)
+                    val response = backendViewModel.getInfo(getData)
                     if (response != null) {
 
                         val iconUrl = response.icon_url
@@ -173,7 +168,7 @@ class StockDetailedEntry : AppCompatActivity() {
 
             lifecycleScope.launch {
                 try {
-                    val response = backendViewModel.getEndorse(getData.ticker)
+                    val response = backendViewModel.getEndorse(getData)
                     if (response != null) {
 
                         val endoCount = response.endorsements
@@ -187,8 +182,8 @@ class StockDetailedEntry : AppCompatActivity() {
 
             }
 
-            getInfoData(getData.ticker, detailDesc)
-            getNewsData(getData.ticker)
+            getInfoData(getData, detailDesc)
+            getNewsData(getData)
         }
 
         if (savedInstanceState != null) {
@@ -200,11 +195,11 @@ class StockDetailedEntry : AppCompatActivity() {
                     newsDialog()
                 } else if (dialogHelper.whichDialog == 2) {
                     if (getData != null) {
-                        buyDialog(getData.ticker)
+                        buyDialog(getData)
                     }
                 } else if (dialogHelper.whichDialog == 3) {
                     if (getData != null) {
-                        sellDialog(getData.ticker)
+                        sellDialog(getData)
                     }
                 }
             }
@@ -221,7 +216,7 @@ class StockDetailedEntry : AppCompatActivity() {
                     val token = userDataManager.getJwtToken()
                     val sendEndorse = getData?.let { it1 ->
                         if (token != null) {
-                            backendViewModel.setEndorse(it1.ticker, token)
+                            backendViewModel.setEndorse(it1, token)
                         }
                     }
                 } catch (e: IllegalArgumentException) {
@@ -229,7 +224,7 @@ class StockDetailedEntry : AppCompatActivity() {
                 }
 
                 try {
-                    val response = getData?.let { it1 -> backendViewModel.getEndorse(it1.ticker) }
+                    val response = getData?.let { it1 -> backendViewModel.getEndorse(it1) }
                     if (response != null) {
 
                         val endoCount = response.endorsements
@@ -248,13 +243,13 @@ class StockDetailedEntry : AppCompatActivity() {
 
         buyBut.setOnClickListener {
             if (getData != null) {
-                buyDialog(getData.ticker)
+                buyDialog(getData)
             }
         }
 
         sellBut.setOnClickListener {
             if (getData != null) {
-                sellDialog(getData.ticker)
+                sellDialog(getData)
             }
         }
 
