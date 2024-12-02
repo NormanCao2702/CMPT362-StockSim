@@ -209,8 +209,10 @@ class HomeFragment : Fragment() {
                 setDrawAxisLine(true)
                 setDrawGridLines(false)
                 position = XAxis.XAxisPosition.BOTTOM
+                granularity = 1f    // Prevent duplicate labels
+                labelCount = 4      // Show only 4-5 labels
                 valueFormatter = object : ValueFormatter() {
-                    private val dateFormat = SimpleDateFormat("MM/dd HH:mm", Locale.getDefault())
+                    private val dateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())  // Simplified to just hours:minutes
                     override fun getFormattedValue(value: Float): String {
                         return dateFormat.format(Date(value.toLong()))
                     }
