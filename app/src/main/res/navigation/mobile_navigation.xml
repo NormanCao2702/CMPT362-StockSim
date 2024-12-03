@@ -29,9 +29,4 @@
         android:label="Settings"
         tools:layout="@layout/fragment_portfolio" />
 
-    <fragment
-        android:id="@+id/blankFragment"
-        android:name="com.example.cmpt362_stocksim.ui.inventory.StockInventory"
-        android:label="Blank"
-        tools:layout="@layout/fragment_blank" />
 </navigation>

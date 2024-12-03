@@ -12,6 +12,7 @@ import android.graphics.Color
 import android.net.Uri
 import android.util.Log
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
@@ -37,7 +38,7 @@ import com.github.mikephil.charting.charts.LineChart
  */
 class StockDetailedEntry : AppCompatActivity() {
     // UI elements
-    private lateinit var bckButton: Button
+    private lateinit var bckButton: ImageButton
     private lateinit var newsBut: Button
     private lateinit var buyBut: Button
     private lateinit var sellBut: Button
@@ -89,7 +90,7 @@ class StockDetailedEntry : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-        enableEdgeToEdge()
+//        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_stock_detailed_entry)
 

@@ -45,7 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="124dp"
         android:layout_marginTop="40dp"
-        android:backgroundTint="@android:color/holo_green_dark"
+        android:backgroundTint="@color/webBlue"
         android:padding="16dp"
         android:text="Create"
         app:layout_constraintStart_toStartOf="parent"
