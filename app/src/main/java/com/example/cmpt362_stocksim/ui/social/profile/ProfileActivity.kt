@@ -35,6 +35,7 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var addFriendButton: Button
     private lateinit var removeFriendButton: Button
     private lateinit var chatButton: Button
+    private lateinit var backButtonProfileActivity: AppCompatImageButton
 
     private lateinit var backendViewModel: BackendViewModel
 
@@ -59,6 +60,7 @@ class ProfileActivity : AppCompatActivity() {
         addFriendButton = findViewById(R.id.addFriendButton)
         removeFriendButton = findViewById(R.id.removeFriendButton)
         chatButton = findViewById(R.id.chatFriendButton)
+        backButtonProfileActivity = findViewById(R.id.backButtonProfileActivity)
 
         // Get the user ID from the Intent extras
         uid = intent.extras?.getInt("USER_ID").toString()
@@ -93,6 +95,10 @@ class ProfileActivity : AppCompatActivity() {
                 }
 
             }
+        }
+
+        backButtonProfileActivity.setOnClickListener {
+            finish()
         }
 
 

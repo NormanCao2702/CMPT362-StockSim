@@ -69,6 +69,8 @@ class SocialFragment: Fragment() {
         }
 
 
+
+
         // Initialize ViewModel and adapter for the feed
 
         backendViewModel = BackendViewModelFactory(BackendRepository()).create(BackendViewModel::class.java)
