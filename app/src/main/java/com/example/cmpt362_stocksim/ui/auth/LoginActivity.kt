@@ -20,6 +20,7 @@ import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
 
+    // Setup backend repository and data manager
     private lateinit var backendViewModel: BackendViewModel
     private lateinit var userDataManager: UserDataManager
 
@@ -93,6 +94,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    // Save users backend token
     private fun saveJwtToken(token: String) {
         // Save JWT token to SharedPreferences
         val sharedPref = getSharedPreferences("AUTH", MODE_PRIVATE)
@@ -101,7 +103,7 @@ class LoginActivity : AppCompatActivity() {
             apply()
         }
     }
-
+    // Check if user is logged in
     private fun isLoggedIn(): Boolean {
         val sharedPref = getSharedPreferences("AUTH", MODE_PRIVATE)
         val token = sharedPref.getString("JWT_TOKEN", null)

@@ -19,13 +19,17 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-
+/**
+ * This activity is the achievement page
+ */
 class AchievementActivity : AppCompatActivity() {
 
+    // Setup backend api repository
     val repository2 = BackendRepository()
     val viewModelFactory2 = BackendViewModelFactory(repository2)
     val backendViewModel = viewModelFactory2.create(BackendViewModel::class.java)
 
+    // Setup user data manager
     private val userDataManager by lazy { UserDataManager(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,14 +38,16 @@ class AchievementActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_achievement)
 
+        // Get user ID
         val userId = userDataManager.getUserId()
 
+        // For each achievement unlocked by the user dynamically set the the UI
         lifecycleScope.launch {
             try {
                 val response = userId?.let { backendViewModel.getUsersAchievement(it) }
                 if (response != null) {
                     for (achievement in response.achievements){
-
+                        // If the user has achievement 1 then checkmark its box and record the date
                         if (achievement.id == 1){
                             val checkbox1 = findViewById<CheckBox>(R.id.achievement_checkbox)
                             val textv1 = findViewById<TextView>(R.id.achievement_item3)
@@ -49,7 +55,7 @@ class AchievementActivity : AppCompatActivity() {
                             val date = formatEpochSeconds(achievement.date)
                             textv1.text = "Unlocked: ${date}"
                         }
-                        // DO OTHERS HERE ASWELL OR IN A CLASS FILE.
+                        // Similar for the rest
                         if (achievement.id == 2){
                             val checkbox2 = findViewById<CheckBox>(R.id.achievement_checkbox2)
                             val textv2 = findViewById<TextView>(R.id.achievement_item6)
@@ -136,22 +142,18 @@ class AchievementActivity : AppCompatActivity() {
                             val date = formatEpochSeconds(achievement.date)
                             textv15.text = "Unlocked: ${date}"
                         }
-
-
                     }
                 }
             } catch (e: IllegalArgumentException) {
                 Log.d("MJR", e.message!!)
             }
-
         }
-
         findViewById<ImageButton>(R.id.btnBack2).setOnClickListener {
             finish()
         }
     }
 
-
+    // Format the date
     fun formatEpochSeconds(epochSeconds: Long): String {
         val date = Date(epochSeconds * 1000) // Convert seconds to milliseconds
         val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())

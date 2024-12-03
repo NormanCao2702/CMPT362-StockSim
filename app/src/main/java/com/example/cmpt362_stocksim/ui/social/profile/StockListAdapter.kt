@@ -7,6 +7,7 @@ import android.widget.BaseAdapter
 import android.widget.TextView
 import com.example.cmpt362_stocksim.api.BackendRepository
 
+// Custom adapter for displaying a list of stock inventory items in a ListView.
 class StockListAdapter(private val activity: Activity,
                        private var stockList: List<BackendRepository.stockInv>): BaseAdapter() {
     override fun getCount(): Int {

@@ -22,23 +22,32 @@ import com.example.cmpt362_stocksim.ui.social.profile.ProfileActivity
 import com.example.cmpt362_stocksim.userDataManager.UserDataManager
 import kotlinx.coroutines.launch
 
+/**
+ * ChatActivity handles the user-to-user chat interface.
+ * This activity displays a chat window and allows users to send and receive messages in real-time.
+ */
 class ChatActivity : AppCompatActivity() {
+    // ID and name of the user being chatted with
     private var other_id = 0
     private lateinit var other_name: String
-
+    // UI components
     private lateinit var usernameTw: TextView
     private lateinit var chatAdapter: ChatAdapter
     private lateinit var sendMessageFL: FrameLayout
     private lateinit var backButtonIB: AppCompatImageButton
     private lateinit var messageText: EditText
+    // List to store chat messages
     private val messages = ArrayList<BackendRepository.message>()
 
+    // Backend ViewModel for handling API interactions
     private lateinit var backendViewModel: BackendViewModel
     private lateinit var chatView: RecyclerView
     private var latestMessage = 1
 
+    // Lazy initialization of UserDataManager for user-related data
     private val userDataManager by lazy { UserDataManager(this) }
     private lateinit var repeatHandler: Handler
+
     override fun onCreate(savedInstanceState: Bundle?) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
@@ -46,15 +55,18 @@ class ChatActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_chat)
 
+        // Retrieve user ID and name from the intent
         other_id = intent.extras?.getInt("USER_ID")!!
         other_name = intent.extras?.getString("USERNAME")!!
 
+        // Initialize UI components
         usernameTw = findViewById(R.id.senderName)
         chatView = findViewById(R.id.chatList)
         sendMessageFL = findViewById(R.id.layoutSend)
         backButtonIB = findViewById(R.id.backButton)
         messageText = findViewById(R.id.inputMessage)
 
+        // Set the username text and make it clickable to navigate to the user's profile
         usernameTw.setText(other_name)
         usernameTw.setOnClickListener {
             val args = Bundle()
@@ -65,12 +77,14 @@ class ChatActivity : AppCompatActivity() {
         }
         setTitle("Chat")
 
+        // Initialize the ViewModel for backend interactions
         backendViewModel =
             BackendViewModelFactory(BackendRepository()).create(BackendViewModel::class.java)
 
         chatAdapter = ChatAdapter(messages, userDataManager.getUserId()?.toInt()!!)
         chatView.adapter = chatAdapter
 
+        // Send button functionality
         sendMessageFL.setOnClickListener {
             val text = messageText.text.toString()
             if (!text.isBlank()) {
@@ -93,12 +107,10 @@ class ChatActivity : AppCompatActivity() {
         backButtonIB.setOnClickListener {
             finish()
         }
-
-
         loadNewMessages()
-
     }
 
+    // Schedules a repeating action to execute with a delay.
     fun repeatDelayed(delay: Long, action: () -> Unit): Handler {
         val handler = Handler(Looper.getMainLooper())
         handler.postDelayed(object : Runnable {
@@ -120,6 +132,7 @@ class ChatActivity : AppCompatActivity() {
         repeatHandler.removeCallbacksAndMessages(null)
     }
 
+    //Fetches new messages from the backend and updates the chat UI.
     fun loadNewMessages() {
         lifecycleScope.launch {
             val token = userDataManager.getJwtToken()!!

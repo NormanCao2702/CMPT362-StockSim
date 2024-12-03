@@ -30,7 +30,11 @@ import com.example.cmpt362_stocksim.api.BackendRepository.getUsersResponse
 import com.example.cmpt362_stocksim.api.BackendRepository.getStockResponse2
 import com.example.cmpt362_stocksim.api.BackendRepository.StockResponseDataClassNews
 
-
+/**
+ *  This is the backend database view model that connects the backend API to the frontend UI
+ *
+ *  For info on each one look at BackendRepository
+ */
 class BackendViewModel(private val backendRepository: BackendRepository) : ViewModel() {
 
     suspend fun register(username: String, email: String, password: String, birthday: String): String  {
