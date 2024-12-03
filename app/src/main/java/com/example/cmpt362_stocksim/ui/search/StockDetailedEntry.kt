@@ -536,6 +536,7 @@ class StockDetailedEntry : AppCompatActivity() {
                 val response = backendViewModel.getHistory(ticker)
                 if (response != null) {
                     entries = response.history
+                    entries = entries.reversed() as ArrayList<BackendRepository.historyObject>
                     days = entries.size
                     daysMax = entries.size
                 }
