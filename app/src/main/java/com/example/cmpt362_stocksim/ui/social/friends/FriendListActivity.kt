@@ -23,29 +23,39 @@ import com.example.cmpt362_stocksim.ui.social.profile.ProfileActivity
 import com.example.cmpt362_stocksim.userDataManager.UserDataManager
 import kotlinx.coroutines.launch
 
+/**
+ * Activity for managing the user's friend list, including viewing friends, handling friend requests,
+ * and searching for other users.
+ */
 class FriendListActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
+    // UI components for search, friend list, and friend requests
     private lateinit var searchBar: SearchView
     private lateinit var searchList: ListView
     private lateinit var friendsList: ListView
-
     private lateinit var friendRequestList: ListView
     private lateinit var backButtonFriendListActivity: AppCompatImageButton
 
+    // Adapters for handling list data
     private lateinit var friendSearchAdapter: FriendSearchAdapter
     private lateinit var friendsAdapter: FriendAdapter
     private lateinit var friendRequestAdapter: FriendRequestAdapter
 
+    // Utility to manage user data and backend interaction
     private val userDataManager by lazy { UserDataManager(this) }
     private lateinit var backendViewModel: BackendViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_friend_list)
+
+        // Initialize the ViewModel for backend interactions
         backendViewModel =
             BackendViewModelFactory(BackendRepository()).create(BackendViewModel::class.java)
 
+        // Initialize UI components
         searchBar = findViewById(R.id.userSearch)
         searchList = findViewById(R.id.userSearchListview)
         friendsList = findViewById(R.id.friendListView)
@@ -56,17 +66,20 @@ class FriendListActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
             finish()
         }
 
+        // Load friends and friend requests
         updateFriends()
         updateFriendRequests()
 
+        // Initialize adapters with empty data
         friendSearchAdapter = FriendSearchAdapter(this, ArrayList())
         friendsAdapter = FriendAdapter(this, ArrayList())
         friendRequestAdapter = FriendRequestAdapter(this, ArrayList()) {uid, accept ->
+            // Handle accept/decline actions for friend requests
             lifecycleScope.launch {
                 val token = userDataManager.getJwtToken()!!
                 if(accept) {
                     backendViewModel.friendRequestAccept(uid.toString(), token)
-                    updateFriends()
+                    updateFriends() // Refresh the friends list after accepting a request
                 } else {
                     backendViewModel.friendRequestDecline(uid.toString(), token)
                 }
@@ -75,10 +88,12 @@ class FriendListActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
             }
         }
 
+        // Set listeners and adapters for UI components
         friendsList.setOnItemClickListener { adapterView, view, index, l ->
             val item = adapterView.getItemAtPosition(index) as BackendRepository.friend
             val user_id = item.uid
             val username = item.username
+            // Open ChatActivity with the selected friend's details
             val args = Bundle()
             val intent = Intent(this, ChatActivity::class.java)
             args.putInt("USER_ID", user_id)
@@ -91,6 +106,7 @@ class FriendListActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         friendsList.adapter = friendsAdapter
         friendRequestList.adapter = friendRequestAdapter
 
+        // Manage search bar focus behavior
         searchBar.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
                 searchList.visibility = View.VISIBLE
@@ -99,6 +115,7 @@ class FriendListActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
             }
         }
 
+        // Open ProfileActivity when clicking on a user in the search results
         searchBar.setOnQueryTextListener(this)
         searchList.setOnItemClickListener { adapterView, view, index, l ->
             val item = adapterView.getItemAtPosition(index) as BackendRepository.user
@@ -113,6 +130,9 @@ class FriendListActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
     }
 
+    /**
+     * Fetches the user's current friends from the backend and updates the UI.
+     */
     fun updateFriends() {
         lifecycleScope.launch {
             val uid = userDataManager.getUserId()!!
@@ -125,6 +145,9 @@ class FriendListActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         }
     }
 
+    /**
+     * Fetches friend requests from the backend and updates the UI.
+     */
     fun updateFriendRequests() {
         lifecycleScope.launch {
             val token = userDataManager.getJwtToken()!!
@@ -141,10 +164,14 @@ class FriendListActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         return false
     }
 
+    /**
+     * Handles live search as the user types in the search bar.
+     */
     override fun onQueryTextChange(newText: String?): Boolean {
         lifecycleScope.launch {
             if (newText != null) {
                 if(newText.isEmpty()) {
+                    // Clear search results if the query is empty
                     Handler(Looper.getMainLooper()).post {
                         friendSearchAdapter.replace(ArrayList())
                         friendSearchAdapter.notifyDataSetInvalidated()
@@ -156,6 +183,7 @@ class FriendListActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
                         users = backendViewModel.getUsers(newText)?.users
                     } catch(e: IllegalArgumentException) {
                         Handler(Looper.getMainLooper()).post {
+                            // Update search results with new data
                             friendSearchAdapter.replace(ArrayList())
                             friendSearchAdapter.notifyDataSetInvalidated()
                             searchList.invalidateViews()

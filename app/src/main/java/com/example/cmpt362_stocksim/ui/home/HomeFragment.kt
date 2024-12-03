@@ -38,22 +38,28 @@ import java.util.Locale
 
 class HomeFragment : Fragment() {
 
+    // Initialize textview
     private lateinit var tvCashBalance: TextView
     private lateinit var tvNetWorth: TextView
+
+    // Initialize achievement checker and data manager
     private val userDataManager by lazy { UserDataManager(requireContext()) }
-
     private val achievementChecker by lazy { AchievementChecker(requireContext(), viewLifecycleOwner) }
+    private lateinit var netWorthHistoryManager: NetWorthHistoryManager
 
+    // Initialize flag
     private var newUserChecker = true
-    private var _binding: FragmentHomeBinding? = null
-    private lateinit var lineChart: LineChart
-    //private var isAchievementUnlocked = false
 
+    private var _binding: FragmentHomeBinding? = null
+
+    // Initialize line chart
+    private lateinit var lineChart: LineChart
+
+    // Setup backend repository
     val repository2 = BackendRepository()
     val viewModelFactory2 = BackendViewModelFactory(repository2)
     val backendViewModel = viewModelFactory2.create(BackendViewModel::class.java)
 
-    private lateinit var netWorthHistoryManager: NetWorthHistoryManager
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -64,25 +70,24 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        // Connect pref and manager
         netWorthHistoryManager = NetWorthHistoryManager(requireContext())
-
-
-
         val sharedPreferences = requireContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
 
+        // Check if its a new login and setup sharepref for setup
         if (newUserChecker == true){
             sharedPreferences.edit().putBoolean("hasSetup", false).apply()
             newUserChecker = false
         }
 
-
+        // Set textviews
         tvCashBalance = binding.tvCashBalance
         tvNetWorth = binding.tvNetWorth
 
+        // Display networth
         lifecycleScope.launch {
             try {
                 // First refresh user info to get latest net worth
@@ -97,6 +102,7 @@ class HomeFragment : Fragment() {
             }
         }
 
+        // Display user cash
         lifecycleScope.launch {
             try {
                 val userId = userDataManager.getUserId()
@@ -109,6 +115,7 @@ class HomeFragment : Fragment() {
             }
         }
 
+        // Create graph line chart
         lineChart = binding.lineChart // Make sure you have this ID in your layout
         setupChart()
         fetchNetWorthAndUpdateChart()
@@ -117,6 +124,7 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    // This function updates the chart data based on user history
     private fun updateChartData(history: List<NetWorthHistoryManager.NetWorthEntry>) {
         val entries = if (history.all { it.value == history[0].value }) {
             // If all values are the same (like 10000.0), create two points with slight difference
@@ -157,6 +165,7 @@ class HomeFragment : Fragment() {
         }
     }
 
+    // This function gets users networth and updates the chart
     private fun fetchNetWorthAndUpdateChart() {
         lifecycleScope.launch {
             try {
@@ -201,6 +210,7 @@ class HomeFragment : Fragment() {
         }
     }
 
+    // This function sets up the homepage chart
     private fun setupChart() {
         lineChart.apply {
             // Disable description
@@ -250,53 +260,8 @@ class HomeFragment : Fragment() {
             minOffset = 20f
         }
     }
-//
-//    private fun checkAchievement(){
-//        var count = 0.0
-//
-//        // Do a lunach and check if the user has it...
-//        val sharedPreferences = requireContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-//        isAchievementUnlocked = sharedPreferences.getBoolean("isAchievementUnlocked", false)
-//
-//        lifecycleScope.launch {
-//            try {
-//                val userId = userDataManager.getUserId()
-//                val response = userId?.let { backendViewModel.getInv(it) }
-//                if (response != null) {
-//                    for (stock in response.stocks) {
-//
-//                        count += stock.amount.toFloat()
-//                    }
-//                }
-//                if (count >= 5.0 && !isAchievementUnlocked) {
-//                    isAchievementUnlocked = true
-//                    sharedPreferences.edit().putBoolean("isAchievementUnlocked", false).apply()
-//                    Toast.makeText(
-//                        requireContext(),
-//                        "Beginner Investor Achievement Unlocked",
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//
-//                    lifecycleScope.launch {
-//                        try {
-//                            val token = userDataManager.getJwtToken()
-//                            val response = token?.let {
-//                                backendViewModel.setUsersAchievement("1",
-//                                    it
-//                                )
-//                            }
-//                        } catch (e: IllegalArgumentException) {
-//                            Log.d("MJR", e.message!!)
-//                        }
-//                    }
-//                }
-//
-//            } catch (e: IllegalArgumentException) {
-//                Log.d("MJR", e.message!!)
-//            }
-//        }
-//    }
 
+    // On app resume resetup chart and achievement check for new achievements
     override fun onResume() {
         super.onResume()
         // Reset and reinitialize the chart
@@ -315,6 +280,7 @@ class HomeFragment : Fragment() {
         }
     }
 
+    // Setup buttons in homepage
     private fun setupButton() {
         binding.btnStockInventory.setOnClickListener {
             val intent = Intent(requireActivity(), StockInventory::class.java)
