@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 import java.util.Calendar
 
 class RegisterActivity : AppCompatActivity() {
-
+    // Initialize backend viewmodel and data manger
     private lateinit var backendViewModel: BackendViewModel
     private lateinit var userDataManager: UserDataManager
 
@@ -96,7 +96,7 @@ class RegisterActivity : AppCompatActivity() {
                     val jwt = backendViewModel.register(username, email, password, birthday)
 
                     // Save JWT token (you'll need to implement this)
-//                    saveJwtToken(jwt)
+                    // saveJwtToken(jwt)
                     userDataManager.saveUserData(jwt)
 
                     // Navigate to MainActivity
@@ -112,6 +112,7 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
+    // This function saves users JWT token
     private fun saveJwtToken(token: String) {
         // Save JWT token to SharedPreferences
         val sharedPref = getSharedPreferences("AUTH", MODE_PRIVATE)

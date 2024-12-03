@@ -6,6 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.cmpt362_stocksim.api.BackendRepository
 
+/**
+ * This class is the viewmodel of the last settings/ logout page
+ */
 class PortfolioViewModel: ViewModel() {
 
     private val _isLoading = MutableLiveData<Boolean>()
@@ -21,12 +24,14 @@ class PortfolioViewModel: ViewModel() {
     private val _statsData = MutableLiveData<StatsData>()
     val statsData: LiveData<StatsData> = _statsData
 
+    // Data class that stores the achievement, stock, and favorite count of the user
     data class StatsData(
         val achievementCount: Int = 0,
         val stocksCount: Int = 0,
         val favoritesCount: Int = 0
     )
 
+    // Sets the users achievement, stockcount, and favorite stocks amounts
     suspend fun loadUserStats(userId: String, repository: BackendRepository) {
         try {
             val achievements = repository.getUsersAchievement(userId)

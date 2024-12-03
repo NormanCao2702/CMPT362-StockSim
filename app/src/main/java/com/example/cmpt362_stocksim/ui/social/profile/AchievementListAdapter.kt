@@ -14,20 +14,22 @@ import java.text.ParseException
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
+// Adapter for displaying a list of achievements in a ListView
 class AchievementListAdapter(private val activity: Activity,
                              private var feedList: List<BackendRepository.achieves>): BaseAdapter() {
+    // Return the number of achievements in the list
     override fun getCount(): Int {
         return feedList.size
     }
-
+    // Return the achievement item at the given index
     override fun getItem(index: Int): BackendRepository.achieves {
         return feedList.get(index)
     }
-
+    // Return the unique ID for the achievement item (based on its ID)
     override fun getItemId(index: Int): Long {
         return feedList.get(index).id.toLong()
     }
-
+    // Bind data to the ListView item layout
     override fun getView(id: Int, view: View?, viewGroup: ViewGroup?): View {
         val newView = View.inflate(activity, android.R.layout.simple_list_item_2, null)
         val item = getItem(id)
@@ -38,6 +40,7 @@ class AchievementListAdapter(private val activity: Activity,
         return newView
     }
 
+    // Convert a date (in seconds since epoch) into a "time ago" format (e.g., "5 minutes ago")
     @RequiresApi(Build.VERSION_CODES.O)
     fun getTimeAgo(date: Long): String {
         try {
@@ -55,6 +58,7 @@ class AchievementListAdapter(private val activity: Activity,
         return "Unknown"
     }
 
+    // Update the adapter's achievement list with a new list
     fun replace(list: List<BackendRepository.achieves>) {
         feedList = list
     }
