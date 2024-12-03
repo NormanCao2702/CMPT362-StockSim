@@ -5,61 +5,59 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-<androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
 
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    tools:context=".ui.social.SocialFragment">
-
-    <ImageButton
-        android:id="@+id/friend_list_button"
-        android:layout_width="49dp"
-        android:layout_height="37dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="12dp"
-        android:background="@drawable/edittext_background"
-        android:src="@drawable/friend_list"
-        app:layout_constraintBottom_toTopOf="@+id/feed_listview"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <EditText
-        android:id="@+id/post_textbox"
-        android:layout_width="352dp"
-        android:layout_height="41dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/edittext_background"
-        android:ems="10"
-        android:hint="  Write a post!"
-        android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/feed_listview" />
-
-    <Button
-        android:id="@+id/button_create_post"
-        android:layout_width="160dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="124dp"
-        android:layout_marginTop="40dp"
-        android:backgroundTint="@color/webBlue"
-        android:padding="16dp"
-        android:text="Create"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/post_textbox" />
+        tools:context=".ui.social.SocialFragment">
 
-    <ListView
-        android:id="@+id/feed_listview"
-        android:layout_width="380dp"
-        android:layout_height="359dp"
-        android:layout_marginTop="92dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <ImageButton
+            android:id="@+id/friend_list_button"
+            android:layout_width="49dp"
+            android:layout_height="37dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/edittext_background"
+            android:src="@drawable/friend_list"
+            app:layout_constraintBottom_toTopOf="@+id/feed_listview"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
 
+        <EditText
+            android:id="@+id/post_textbox"
+            android:layout_width="352dp"
+            android:layout_height="41dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/edittext_background"
+            android:ems="10"
+            android:hint="  Write a post!"
+            android:inputType="text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/feed_listview" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/button_create_post"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="124dp"
+            android:layout_marginTop="40dp"
+            android:backgroundTint="@color/webBlue"
+            android:padding="16dp"
+            android:text="Create"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/post_textbox" />
+
+        <ListView
+            android:id="@+id/feed_listview"
+            android:layout_width="380dp"
+            android:layout_height="359dp"
+            android:layout_marginTop="92dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
