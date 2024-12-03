@@ -125,25 +125,25 @@
             android:id="@+id/button22"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
             android:backgroundTint="@color/webGreen"
             android:text="Recommend!"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/textViewRec"
+            app:layout_constraintStart_toEndOf="@+id/textViewRec"
             app:layout_constraintTop_toBottomOf="@id/buttonCombo" />
 
         <TextView
             android:id="@+id/textViewRec"
-            android:layout_width="250dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="30dp"
-            android:textAlignment="center"
+            android:layout_width="225dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="20dp"
             android:text="20 People endorsed this stock"
+            android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="18dp"
             android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/button22"
+            app:layout_constraintHorizontal_bias="0.059"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/buttonCombo">
 
