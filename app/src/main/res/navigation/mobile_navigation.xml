@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/navigation_search"
-        android:name="com.example.cmpt362_stocksim.SearchFragment"
+        android:name="com.example.cmpt362_stocksim.ui.search.SearchFragment"
         android:label="Search"
         tools:layout="@layout/fragment_search" />
 
@@ -31,7 +31,7 @@
 
     <fragment
         android:id="@+id/blankFragment"
-        android:name="com.example.cmpt362_stocksim.StockInventory"
+        android:name="com.example.cmpt362_stocksim.ui.inventory.StockInventory"
         android:label="Blank"
         tools:layout="@layout/fragment_blank" />
 </navigation>

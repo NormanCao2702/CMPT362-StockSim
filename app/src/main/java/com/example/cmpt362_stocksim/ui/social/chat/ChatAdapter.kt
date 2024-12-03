@@ -4,9 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.example.cmpt362_stocksim.BackendRepository
+import com.example.cmpt362_stocksim.api.BackendRepository
 import com.example.cmpt362_stocksim.R
 
 class ChatAdapter(private val dataSet: ArrayList<BackendRepository.message>, private val our_id: Int) : RecyclerView.Adapter<ChatAdapter.ViewHolder>() {

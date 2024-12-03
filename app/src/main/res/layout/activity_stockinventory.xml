@@ -45,7 +45,7 @@
             android:orientation="vertical"
             app:layout_constraintTop_toBottomOf="@id/btnBack"
             android:padding="16dp"
-            tools:context=".StockInventory" />
+            tools:context=".ui.inventory.StockInventory" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

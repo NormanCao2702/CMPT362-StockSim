@@ -1,14 +1,13 @@
-package com.example.cmpt362_stocksim
+package com.example.cmpt362_stocksim.ui.search
 
 
-import android.app.Activity
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
-import com.example.cmpt362_stocksim.BackendRepository
 import com.example.cmpt362_stocksim.R
+import com.example.cmpt362_stocksim.api.BackendRepository
 
 class StockSearchAdapter(private val context: Context, private var stockList: List<BackendRepository.stock>): BaseAdapter() {
 

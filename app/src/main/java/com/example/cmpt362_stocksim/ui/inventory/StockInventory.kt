@@ -1,4 +1,4 @@
-package com.example.cmpt362_stocksim
+package com.example.cmpt362_stocksim.ui.inventory
 
 import android.graphics.Color
 import android.os.Bundle
@@ -9,6 +9,10 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.example.cmpt362_stocksim.R
+import com.example.cmpt362_stocksim.api.BackendRepository
+import com.example.cmpt362_stocksim.api.BackendViewModel
+import com.example.cmpt362_stocksim.api.BackendViewModelFactory
 import com.example.cmpt362_stocksim.userDataManager.UserDataManager
 import kotlinx.coroutines.launch
 

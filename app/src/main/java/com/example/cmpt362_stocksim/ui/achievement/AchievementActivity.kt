@@ -1,26 +1,19 @@
-package com.example.cmpt362_stocksim
+package com.example.cmpt362_stocksim.ui.achievement
 
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.ImageButton
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.example.cmpt362_stocksim.R
+import com.example.cmpt362_stocksim.api.BackendRepository
+import com.example.cmpt362_stocksim.api.BackendViewModel
+import com.example.cmpt362_stocksim.api.BackendViewModelFactory
 import com.example.cmpt362_stocksim.userDataManager.UserDataManager
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
-import java.util.ArrayList
 import java.util.Date
 import java.util.Locale
 

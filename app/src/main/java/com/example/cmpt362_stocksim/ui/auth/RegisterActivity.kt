@@ -9,9 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.cmpt362_stocksim.MainActivity
 import com.example.cmpt362_stocksim.R
-import com.example.cmpt362_stocksim.BackendRepository
-import com.example.cmpt362_stocksim.BackendViewModel
-import com.example.cmpt362_stocksim.BackendViewModelFactory
+import com.example.cmpt362_stocksim.api.BackendRepository
+import com.example.cmpt362_stocksim.api.BackendViewModel
+import com.example.cmpt362_stocksim.api.BackendViewModelFactory
 import com.example.cmpt362_stocksim.userDataManager.UserDataManager
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText

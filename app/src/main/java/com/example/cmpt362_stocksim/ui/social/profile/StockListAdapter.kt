@@ -1,18 +1,11 @@
 package com.example.cmpt362_stocksim.ui.social.profile
 
 import android.app.Activity
-import android.icu.util.Calendar
-import android.os.Build
-import android.text.format.DateUtils
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
-import androidx.annotation.RequiresApi
-import com.example.cmpt362_stocksim.BackendRepository
-import java.text.ParseException
-import java.time.OffsetDateTime
-import java.time.ZoneOffset
+import com.example.cmpt362_stocksim.api.BackendRepository
 
 class StockListAdapter(private val activity: Activity,
                        private var stockList: List<BackendRepository.stockInv>): BaseAdapter() {

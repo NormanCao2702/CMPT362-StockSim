@@ -3,9 +3,9 @@ package com.example.cmpt362_stocksim.userDataManager
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import com.example.cmpt362_stocksim.BackendRepository
-import com.example.cmpt362_stocksim.BackendViewModel
-import com.example.cmpt362_stocksim.BackendViewModelFactory
+import com.example.cmpt362_stocksim.api.BackendRepository
+import com.example.cmpt362_stocksim.api.BackendViewModel
+import com.example.cmpt362_stocksim.api.BackendViewModelFactory
 import com.example.cmpt362_stocksim.utils.JwtUtils
 import java.io.ByteArrayOutputStream
 import android.util.Base64

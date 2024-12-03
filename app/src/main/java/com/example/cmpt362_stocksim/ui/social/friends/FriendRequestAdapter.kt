@@ -6,15 +6,12 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageButton
 import android.widget.TextView
-import com.example.cmpt362_stocksim.BackendRepository
-import com.example.cmpt362_stocksim.BackendViewModel
+import com.example.cmpt362_stocksim.api.BackendRepository
 import com.example.cmpt362_stocksim.R
-import com.example.cmpt362_stocksim.userDataManager.UserDataManager
-import kotlinx.coroutines.coroutineScope
 
 class FriendRequestAdapter(private val activity: Activity,
-        private var userList: List<BackendRepository.request>,
-        private val responseCallback: ((id: Int, accept: Boolean)->Unit)): BaseAdapter() {
+                           private var userList: List<BackendRepository.request>,
+                           private val responseCallback: ((id: Int, accept: Boolean)->Unit)): BaseAdapter() {
     override fun getCount(): Int {
         return userList.size
     }

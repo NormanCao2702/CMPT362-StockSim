@@ -6,21 +6,19 @@ import android.os.Handler
 import android.os.Looper
 import android.widget.EditText
 import android.widget.FrameLayout
-import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
-import com.example.cmpt362_stocksim.BackendRepository
-import com.example.cmpt362_stocksim.BackendViewModel
-import com.example.cmpt362_stocksim.BackendViewModelFactory
+import com.example.cmpt362_stocksim.api.BackendRepository
+import com.example.cmpt362_stocksim.api.BackendViewModel
+import com.example.cmpt362_stocksim.api.BackendViewModelFactory
 import com.example.cmpt362_stocksim.R
 import com.example.cmpt362_stocksim.ui.social.profile.ProfileActivity
 import com.example.cmpt362_stocksim.userDataManager.UserDataManager
 import kotlinx.coroutines.launch
-import java.util.Timer
 
 class ChatActivity : AppCompatActivity() {
     private var other_id = 0

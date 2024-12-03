@@ -1,48 +1,32 @@
-package com.example.cmpt362_stocksim
+package com.example.cmpt362_stocksim.ui.search
 
 import android.content.Context
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.util.Log
 import android.widget.EditText
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.SearchView
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.room.ColumnInfo
-import com.example.cmpt362_stocksim.databinding.FragmentSearchBinding
+import com.example.cmpt362_stocksim.R
+import com.example.cmpt362_stocksim.api.BackendRepository
+import com.example.cmpt362_stocksim.api.BackendViewModel
+import com.example.cmpt362_stocksim.api.BackendViewModelFactory
 import com.example.cmpt362_stocksim.userDataManager.UserDataManager
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
-import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.OkHttp3Downloader
 import com.squareup.picasso.Picasso
-import com.squareup.picasso.Request
-import com.squareup.picasso.RequestCreator
 import kotlinx.coroutines.launch
-import okhttp3.HttpUrl
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import java.util.Locale
 import com.github.mikephil.charting.charts.LineChart
 
 class StockDetailedEntry : AppCompatActivity() {
@@ -56,8 +40,6 @@ class StockDetailedEntry : AppCompatActivity() {
     private lateinit var endoText: TextView
     private lateinit var infoTextView: TextView
     private lateinit var titletext2: TextView
-
-    private val stockViewModel: StockApiViewModel by viewModels()
 
     private var address1 = ""
     private var city = ""
@@ -84,14 +66,6 @@ class StockDetailedEntry : AppCompatActivity() {
     private var closePart = ""
     var isShowingDialog: Boolean = false
 
-    // Initialize Database
-    private val stock = Stock()
-    private lateinit var database: StockDatabase
-    private lateinit var databaseDao: StockDatabaseDao
-    private lateinit var repository: StockDatabaseRepository
-    private lateinit var viewModelFactory: StockDatabaseViewModel.stockViewModelFactory
-    private lateinit var stockVViewModel: StockDatabaseViewModel
-
     val repository2 = BackendRepository()
     val viewModelFactory2 = BackendViewModelFactory(repository2)
     val backendViewModel = viewModelFactory2.create(BackendViewModel::class.java)
@@ -108,12 +82,6 @@ class StockDetailedEntry : AppCompatActivity() {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_stock_detailed_entry)
-
-        database = StockDatabase.getInstance(this)
-        databaseDao = database.stockDatabaseDao
-        repository = StockDatabaseRepository(databaseDao)
-        viewModelFactory = StockDatabaseViewModel.stockViewModelFactory(repository)
-        stockVViewModel = ViewModelProvider(this, viewModelFactory).get(StockDatabaseViewModel::class.java)
 
         bckButton = findViewById(R.id.entryBackButton)
         //infoBut = findViewById(R.id.button)

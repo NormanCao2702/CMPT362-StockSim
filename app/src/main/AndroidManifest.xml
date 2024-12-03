@@ -42,13 +42,13 @@
         <!-- </intent-filter> -->
         <!-- </activity> -->
         <activity
-            android:name=".StockDetailedEntry"
+            android:name=".ui.search.StockDetailedEntry"
             android:exported="false"></activity>
         <activity
-            android:name=".StockInventory"
+            android:name=".ui.inventory.StockInventory"
             android:exported="false" />
         <activity
-            android:name=".AchievementActivity"
+            android:name=".ui.achievement.AchievementActivity"
             android:exported="false" />
         <activity
             android:name=".ui.social.friends.FriendListActivity"

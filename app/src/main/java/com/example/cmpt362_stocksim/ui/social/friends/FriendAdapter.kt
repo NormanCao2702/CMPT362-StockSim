@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
-import com.example.cmpt362_stocksim.BackendRepository
+import com.example.cmpt362_stocksim.api.BackendRepository
 import com.example.cmpt362_stocksim.R
 
 class FriendAdapter(private val activity: Activity,

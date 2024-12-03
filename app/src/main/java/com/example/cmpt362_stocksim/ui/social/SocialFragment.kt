@@ -14,9 +14,9 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.example.cmpt362_stocksim.BackendRepository
-import com.example.cmpt362_stocksim.BackendViewModel
-import com.example.cmpt362_stocksim.BackendViewModelFactory
+import com.example.cmpt362_stocksim.api.BackendRepository
+import com.example.cmpt362_stocksim.api.BackendViewModel
+import com.example.cmpt362_stocksim.api.BackendViewModelFactory
 import com.example.cmpt362_stocksim.ui.social.friends.FriendListActivity
 import com.example.cmpt362_stocksim.databinding.FragmentSocialBinding
 import com.example.cmpt362_stocksim.ui.social.profile.ProfileActivity
@@ -44,9 +44,6 @@ class SocialFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val socialViewModel =
-            ViewModelProvider(this).get(SocialViewModel::class.java)
-
         _binding = FragmentSocialBinding.inflate(inflater, container, false)
         val root: View = binding.root
 

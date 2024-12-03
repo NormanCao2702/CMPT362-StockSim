@@ -15,14 +15,14 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.example.cmpt362_stocksim.AchievementActivity
-import com.example.cmpt362_stocksim.AchievementChecker
-import com.example.cmpt362_stocksim.BackendRepository
-import com.example.cmpt362_stocksim.BackendViewModel
-import com.example.cmpt362_stocksim.BackendViewModelFactory
-import com.example.cmpt362_stocksim.NetWorthHistoryManager
+import com.example.cmpt362_stocksim.ui.achievement.AchievementActivity
+import com.example.cmpt362_stocksim.ui.achievement.AchievementChecker
+import com.example.cmpt362_stocksim.api.BackendRepository
+import com.example.cmpt362_stocksim.api.BackendViewModel
+import com.example.cmpt362_stocksim.api.BackendViewModelFactory
+import com.example.cmpt362_stocksim.userDataManager.NetWorthHistoryManager
 import com.example.cmpt362_stocksim.R
-import com.example.cmpt362_stocksim.StockInventory
+import com.example.cmpt362_stocksim.ui.inventory.StockInventory
 import com.example.cmpt362_stocksim.databinding.FragmentHomeBinding
 import com.example.cmpt362_stocksim.userDataManager.UserDataManager
 import com.github.mikephil.charting.charts.LineChart
@@ -42,7 +42,7 @@ class HomeFragment : Fragment() {
     private lateinit var tvNetWorth: TextView
     private val userDataManager by lazy { UserDataManager(requireContext()) }
 
-    private val achievementChecker by lazy {AchievementChecker(requireContext(), viewLifecycleOwner)}
+    private val achievementChecker by lazy { AchievementChecker(requireContext(), viewLifecycleOwner) }
 
     private var newUserChecker = true
     private var _binding: FragmentHomeBinding? = null
@@ -64,8 +64,6 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root

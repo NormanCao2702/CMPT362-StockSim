@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import com.example.cmpt362_stocksim.BackendRepository
+import com.example.cmpt362_stocksim.api.BackendRepository
 import java.text.ParseException
 import java.time.OffsetDateTime
 import java.time.ZoneOffset

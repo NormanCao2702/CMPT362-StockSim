@@ -1,4 +1,4 @@
-package com.example.cmpt362_stocksim
+package com.example.cmpt362_stocksim.ui.achievement
 
 import android.content.Context
 import android.util.Log
@@ -6,6 +6,9 @@ import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
 import kotlinx.coroutines.launch
 import androidx.lifecycle.lifecycleScope
+import com.example.cmpt362_stocksim.api.BackendRepository
+import com.example.cmpt362_stocksim.api.BackendViewModel
+import com.example.cmpt362_stocksim.api.BackendViewModelFactory
 import com.example.cmpt362_stocksim.userDataManager.UserDataManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope

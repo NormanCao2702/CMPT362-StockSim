@@ -4,9 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.cmpt362_stocksim.BackendRepository
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
+import com.example.cmpt362_stocksim.api.BackendRepository
 
 class PortfolioViewModel: ViewModel() {
 

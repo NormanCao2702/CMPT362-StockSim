@@ -1,8 +1,7 @@
-package com.example.cmpt362_stocksim
+package com.example.cmpt362_stocksim.userDataManager
 
 import android.content.Context
 import android.util.Log
-import kotlin.math.abs
 
 // Create a NetWorthHistoryManager to handle CSV operations
 class NetWorthHistoryManager(private val context: Context) {

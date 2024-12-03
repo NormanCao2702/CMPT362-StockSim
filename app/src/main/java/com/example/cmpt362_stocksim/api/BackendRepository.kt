@@ -1,6 +1,5 @@
-package com.example.cmpt362_stocksim
+package com.example.cmpt362_stocksim.api
 
-import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import io.ktor.client.HttpClient
@@ -104,14 +103,14 @@ class BackendRepository {
 
     data class StockResponseDataClassNews (val results: List<StockResultDataClassNews>)
 
-    data class StockResultDataClassNews (    val id: String,
-                                             val publisher: Publisher,
-                                             val title: String,
-                                             val author: String,
-                                             val published_utc: String,
-                                             val article_url: String,
-                                             val image_url: String,
-                                             val description: String)
+    data class StockResultDataClassNews (val id: String,
+                                         val publisher: Publisher,
+                                         val title: String,
+                                         val author: String,
+                                         val published_utc: String,
+                                         val article_url: String,
+                                         val image_url: String,
+                                         val description: String)
 
     data class Publisher(
         val name: String,
