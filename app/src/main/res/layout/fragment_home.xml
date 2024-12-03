@@ -92,6 +92,7 @@
         android:layout_marginStart="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/edittext_background"
         app:srcCompat="@drawable/bell_icon" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
