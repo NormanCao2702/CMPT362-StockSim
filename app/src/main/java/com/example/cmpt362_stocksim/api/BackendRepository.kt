@@ -8,28 +8,28 @@ import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.post
 import io.ktor.client.request.get
 import io.ktor.client.request.header
+import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
+import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.ParametersBuilder
 import io.ktor.http.URLProtocol
+import io.ktor.http.contentType
 import io.ktor.http.path
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 import java.net.URLEncoder
 
+
 class BackendRepository {
-    // Get API path to backend database
     private val HOST = "stocksim.breadmod.info"
     private val API_PATH = "api"
     private val client = HttpClient(CIO)
 
-    // Set error response data classes
     data class ErrorResponse(val error: String)
     data class RegisterResponse(val token: String)
 
-    //These are all dataclasses used to return backend database to frontend API
-    // User Info data class
     data class GetInfoResponse(
         val name: String,
         val postal_code: String,
@@ -46,71 +46,66 @@ class BackendRepository {
         val employee_count: String
     )
 
-    // Endorsements data class
     data class getEndorseResponse(val endorsements: Int)
     data class setEndorseResponse(val token2: String)
 
-    // Stock history data classes
     data class historyObject(val date: Long, val price: Float);
     data class getHistoryEndorsement(val history: ArrayList<historyObject>)
-
-    // Stock price data class
     data class getPriceResponse(val price: Float, val change: String)
-
-    // User cash data class
     data class getCashResponse(val cash: Float)
-
-    // Buy and sell stock data class
     data class getBuyResponse(val token3: String)
     data class getSellResponse(val token4: String)
 
-    // Users stock inventory data class
     data class stockInv(val symbol: String, val amount: String)
     data class getInvResponse(val stocks: ArrayList<stockInv>)
 
-    // User achievements data classes
     data class achieves(val id: Int, val date: Long, val name: String, val description: String)
     data class getUserAchResponse(val achievements: ArrayList<achieves>)
     data class setUserAchResponse(val token5: String)
     data class allAchieves(val name: String, val description: String, val id: String)
     data class getAllAchResponse(val achievements: ArrayList<allAchieves>)
 
-    // Global chat feed dataclass
     data class feedItem(val content: String, val date: Long, val post_id: Int, val uid: Int, val username: String)
     data class feed(val feed: ArrayList<feedItem>)
 
-    // Friend actions data class
     data class friendRequestResponse(val token6: String)
     data class friendCancelResponse(val token7: String)
     data class friendAcceptResponse(val token8: String)
     data class friendDeclineResponse(val token8: String)
+
     data class friend(val uid: Int, val username: String, val added_date: String)
     data class getFriendsResponse(val friends: ArrayList<friend>)
+
     data class request(val uid: Int, val username: String, val sent_date: Long)
     data class getRecievedResponse(val requests: ArrayList<request>)
     data class getSentResponse(val requests: ArrayList<request>)
-    data class setRemoveResponse(val token9: String)
 
-    // Users posts data class
+    data class setRemoveResponse(val token9: String)
     data class setPostResponse(val token10: String)
+
+
     data class post(val content: String, val date: Long, val post_id: Int)
     data class getUserPostResponse(val posts: ArrayList<post>)
 
-    // users message data classes
     data class message(val content: String, val date: Long, val from: Int, val username: String, val message_id: Int)
     data class getMessageResponse(val messages: ArrayList<message>)
+
     data class setMessageResponse(val token11: String)
+
     data class getCheckResponse(val messages: ArrayList<message>)
 
-    // user data class
     data class user(val uid: Int, val username: String)
+
     data class getUsersResponse(val users: ArrayList<user>)
+
     data class isFriendResponse(val is_friend: Boolean)
 
-    // Stock info data classes
     data class stock(val symbol: String, val name: String, val price: Float)
     data class getStockResponse2(val tickers: ArrayList<stock>)
+
+
     data class StockResponseDataClassNews (val results: List<StockResultDataClassNews>)
+
     data class StockResultDataClassNews (val id: String,
                                          val publisher: Publisher,
                                          val title: String,
@@ -119,22 +114,25 @@ class BackendRepository {
                                          val article_url: String,
                                          val image_url: String,
                                          val description: String)
+
     data class Publisher(
         val name: String,
         val homepage_url: String
     )
 
-    // This function handles the errors returned from the database
+
+
     suspend fun handleError(response: HttpResponse): String {
         var errorMessage = "An error connecting to the backend has occurred! This may be caused by using SFU Wifi."
         try {
             errorMessage = Gson().fromJson(response.bodyAsText(), ErrorResponse::class.java).error
         } catch(e: JsonSyntaxException) {
+
         }
+
         throw IllegalArgumentException(errorMessage)
     }
 
-    // This function sets the users achievements in the database
     suspend fun setUsersAchievement(id: String, token: String): setUserAchResponse? {
         val builder = HttpRequestBuilder()
         val params = ParametersBuilder(0)
@@ -157,7 +155,6 @@ class BackendRepository {
         return null
     }
 
-    // This function gets the stocks related news from the database
     suspend fun getNews(sym: String): StockResponseDataClassNews? {
         val builder = HttpRequestBuilder()
         builder.url.protocol = URLProtocol.HTTPS
@@ -175,7 +172,6 @@ class BackendRepository {
         return null
     }
 
-    // This function gets all achievements from the database
     suspend fun getAllAchievements(): getAllAchResponse? {
         val builder = HttpRequestBuilder()
         builder.url.protocol = URLProtocol.HTTPS
@@ -192,7 +188,6 @@ class BackendRepository {
         return null
     }
 
-    // This function get all the achievements from the user
     suspend fun getUsersAchievement(user: String): getUserAchResponse? {
         val builder = HttpRequestBuilder()
         builder.url.protocol = URLProtocol.HTTPS
@@ -210,7 +205,6 @@ class BackendRepository {
         return null
     }
 
-    // This function sets how much the user bought and sends it to the database
     suspend fun buyStock(ticker: String, amount: String, token: String): getBuyResponse? {
         val builder = HttpRequestBuilder()
         val params = ParametersBuilder(0)
@@ -237,7 +231,6 @@ class BackendRepository {
         return null
     }
 
-    // This function sets how much the user sold and sends it to the database
     suspend fun sellStock(ticker: String, amount: String, token: String): getSellResponse? {
         val builder = HttpRequestBuilder()
         val params = ParametersBuilder(0)
@@ -264,7 +257,6 @@ class BackendRepository {
         return null
     }
 
-    // This function register the new user to the database
     suspend fun register(username: String, email: String, password: String, birthday: String): String {
         val builder = HttpRequestBuilder()
         val params = ParametersBuilder(0)
@@ -298,8 +290,8 @@ class BackendRepository {
         return "";
     }
 
-    // This function checks the users login
     data class LoginResponse(val token: String)
+
     suspend fun login(username: String, password: String): String {
         val builder = HttpRequestBuilder()
         val params = ParametersBuilder(0)
@@ -332,11 +324,11 @@ class BackendRepository {
         val birthday: String,
         val net_worth: Double
     )
+
     data class NetWorthResponse(
         val net_worth: Double
     )
 
-    // This function gets the users info
     suspend fun getUserInfo(userId: String): UserInfoResponse {
         val builder = HttpRequestBuilder()
         builder.url.protocol = URLProtocol.HTTPS
@@ -368,7 +360,6 @@ class BackendRepository {
         )
     }
 
-    // This function gets the price of the stock
     suspend fun getPrice(ticker: String): getPriceResponse? {
         val builder = HttpRequestBuilder()
         builder.url.protocol = URLProtocol.HTTPS
@@ -386,7 +377,6 @@ class BackendRepository {
         return null
     }
 
-    // This function gets the users stock inventory
     suspend fun getInv(user: String): getInvResponse? {
         val builder = HttpRequestBuilder()
         builder.url.protocol = URLProtocol.HTTPS
@@ -404,7 +394,6 @@ class BackendRepository {
         return null
     }
 
-    // This function gets the stocks related info
     suspend fun getInfo(ticker: String): GetInfoResponse? {
         val builder = HttpRequestBuilder()
         builder.url.protocol = URLProtocol.HTTPS
@@ -422,7 +411,6 @@ class BackendRepository {
         return null
     }
 
-    // This function gets the stocks endorement amount
     suspend fun getEndorse(ticker: String): getEndorseResponse? {
         val builder = HttpRequestBuilder()
         builder.url.protocol = URLProtocol.HTTPS
@@ -440,7 +428,6 @@ class BackendRepository {
         return null
     }
 
-    // This function gets the users cash amount
     suspend fun getCash(user: String): getCashResponse? {
         val builder = HttpRequestBuilder()
         builder.url.protocol = URLProtocol.HTTPS
@@ -458,7 +445,6 @@ class BackendRepository {
         return null
     }
 
-    // This function sets the users endorement
     suspend fun setEndorse(ticker: String, token: String): setEndorseResponse? {
         val builder = HttpRequestBuilder()
         val params = ParametersBuilder(0)
@@ -481,7 +467,6 @@ class BackendRepository {
         return null
     }
 
-    // This function gets the stocks price history
     suspend fun getHistory(ticker: String): getHistoryEndorsement? {
         val builder = HttpRequestBuilder()
         builder.url.protocol = URLProtocol.HTTPS
@@ -503,7 +488,6 @@ class BackendRepository {
         val favorites: List<String>  // List of stock symbols
     )
 
-    // This function gets the users favorites
     suspend fun getUserFavorites(userId: String): UserFavorites {
         val builder = HttpRequestBuilder()
         builder.url.protocol = URLProtocol.HTTPS
@@ -519,8 +503,69 @@ class BackendRepository {
         }
         throw IllegalStateException("Failed to get favorites")
     }
+    suspend fun getFavorites(userId: String): List<String> {
+        val builder = HttpRequestBuilder()
+        builder.url.protocol = URLProtocol.HTTPS
+        builder.url.host = HOST
+        builder.url.path(API_PATH, "user", "favorites")
+        builder.url.parameters.append("uid", userId)
 
-    // This function gets the chat feed
+        val response = client.get(builder)
+        if (response.status == HttpStatusCode.OK) {
+            val responseData = Gson().fromJson(response.bodyAsText(), FavoritesResponse::class.java)
+            return responseData.favorites
+        } else {
+            handleError(response)
+        }
+        return emptyList()
+    }
+
+    data class FavoritesResponse(
+        val favorites: List<String>
+    )
+
+    suspend fun addFavorite(symbol: String, token: String): Boolean {
+        val builder = HttpRequestBuilder()
+        builder.url.protocol = URLProtocol.HTTPS
+        builder.url.host = HOST
+        builder.url.path(API_PATH, "user", "favorites")
+
+        // Add JWT token to header
+        builder.headers.append("Authorization", "Bearer $token")
+
+        // Add symbol to request body
+        builder.setBody("""{"symbol": "$symbol"}""")
+        builder.contentType(ContentType.Application.Json)
+
+        val response = client.post(builder)
+        if (response.status == HttpStatusCode.Created) {
+            return true
+        } else {
+            handleError(response)
+        }
+        return false
+    }
+
+    suspend fun removeFavorite(symbol: String, token: String): Boolean {
+        val builder = HttpRequestBuilder()
+        builder.url.protocol = URLProtocol.HTTPS
+        builder.url.host = HOST
+        builder.url.path(API_PATH, "user", "favorites", "remove")
+
+        // Add symbol as query parameter
+        builder.url.parameters.append("symbol", symbol)
+
+        // Add JWT token to header
+        builder.headers.append("Authorization", "Bearer $token")
+
+        val response = client.post(builder)
+        if (response.status == HttpStatusCode.OK) {
+            return true
+        } else {
+            handleError(response)
+        }
+        return false
+    }
     suspend fun getFeed(): ArrayList<feedItem> {
         val builder = HttpRequestBuilder()
         builder.url.protocol = URLProtocol.HTTPS
@@ -537,7 +582,6 @@ class BackendRepository {
         throw IllegalStateException("Failed to get favorites")
     }
 
-    // This function sends a friend request from user a to user b
     suspend fun setFriendRequest(to: String, token: String): friendRequestResponse? {
         val builder = HttpRequestBuilder()
         val params = ParametersBuilder(0)
@@ -560,7 +604,6 @@ class BackendRepository {
         return null
     }
 
-    // This function cancels a friend request in the database
     suspend fun friendRequestCancel(to: String, token: String): friendCancelResponse? {
         val builder = HttpRequestBuilder()
         val params = ParametersBuilder(0)
@@ -583,7 +626,6 @@ class BackendRepository {
         return null
     }
 
-    // This function accepts a friend request in the database
     suspend fun friendRequestAccept(to: String, token: String): friendAcceptResponse? {
         val builder = HttpRequestBuilder()
         val params = ParametersBuilder(0)
@@ -606,7 +648,6 @@ class BackendRepository {
         return null
     }
 
-    // This function declines a friend request in the database
     suspend fun friendRequestDecline(from: String, token: String): friendDeclineResponse? {
         val builder = HttpRequestBuilder()
         val params = ParametersBuilder(0)
@@ -629,7 +670,7 @@ class BackendRepository {
         return null
     }
 
-    // This function retrieves a users friends
+
     suspend fun getFriends(user: String): getFriendsResponse? {
         val builder = HttpRequestBuilder()
         builder.url.protocol = URLProtocol.HTTPS
@@ -647,7 +688,6 @@ class BackendRepository {
         return null
     }
 
-    // This function retrieves the users current friend requests
     suspend fun getReceived(token: String): getRecievedResponse? {
         val builder = HttpRequestBuilder()
         builder.header("Authorization", "Bearer " + token)
@@ -666,7 +706,6 @@ class BackendRepository {
         return null
     }
 
-    // This function gets the send friend requests from the user
     suspend fun getSent(token: String): getSentResponse? {
         val builder = HttpRequestBuilder()
         builder.header("Authorization", "Bearer " + token)
@@ -685,7 +724,6 @@ class BackendRepository {
         return null
     }
 
-    // This function remove a friend from the database of the user
     suspend fun setRemove(uid: String, token: String): setRemoveResponse? {
         val builder = HttpRequestBuilder()
         val params = ParametersBuilder(0)
@@ -708,7 +746,8 @@ class BackendRepository {
         return null
     }
 
-    // This function sets a post to the database
+
+
     suspend fun setPost(content: String, token: String): setPostResponse? {
         val builder = HttpRequestBuilder()
         val params = ParametersBuilder(0)
@@ -731,7 +770,6 @@ class BackendRepository {
         return null
     }
 
-    // This function gets the users messages they posted
     suspend fun getUserPosts(user: String): getUserPostResponse? {
         val builder = HttpRequestBuilder()
         builder.url.protocol = URLProtocol.HTTPS
@@ -749,7 +787,8 @@ class BackendRepository {
         return null
     }
 
-    // This function gets the messages sent by the user
+
+
     suspend fun getMessages(user: String, token: String): getMessageResponse? {
         val builder = HttpRequestBuilder()
         builder.url.protocol = URLProtocol.HTTPS
@@ -768,7 +807,9 @@ class BackendRepository {
         return null
     }
 
-    // This function sets the messages sent by the user in the database
+
+
+
     suspend fun setSendMessage(to: String, content: String, token: String): setMessageResponse? {
         val builder = HttpRequestBuilder()
         val params = ParametersBuilder(0)
@@ -796,7 +837,8 @@ class BackendRepository {
     }
 
 
-    // This function gets the messages recieved by the user
+
+
     suspend fun getCheckMessages(user: String, parent: String, token: String): getCheckResponse? {
         val builder = HttpRequestBuilder()
         builder.url.protocol = URLProtocol.HTTPS
@@ -805,6 +847,7 @@ class BackendRepository {
         builder.url.path(API_PATH, "social", "get_messages_after")
         builder.url.parameters.append("uid", user)
         builder.url.parameters.append("parent", parent)
+
 
         val response = client.get(builder)
         if(response.status == HttpStatusCode.OK) {
@@ -816,7 +859,6 @@ class BackendRepository {
         return null
     }
 
-    // This function gets the users in the social search bar from the database
     suspend fun getUsers(user: String): getUsersResponse? {
         val builder = HttpRequestBuilder()
         builder.url.protocol = URLProtocol.HTTPS
@@ -835,7 +877,8 @@ class BackendRepository {
         return null
     }
 
-    // This function gets the stock in the database based on its ticker
+
+
     suspend fun getStocks(sym: String): getStockResponse2? {
         val builder = HttpRequestBuilder()
         builder.url.protocol = URLProtocol.HTTPS
@@ -853,7 +896,8 @@ class BackendRepository {
         return null
     }
 
-    // This function checks to see if a user is a friend of the main user
+
+
     suspend fun getIsUserFriend(user: String, token: String): Boolean {
         val builder = HttpRequestBuilder()
         builder.header("Authorization", "Bearer " + token)
@@ -870,4 +914,6 @@ class BackendRepository {
         }
         return false
     }
+
+
 }

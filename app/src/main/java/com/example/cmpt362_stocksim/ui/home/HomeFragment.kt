@@ -114,9 +114,6 @@ class HomeFragment : Fragment() {
         fetchNetWorthAndUpdateChart()
         setupButton()
 
-
-
-
         return binding.root
     }
 
