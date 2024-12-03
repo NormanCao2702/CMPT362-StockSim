@@ -6,35 +6,16 @@
     android:layout_height="match_parent"
     android:padding="16dp">
 
-    <!-- Line Chart -->
-
-    <!-- Cash Balance Section -->
-
-    <!--    <TextView-->
-<!--        android:id="@+id/tvChangeAmount"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="20dp"-->
-<!--        android:text="$0.0000(0.00%)"-->
-<!--        android:textColor="@android:color/holo_green_dark"-->
-<!--        android:textSize="16sp"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.966"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/tvPortfolioValue" />-->
-
-    <!-- Start Journey Button -->
-
     <TextView
         android:id="@+id/tvCashBalance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="80dp"
         android:text="$10,000.00"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.505"
+        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -53,7 +34,7 @@
         android:layout_width="112dp"
         android:layout_height="32dp"
         android:layout_marginStart="132dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="32dp"
         android:text="$10,000.00"
         android:textSize="25dp"
         android:textStyle="bold"
@@ -65,7 +46,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="84dp"
-        android:backgroundTint="@android:color/holo_green_dark"
+        android:backgroundTint="@color/webBlue"
         android:padding="16dp"
         android:text="Stock Inventory"
         app:layout_constraintStart_toStartOf="parent"
@@ -76,7 +57,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="84dp"
-        android:backgroundTint="@android:color/holo_green_dark"
+        android:backgroundTint="@color/webBlue"
         android:padding="16dp"
         android:text="Achievement"
         app:layout_constraintEnd_toEndOf="parent"
@@ -84,15 +65,5 @@
         app:layout_constraintStart_toEndOf="@+id/btnStockInventory"
         app:layout_constraintTop_toBottomOf="@+id/lineChart" />
 
-    <ImageButton
-        android:id="@+id/notification_button"
-        android:layout_width="50dp"
-        android:layout_height="42dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/edittext_background"
-        app:srcCompat="@drawable/bell_icon" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

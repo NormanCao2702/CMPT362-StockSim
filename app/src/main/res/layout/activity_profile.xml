@@ -118,6 +118,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="20dp"
         android:text="Add Friend"
+        android:backgroundTint="@color/webBlue"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user_totalworth_textview" />
 

@@ -19,7 +19,7 @@
             android:layout_width="98dp"
             android:layout_height="75dp"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="90dp"
+            android:layout_marginTop="52dp"
             android:scaleType="fitXY"
             android:src="@drawable/apple_logo"
             app:layout_constraintEnd_toStartOf="@id/detailedTitle"
@@ -31,21 +31,20 @@
             android:id="@+id/detailedTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:text="Test123"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="26sp"
-            android:layout_marginTop="90dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="52dp"
             android:gravity="center"
-            android:textStyle="bold"
             android:shadowColor="@android:color/darker_gray"
             android:shadowDx="2"
             android:shadowDy="2"
             android:shadowRadius="4"
+            android:text="Test123"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="26sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/detailImage2"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintHorizontal_bias="0.5" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/detailedTitle2"
@@ -66,17 +65,18 @@
             app:layout_constraintStart_toEndOf="@id/detailImage2"
             app:layout_constraintHorizontal_bias="0.5" />
 
-        <Button
+
+        <ImageButton
+            android:id="@+id/entryBackButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/entryBackButton"
-            android:text="Back"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="4dp"
+            android:src="@drawable/ic_arrow_back"
+            android:backgroundTint="@color/webGreen"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="80dp"
-            android:layout_marginEnd="10dp">
-        </Button>
-
+            app:layout_constraintHorizontal_bias="0.03"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/lineChart2"
@@ -117,6 +117,7 @@
             android:layout_marginBottom="100dp"
             app:layout_constraintBottom_toBottomOf="parent"
             android:text="News"
+            android:backgroundTint="@color/webGreen"
             app:layout_constraintTop_toBottomOf="@id/detailedDescription" />
 
 
@@ -126,7 +127,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
+            android:backgroundTint="@color/webGreen"
             android:text="Recommend!"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/textViewRec"
             app:layout_constraintTop_toBottomOf="@id/buttonCombo" />
 
@@ -160,6 +163,7 @@
                 android:layout_width="0dp"
                 android:layout_marginTop="40dp"
                 android:layout_weight="1"
+                android:backgroundTint="@color/webGreen"
                 android:text="Buy"/>
             <Button
                 android:id="@+id/button4"
@@ -169,6 +173,7 @@
                 android:layout_width="0dp"
                 android:layout_marginTop="40dp"
                 android:layout_weight="1"
+                android:backgroundTint="@color/webGreen"
                 android:text="Sell"/>
         </LinearLayout>
 

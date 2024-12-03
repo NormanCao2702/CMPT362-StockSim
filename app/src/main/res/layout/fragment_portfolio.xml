@@ -12,7 +12,7 @@
         android:id="@+id/backgroundView"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:background="@color/purple_500"
+        android:background="@color/webBlue"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="0dp" />
 
@@ -206,6 +206,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
+                android:backgroundTint="@color/webBlue"
                 android:text="LOGOUT"
                 android:textColor="@color/white"
                 app:cornerRadius="8dp" />

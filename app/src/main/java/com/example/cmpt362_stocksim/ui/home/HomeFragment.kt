@@ -282,10 +282,6 @@ class HomeFragment : Fragment() {
 
     // Setup buttons in homepage
     private fun setupButton() {
-        binding.notificationButton.setOnClickListener{
-            // notification button click event
-        }
-
         binding.btnStockInventory.setOnClickListener {
             val intent = Intent(requireActivity(), StockInventory::class.java)
             startActivity(intent)

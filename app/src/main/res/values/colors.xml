@@ -8,4 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="lavender">#8692F7</color>
+    <color name="webBlue">#2ebbff</color>
+    <color name="webGreen">#1ab505</color>
+    <color name="lightblue">#24e5ff</color>
 </resources>
