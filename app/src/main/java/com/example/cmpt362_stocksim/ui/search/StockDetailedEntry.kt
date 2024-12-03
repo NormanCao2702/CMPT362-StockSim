@@ -7,12 +7,15 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.net.Uri
 import android.util.Log
 import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.lifecycleScope
 import com.example.cmpt362_stocksim.R
 import com.example.cmpt362_stocksim.api.BackendRepository
@@ -29,18 +32,20 @@ import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import com.github.mikephil.charting.charts.LineChart
 
+/**
+ * Activity to display detailed stock information, including price, history, news, and more.
+ */
 class StockDetailedEntry : AppCompatActivity() {
-
+    // UI elements
     private lateinit var bckButton: Button
     private lateinit var newsBut: Button
-    private lateinit var infoBut: Button
     private lateinit var buyBut: Button
     private lateinit var sellBut: Button
     private lateinit var recommendBut: Button
     private lateinit var endoText: TextView
-    private lateinit var infoTextView: TextView
     private lateinit var titletext2: TextView
 
+    // Stock-related fields
     private var address1 = ""
     private var city = ""
     private var state = ""
@@ -53,6 +58,7 @@ class StockDetailedEntry : AppCompatActivity() {
     private var tolEmployee = ""
     private var polCode = ""
 
+    // News data lists
     private var idList: MutableList<String> = ArrayList()
     private var publisherNList: MutableList<String> = ArrayList()
     private var publisherURLList: MutableList<String> = ArrayList()
@@ -62,47 +68,50 @@ class StockDetailedEntry : AppCompatActivity() {
     private var article_urlList: MutableList<String> = ArrayList()
     private var image_urlList: MutableList<String> = ArrayList()
     private var descriptionList: MutableList<String> = ArrayList()
-    private var price: Double = 0.0
-    private var closePart = ""
+
+    // Checks to see if a dialog box is showing
     var isShowingDialog: Boolean = false
 
+    // Connect backend API to front end
     val repository2 = BackendRepository()
     val viewModelFactory2 = BackendViewModelFactory(repository2)
     val backendViewModel = viewModelFactory2.create(BackendViewModel::class.java)
 
-    val api = ""
-
+    // User data manager for basic user information and id's ,etc
     private val userDataManager by lazy { UserDataManager(this) }
 
+    // Line chart for displaying stock price history
     private lateinit var lineChart: LineChart
+
     val entries2 = ArrayList<Entry>()
     var daysMax = 1000
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_stock_detailed_entry)
 
+        // Initialize UI elements
         bckButton = findViewById(R.id.entryBackButton)
-        //infoBut = findViewById(R.id.button)
         newsBut = findViewById(R.id.button2)
         buyBut = findViewById(R.id.button3)
         sellBut = findViewById(R.id.button4)
-
         recommendBut = findViewById(R.id.button22)
         endoText = findViewById(R.id.textViewRec)
         titletext2 = findViewById(R.id.detailedTitle2)
 
-
+        // Get stock ticker data from the intent
         val getData = intent.getStringExtra("tickerName")
 
         if (getData != null){
+            // Get views
             val detailTitle: TextView = findViewById(R.id.detailedTitle)
             val detailDesc: TextView = findViewById(R.id.detailedDescription)
             val iconView: ImageView = findViewById(R.id.detailImage2)
-            //infoTextView = findViewById(R.id.textvDialog)
-            //val detailImage: ImageView = findViewById(R.id.detailImage)
 
+            // Fetch and display stock price and daily change
             lifecycleScope.launch {
                 try {
                     val response = backendViewModel.getPrice(getData)
@@ -113,39 +122,37 @@ class StockDetailedEntry : AppCompatActivity() {
                 } catch (e: IllegalArgumentException) {
                     Log.d("MJR", e.message!!)
                 }
-
             }
 
+            // Set up the stock price history chart
             lineChart = findViewById(R.id.lineChart2) // Make sure you have this ID in your layout
             setupChart(getData)
 
+            // Load company logo using Picasso
             loadImageWithPicasso("https://stocksim.breadmod.info/api/ticker/icon?symbol=${getData}", iconView)
 
+            // Fetch and display endorsement count
             lifecycleScope.launch {
                 try {
                     val response = backendViewModel.getEndorse(getData)
                     if (response != null) {
-
                         val endoCount = response.endorsements
-
                         endoText.text = "${endoCount} People endorsed this stock"
-
                     }
                 } catch (e: IllegalArgumentException) {
                     Log.d("MJR", e.message!!)
                 }
-
             }
-
+            // Fetch company info and news
             getInfoData(getData, detailDesc)
             getNewsData(getData)
         }
 
+        // Restore dialog state on configuration changes
         if (savedInstanceState != null) {
             isShowingDialog = savedInstanceState.getBoolean("IS_SHOWING_DIALOG", false);
             if (isShowingDialog) {
                 if (dialogHelper.whichDialog == 0) {
-                   // infoDialog()
                 } else if (dialogHelper.whichDialog == 1) {
                     newsDialog()
                 } else if (dialogHelper.whichDialog == 2) {
@@ -160,13 +167,14 @@ class StockDetailedEntry : AppCompatActivity() {
             }
         }
 
+        // Set up back button
         bckButton.setOnClickListener {
             this.finish()
         }
 
+        // When recommend button is pressed then add your recommend to database and display it
         recommendBut.setOnClickListener() {
             lifecycleScope.launch {
-
                 try {
                     val token = userDataManager.getJwtToken()
                     val sendEndorse = getData?.let { it1 ->
@@ -177,7 +185,6 @@ class StockDetailedEntry : AppCompatActivity() {
                 } catch (e: IllegalArgumentException) {
                     Log.d("MJR", e.message!!)
                 }
-
                 try {
                     val response = getData?.let { it1 -> backendViewModel.getEndorse(it1) }
                     if (response != null) {
@@ -192,24 +199,21 @@ class StockDetailedEntry : AppCompatActivity() {
             println("Button clicked and out")
         }
 
+        // Set up buttons
         newsBut.setOnClickListener {
             newsDialog()
         }
-
         buyBut.setOnClickListener {
             if (getData != null) {
                 buyDialog(getData)
             }
         }
-
         sellBut.setOnClickListener {
             if (getData != null) {
                 sellDialog(getData)
             }
         }
-
     }
-
 
     // Used to save the dialogs for when they are rotated.
     override fun onSaveInstanceState(outState: Bundle) {
@@ -217,42 +221,57 @@ class StockDetailedEntry : AppCompatActivity() {
         super.onSaveInstanceState(outState)
     }
 
-
-
+    // Function to fetch and process news data for a given stock ticker
     private fun getNewsData(ticker: String) {
-
         lifecycleScope.launch {
             try {
+                // Fetch news data from backendViewModel
                 val result = backendViewModel.getNews(ticker)
                 if (result != null) {
-
                     val newsList = result.results
-
-                    for (news in newsList) {
-                        idList.add(news.id)
-                        publisherNList.add(news.publisher.name)
-                        publisherURLList.add(news.publisher.homepage_url)
-                        titleList.add(news.title)
-                        authorList.add(news.author)
-                        published_utcList.add(news.published_utc)
-                        article_urlList.add(news.article_url)
-                        image_urlList.add(news.image_url)
-                        descriptionList.add(news.description)
+                    if(newsList.isEmpty()){
+                        // Add placeholder empty values if no news is available
+                        repeat(3) {
+                            idList.add("")
+                            publisherNList.add("")
+                            publisherURLList.add("")
+                            titleList.add("")
+                            authorList.add("")
+                            published_utcList.add("")
+                            article_urlList.add("")
+                            image_urlList.add("")
+                            descriptionList.add("")
+                        }
+                    } else {
+                        // Populate lists with news data
+                        for (news in newsList) {
+                            idList.add(news.id)
+                            publisherNList.add(news.publisher.name)
+                            publisherURLList.add(news.publisher.homepage_url)
+                            titleList.add(news.title)
+                            authorList.add(news.author)
+                            published_utcList.add(news.published_utc)
+                            article_urlList.add(news.article_url)
+                            image_urlList.add(news.image_url)
+                            descriptionList.add(news.description)
+                        }
                     }
                 }
             } catch (e: IllegalArgumentException) {
+                println("it returned null")
                 Log.d("MJR", e.message!!)
             }
         }
     }
 
-
+    // Function to fetch and display company information for a stock ticker
     private fun getInfoData(ticker: String, descView: TextView) {
         lifecycleScope.launch {
             try {
+                // Fetch company info from backendViewModel
                 val response = backendViewModel.getInfo(ticker)
                 if (response != null) {
-                    // Access fields from the result directly
+                    // Populate data fields with company info
                     address1 = response.address
                     city = response.city
                     state = response.state
@@ -269,28 +288,27 @@ class StockDetailedEntry : AppCompatActivity() {
                 Log.d("MJR", e.message!!)
             }
 
+            // Update the TextView with company details
             descView.text = "Name: ${name} \n\nAddress:\n${address1}, ${city}, ${state}\n\nPhone:\n" +
                     "${phone}\n\nPostal Code:\n${polCode}\n\nHomepage:\n${homepageURL}\n\nList Date:\n${listDate}\n\nMarketCap:\n $${marketCap}\n\nTotal Employees:\n${tolEmployee}" +
                     "\n\nDescription:\n${desc}"
 
         }
-
     }
 
+    // Function to show a dialog for buying stock
     private fun buyDialog(ticker: String) {
-        // Set heart rate dialog to active
         isShowingDialog = true
         dialogHelper.whichDialog = 2
 
-        // Create view and dialog builder
+        // Create and configure the dialog
         val view = layoutInflater.inflate(R.layout.edittext_dialog_buysell, null)
-
         val builder = AlertDialog.Builder(this).setView(view)
         val editText = EditText(this)
 
         val sharedPreferences = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
         val startStocks = sharedPreferences.getFloat("stockCount", 0.0F)
-        // With the dialog box, customize and set toasts for positive and negative button presses
+
         with(builder) {
             setTitle("Buy Stock")
             setMessage("How much stock would you like to buy?")
@@ -301,15 +319,20 @@ class StockDetailedEntry : AppCompatActivity() {
                 if (text.isEmpty()) {
                     text = "0"
                 }
-                // GET THE BUY AMOUNT HERE
 
+                Toast.makeText(
+                    context,
+                    "Bought ${text} stocks",
+                   Toast.LENGTH_SHORT
+                ).show()
 
+                // Set bought amount to backend
                 lifecycleScope.launch {
                     try {
                         val token = userDataManager.getJwtToken()
                         val response = token?.let { backendViewModel.buyStock(ticker, text, it) }
                         if (response != null) {
-                           println("BOUGHT STONKS")
+
                         }
                         sharedPreferences.edit().putFloat("stockCount2", (text.toFloat())).apply()
                     } catch (e: IllegalArgumentException) {
@@ -325,8 +348,8 @@ class StockDetailedEntry : AppCompatActivity() {
         }
     }
 
+    // Function to show a dialog for selling stock
     private fun sellDialog(ticker: String) {
-        // Set heart rate dialog to active
         isShowingDialog = true
         dialogHelper.whichDialog = 3
 
@@ -334,12 +357,10 @@ class StockDetailedEntry : AppCompatActivity() {
         val view = layoutInflater.inflate(R.layout.edittext_dialog_buysell, null)
         val builder = AlertDialog.Builder(this).setView(view)
 
-
         val sharedPreferences = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
         val startStocks = sharedPreferences.getFloat("stockCount", 0.0F)
 
         val editText = EditText(this)
-        // With the dialog box, customize and set toasts for positive and negative button presses
         with(builder) {
             setTitle("Sell Stock")
             setView(editText)
@@ -352,11 +373,13 @@ class StockDetailedEntry : AppCompatActivity() {
                     text = "0"
                 }
 
+                Toast.makeText(
+                    context,
+                    "Sold ${text} stocks",
+                    Toast.LENGTH_SHORT
+                ).show()
 
-
-                //var value = text.toInt()
-
-                // Post sell amount and get that difference in cash
+                // Set sold amount to backend database
                 lifecycleScope.launch {
                     try {
                         val token = userDataManager.getJwtToken()
@@ -378,57 +401,24 @@ class StockDetailedEntry : AppCompatActivity() {
         }
     }
 
-
-//    private fun infoDialog() {
-//        // Set heart rate dialog to active
-//        isShowingDialog = true
-//        dialogHelper.whichDialog = 0
-//
-//        // Create view and dialog builder
-//        val view = layoutInflater.inflate(R.layout.edittext_dialog, null)
-//
-//        val builder = AlertDialog.Builder(this).setView(view)
-//
-//        // With the dialog box, customize and set toasts for positive and negative button presses
-//        with(builder) {
-//            setTitle("Company Info")
-//
-//            val infoTextView: TextView = view.findViewById(R.id.textvDialog)
-//
-//            infoTextView.text =
-//                "Name: ${name} \n\nAddress:\n${address1}, ${city}, ${state}\n\nPhone:\n" +
-//                        "${phone}\n\nCurrency:\n${currency}\n\nHomepage:\n${homepageURL}\n\nList Date:\n${listDate}\n\nMarketCap:\n${marketCap}\n\nTotal Employee:\n${tolEmployee}" +
-//                        "\n\nDescription:\n${desc}"
-//
-//            setPositiveButton("Ok") { _, _ ->
-//                isShowingDialog = false
-//            }
-//            setNegativeButton("Cancel") { _, _ ->
-//                isShowingDialog = false
-//            }
-//            show()
-//        }
-//    }
-
-
+    // Function to display a dialog showing news articles
     private fun newsDialog() {
-        // Set heart rate dialog to active
         isShowingDialog = true
         dialogHelper.whichDialog = 1
 
         // Create view and dialog builder
         val view = layoutInflater.inflate(R.layout.edittext_dialog_news, null)
-        //val editT = view.findViewById<EditText>(R.id.editTextDialog) This is used to get the result when database is implemented
         val builder = AlertDialog.Builder(this).setView(view)
 
-        // With the dialog box, customize and set toasts for positive and negative button presses
         with(builder) {
             setTitle("Company News")
 
+            // get textviews
             val newsTextView: TextView = view.findViewById(R.id.textvDialog)
             val newsTextView2: TextView = view.findViewById(R.id.textvDialog2)
             val newsTextView3: TextView = view.findViewById(R.id.textvDialog3)
 
+            // set their text with necessary information
             newsTextView.text =
                 "Article: ${titleList[0]} \n\nAuthor:\n${authorList[0]} \n\nPublish Date:\n" +
                         "${published_utcList[0]}\n\nDescription:\n${descriptionList[0]}\n\nLink:\n${article_urlList[0]}\n\nPublisher:\n${publisherNList[0]}"
@@ -441,6 +431,7 @@ class StockDetailedEntry : AppCompatActivity() {
                 "Article: ${titleList[2]} \nAuthor:\n${authorList[2]} \nPublish Date:\n" +
                         "${published_utcList[2]}\n\nDescription:\n${descriptionList[2]}\n\nLink:\n${article_urlList[2]}\n\nPublisher:\n${publisherNList[2]}"
 
+            // Set buttons so it takes you to the website
             newsTextView.setOnClickListener {
                 openUrl(article_urlList[0])
             }
@@ -461,22 +452,22 @@ class StockDetailedEntry : AppCompatActivity() {
         }
     }
 
+    // Function to load an image into an ImageView using Picasso
     fun loadImageWithPicasso(imageUrl: String, imageView: ImageView,) {
         val client = OkHttpClient.Builder()
             .build()
 
-        // Picasso builder with authentication headers
         val picasso = Picasso.Builder(imageView.context)
             .downloader(OkHttp3Downloader(client))
             .build()
 
+        // Load the image into the provided ImageView
         picasso.load(imageUrl).into(imageView)
     }
 
-
+    // Function to configure and display a line chart for stock data
     private fun setupChart(ticker: String) {
         setData(ticker)
-
         lineChart.apply {
             // Disable description
             description.isEnabled = false
@@ -530,14 +521,15 @@ class StockDetailedEntry : AppCompatActivity() {
         }
     }
 
+    // Function to populate data points for the chart
     private fun setData(ticker: String) {
 
         // Create flat line data points for 7 days
-
         var entries = ArrayList<BackendRepository.historyObject>()
         var days = 1000
         daysMax = 1000
 
+        // Get datapoints for the selected stock
         lifecycleScope.launch {
             try {
                 val response = backendViewModel.getHistory(ticker)
@@ -555,7 +547,6 @@ class StockDetailedEntry : AppCompatActivity() {
                 days -= 1
             }
 
-
             // Create dataset
             val dataSet = LineDataSet(entries2, "Stock Value").apply {
                 color = Color.GREEN
@@ -570,8 +561,6 @@ class StockDetailedEntry : AppCompatActivity() {
                 fillAlpha = 50
             }
 
-
-
             // Set data to chart
             lineChart.data = LineData(dataSet)
 
@@ -583,14 +572,14 @@ class StockDetailedEntry : AppCompatActivity() {
         }
     }
 
-
-
+    // Function to open a URL in the default browser
     private fun openUrl(url: String) {
         val intent = Intent(Intent.ACTION_VIEW)
         intent.data = Uri.parse(url)
         startActivity(intent)
     }
 
+    // Helper object to track which dialog is currently active
     object dialogHelper {
         var whichDialog: Int = 0
     }

@@ -2,10 +2,12 @@ package com.example.cmpt362_stocksim.ui.auth
 
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.lifecycleScope
 import com.example.cmpt362_stocksim.MainActivity
 import com.example.cmpt362_stocksim.R
@@ -24,6 +26,8 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var userDataManager: UserDataManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
         userDataManager = UserDataManager(this)

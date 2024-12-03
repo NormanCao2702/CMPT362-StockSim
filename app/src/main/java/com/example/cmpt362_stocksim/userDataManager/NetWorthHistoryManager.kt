@@ -19,6 +19,7 @@ class NetWorthHistoryManager(private val context: Context) {
         context.deleteFile(getFileName(userId))
     }
 
+    // Save users networth to csv
     fun saveNetWorthValue(userId: String, value: Double) {
         Log.d("ChartDebug", "Saving net worth for user $userId: $value")
         val entry = "${System.currentTimeMillis()},${value}\n"
@@ -27,6 +28,7 @@ class NetWorthHistoryManager(private val context: Context) {
         }
     }
 
+    // Get users networth history
     fun getNetWorthHistory(userId: String): List<NetWorthEntry> {
         return try {
             context.openFileInput(getFileName(userId)).bufferedReader().useLines { lines ->

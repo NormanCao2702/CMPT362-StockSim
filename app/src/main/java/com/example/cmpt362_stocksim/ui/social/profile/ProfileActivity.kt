@@ -1,5 +1,6 @@
 package com.example.cmpt362_stocksim.ui.social.profile
 
+import android.content.pm.ActivityInfo
 import android.icu.text.NumberFormat
 import android.icu.util.Currency
 import android.os.Bundle
@@ -11,6 +12,7 @@ import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.lifecycleScope
 import com.example.cmpt362_stocksim.api.BackendRepository
 import com.example.cmpt362_stocksim.api.BackendViewModel
@@ -37,6 +39,8 @@ class ProfileActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
 

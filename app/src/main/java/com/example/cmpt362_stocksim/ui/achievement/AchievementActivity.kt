@@ -1,11 +1,13 @@
 package com.example.cmpt362_stocksim.ui.achievement
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Log
 import android.widget.CheckBox
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.lifecycleScope
 import com.example.cmpt362_stocksim.R
 import com.example.cmpt362_stocksim.api.BackendRepository
@@ -27,6 +29,8 @@ class AchievementActivity : AppCompatActivity() {
     private val userDataManager by lazy { UserDataManager(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_achievement)
 

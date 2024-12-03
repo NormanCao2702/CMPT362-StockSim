@@ -17,24 +17,26 @@ import com.example.cmpt362_stocksim.api.BackendViewModelFactory
 import com.example.cmpt362_stocksim.databinding.FragmentSearchBinding
 import kotlinx.coroutines.launch
 
-
+/**
+ * This fragment is for stock searching,  the search icon (second from left) in the bottom nav bar
+ */
 class SearchFragment: Fragment(), SearchView.OnQueryTextListener  {
     private var _binding: FragmentSearchBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
-
+    // Initialize UI elements
     private lateinit var searchBar: SearchView
     private lateinit var searchList: ListView
     private lateinit var clickedList: ListView
+
+    // Initialize adapter for listviews
     private lateinit var stockSearchAdapter: StockSearchAdapter
-
-
-    private val clickedItems = ArrayList<BackendRepository.stock>()
     private lateinit var clickedListAdapter: StockSearchAdapter
 
+    // Initialize arraylist for the recently clicked listview
+    private val clickedItems = ArrayList<BackendRepository.stock>()
+
+    // Initialize backend repository that connects our backend to our frontend
     val repository = BackendRepository()
     val viewModelFactory = BackendViewModelFactory(repository)
     val backendViewModel = viewModelFactory.create(BackendViewModel::class.java)
@@ -45,21 +47,22 @@ class SearchFragment: Fragment(), SearchView.OnQueryTextListener  {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        // Inflate the fragment layout using data binding
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
-        val root: View = binding.root
 
+        val root: View = binding.root
+        // Initialize UI elements
         searchBar = binding.stockSearch
         searchList = binding.stockSearchListview
         clickedList = binding.recentSearchListView
 
+        // Set up adapters for search results and recently clicked lists
         stockSearchAdapter = StockSearchAdapter(requireContext(), ArrayList())
         searchList.adapter = stockSearchAdapter
-
-
         clickedListAdapter = StockSearchAdapter(requireContext(), clickedItems)
         clickedList.adapter = clickedListAdapter
 
-
+        // Show or hide the search list based on the search bar's focus
         searchBar.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
                 searchList.visibility = View.VISIBLE
@@ -68,10 +71,15 @@ class SearchFragment: Fragment(), SearchView.OnQueryTextListener  {
             }
         }
 
+        // Attach query listener to the search bar
         searchBar.setOnQueryTextListener(this)
+
+        // Handle clicks on search result items
         searchList.setOnItemClickListener { adapterView, view, index, l ->
 
             val item = adapterView.getItemAtPosition(index) as BackendRepository.stock
+
+            // Update recently clicked items list
             if (!clickedItems.contains(item)) {
                 if (clickedItems.size >= 3) {
                     clickedItems.removeAt(0) // Remove the oldest item
@@ -80,37 +88,38 @@ class SearchFragment: Fragment(), SearchView.OnQueryTextListener  {
                 clickedListAdapter.replace(clickedItems)
                 clickedListAdapter.notifyDataSetChanged()
             }
-
+            // Navigate to the detailed stock entry screen
             val intent = Intent(requireContext(), StockDetailedEntry::class.java)
             intent.putExtra("tickerName", item.symbol)
             startActivity(intent)
-
-
         }
-
+        // Handle clicks on recently clicked items
         clickedList.setOnItemClickListener { adapterView, view, index, id ->
             val clickedItem = adapterView.getItemAtPosition(index) as BackendRepository.stock
             val intent = Intent(requireContext(), StockDetailedEntry::class.java)
             intent.putExtra("tickerName", clickedItem.symbol)
             startActivity(intent)
         }
-
-
-
-
-
         return root
     }
 
 
-
+    /**
+     * Handles text submission in the search bar.
+     * Currently, it doesn't do anything
+     */
     override fun onQueryTextSubmit(query: String?): Boolean {
         return false
     }
 
+    /**
+     * Handles text changes in the search bar.
+     * Updates the search results dynamically.
+     */
     override fun onQueryTextChange(newText: String?): Boolean {
         lifecycleScope.launch {
             if (newText != null) {
+                // Clear search results if the input is empty
                 if(newText.isEmpty()) {
                     Handler(Looper.getMainLooper()).post {
                         stockSearchAdapter.replace(ArrayList())
@@ -120,8 +129,10 @@ class SearchFragment: Fragment(), SearchView.OnQueryTextListener  {
                 } else {
                     var stocks: ArrayList<BackendRepository.stock>? = null
                     try {
+                        // Fetch matching stocks from the backend
                         stocks = backendViewModel.getStocks(newText)?.tickers
                     } catch(e: IllegalArgumentException) {
+                        // Handle errors
                         Handler(Looper.getMainLooper()).post {
                             stockSearchAdapter.replace(ArrayList())
                             stockSearchAdapter.notifyDataSetInvalidated()
@@ -129,6 +140,7 @@ class SearchFragment: Fragment(), SearchView.OnQueryTextListener  {
                         }
                     }
                     if (stocks != null) {
+                        // Update the adapter with the fetched results
                         Handler(Looper.getMainLooper()).post {
                             stockSearchAdapter.replace(stocks)
                             stockSearchAdapter.notifyDataSetInvalidated()
@@ -141,174 +153,11 @@ class SearchFragment: Fragment(), SearchView.OnQueryTextListener  {
         return false
     }
 
-
-
+    /**
+     *  Cleans up binding when the view is destroyed.
+     */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-//        val startTime = System.nanoTime()
-//
-//        println("TESTING BEFORE 123")
-//
-//        createSearchRecycler()
-//        setupRecentlyClickedRecyclerView()
-//
-//        println("TESTING AFTER 123")
-//
-//        val endTime = System.nanoTime()
-//        val elapsedTimeInSeconds = (endTime - startTime) / 1_000_000_000.0 // Convert to seconds
-//        println("Elapsed time: $elapsedTimeInSeconds seconds")
-
-
-
-
-//    private fun getRecyclerData() {
-//        for (i in list.indices){
-//            val dataClass = StockSearchDataClass( list[i], descList[0], listTickers[i])
-//            dataList.add(dataClass)
-//        }
-//        searchList.addAll(dataList)
-//        recyclerView.adapter = StockSearchAdapterClass(searchList)
-//    }
-
-
-//    @RequiresApi(Build.VERSION_CODES.O)
-//    private fun createSearchRecycler(){
-//        stockViewModel.stockData.observe(viewLifecycleOwner, Observer { stockResponse ->
-//            stockResponse?.let {
-//                it.results.forEach { result ->
-//                    val stringtmp = "${result.T}        Open: ${result.o}        Close: ${result.c}"
-//                    list.add(stringtmp)
-//                    listTickers.add(result.T)
-//                }
-//                if(list.isNotEmpty()){
-//                    setupRecyclerView() // Update the RecyclerView
-//                }
-//            } ?: println("Error: Could not fetch stock data")
-//        })
-//    }
-//
-//    private fun setupRecyclerView(){
-//        //imageList = arrayOf(R.drawable.invis)
-//
-//        titleList = arrayOf("Blah 1", "Blah 2", "Blah 3",)
-//
-//        descList = arrayOf(getString(R.string.testString))
-//
-//        //detailImageList = arrayOf(
-//        //    R.drawable.invis
-//        //)
-//
-//        // HERE I WANT TO GET A VIEW ON Fragment_search.xml as findviewby id is red with an error
-//
-//        recyclerView = binding.stockRecycleView
-//        searchView = binding.search
-//
-//        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-//        recyclerView.setHasFixedSize(true)
-//
-//        dataList = arrayListOf<StockSearchDataClass>()
-//        searchList = arrayListOf<StockSearchDataClass>()
-//
-//
-//        getRecyclerData()
-//
-//        searchView.clearFocus()
-//        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
-//            override fun onQueryTextSubmit(query: String?): Boolean {
-//                searchView.clearFocus()
-//                return true
-//            }
-//
-//            override fun onQueryTextChange(newText: String?): Boolean {
-//                searchList.clear()
-//                val searchText = newText!!.toLowerCase(Locale.getDefault())
-//                if (searchText.isNotEmpty()){
-//                    dataList.forEach{
-//                        if (it.dataTitle.toLowerCase(Locale.getDefault()).contains(searchText)){
-//                            searchList.add(it)
-//                        }
-//                    }
-//                    recyclerView.adapter!!.notifyDataSetChanged()
-//                } else {
-//                    searchList.clear()
-//                    searchList.addAll(dataList)
-//                    recyclerView.adapter!!.notifyDataSetChanged()
-//                }
-//                return false
-//            }
-//        })
-//        myAdapter = StockSearchAdapterClass(searchList)
-//        recyclerView.adapter = myAdapter
-//
-//        myAdapter.onItemClick = {clickedItem ->
-//            val intent = Intent(requireContext(), StockDetailedEntry::class.java)
-//
-//            intent.putExtra("android", clickedItem)
-//            intent.putExtra("stockInfo", clickedItem.dataTitle)
-//            startActivity(intent)
-//
-//            recentlyClickedList.add(0, clickedItem) // Add to the top of the list
-//            if (recentlyClickedList.size > 3) { // Limit the list to 10 items, if desired
-//                recentlyClickedList.removeAt(recentlyClickedList.size - 1)
-//            }
-//            recentlyClickedAdapter.notifyDataSetChanged()
-//
-//        }
-//    }
-
-//    private fun setupRecentlyClickedRecyclerView() {
-//        recentlyClickedRecyclerView = binding.stockRecycleViewRecent
-//        recentlyClickedRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-//        recentlyClickedRecyclerView.setHasFixedSize(true)
-//
-//        recentlyClickedAdapter = StockSearchAdapterClass(recentlyClickedList)
-//        recentlyClickedRecyclerView.adapter = recentlyClickedAdapter
-//
-//
-//        recentlyClickedAdapter.onItemClick = { clickedItem ->
-//            val intent = Intent(requireContext(), StockDetailedEntry::class.java)
-//            intent.putExtra("android", clickedItem)
-//            startActivity(intent)
-//        }
-//    }
-
-
-
-
-
-//    private val stockViewModel: StockApiViewModel by viewModels()
-//    val list: MutableList<String> = ArrayList()
-//    val listTickers: MutableList<String> = ArrayList()
-
-//    private lateinit var recyclerView: RecyclerView
-//    private lateinit var dataList: ArrayList<StockSearchDataClass>
-//
-//    private lateinit var recentlyClickedRecyclerView: RecyclerView
-//    private lateinit var recentlyClickedAdapter: StockSearchAdapterClass
-//    private val recentlyClickedList = ArrayList<StockSearchDataClass>()
-//
-//    lateinit var imageList: Array<Int>
-//    lateinit var titleList: Array<String>
-//    lateinit var descList: Array<String>
-//    lateinit var detailImageList: Array<Int>
-//    private lateinit var myAdapter: StockSearchAdapterClass
-//
-//    private lateinit var searchView: SearchView
-//    private lateinit var searchList: ArrayList<StockSearchDataClass

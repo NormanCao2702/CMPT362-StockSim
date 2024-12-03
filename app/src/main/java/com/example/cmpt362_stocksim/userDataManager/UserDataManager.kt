@@ -10,12 +10,14 @@ import com.example.cmpt362_stocksim.utils.JwtUtils
 import java.io.ByteArrayOutputStream
 import android.util.Base64
 
-
 class UserDataManager(private val context: Context) {
+    // SharedPreferences to store user authentication and profile data locally
     private val sharedPref = context.getSharedPreferences("AUTH", Context.MODE_PRIVATE)
-    private val backendViewModel: BackendViewModel  // You'll need to handle dependency injection properly
+    // ViewModel for interacting with the backend API
+    private val backendViewModel: BackendViewModel
 
     init {
+        // Initialize BackendViewModel using a repository and factory
         val repository = BackendRepository()
         val viewModelFactory = BackendViewModelFactory(repository)
         backendViewModel = viewModelFactory.create(BackendViewModel::class.java)
@@ -45,6 +47,7 @@ class UserDataManager(private val context: Context) {
             .apply()
     }
 
+    // Function to save user profile image
     fun saveProfileImage(bitmap: Bitmap) {
         val byteArrayOutputStream = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
@@ -56,6 +59,7 @@ class UserDataManager(private val context: Context) {
             .apply()
     }
 
+    // Getter methods to retrieve user data from SharedPreferences
     fun getUserId(): String? = sharedPref.getString("USER_ID", null)
     fun getUsername(): String? = sharedPref.getString("USERNAME", null)
     fun getJwtToken(): String? = sharedPref.getString("JWT_TOKEN", null)
@@ -75,6 +79,7 @@ class UserDataManager(private val context: Context) {
         }
     }
 
+    //Retrieve the user's profile image as a Bitmap.
     fun getProfileImage(): Bitmap? {
         val base64Image = sharedPref.getString("PROFILE_IMAGE", null)
         return if (base64Image != null) {
@@ -87,6 +92,8 @@ class UserDataManager(private val context: Context) {
         } else null
     }
 
+
+    // Clear all saved user data from SharedPreferences.
     fun clearUserData() {
         sharedPref.edit().clear().apply()
     }

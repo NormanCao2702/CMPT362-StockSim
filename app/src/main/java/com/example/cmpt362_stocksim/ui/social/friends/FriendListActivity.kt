@@ -1,6 +1,7 @@
 package com.example.cmpt362_stocksim.ui.social.friends
 
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -8,6 +9,7 @@ import android.util.Log
 import android.view.View
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.lifecycleScope
 import com.example.cmpt362_stocksim.api.BackendRepository
@@ -34,6 +36,8 @@ class FriendListActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     private val userDataManager by lazy { UserDataManager(this) }
     private lateinit var backendViewModel: BackendViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_friend_list)
         backendViewModel =

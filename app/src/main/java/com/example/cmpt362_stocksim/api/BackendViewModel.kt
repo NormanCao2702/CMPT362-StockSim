@@ -30,7 +30,13 @@ import com.example.cmpt362_stocksim.api.BackendRepository.getUsersResponse
 import com.example.cmpt362_stocksim.api.BackendRepository.getStockResponse2
 import com.example.cmpt362_stocksim.api.BackendRepository.StockResponseDataClassNews
 
-
+/**
+ *  These functions are used in our backend viewmodel to get API calls
+ *
+ *  Function names describe what they are getting from the backend database
+ *
+ *  Extra info is in BackendRepository
+ */
 class BackendViewModel(private val backendRepository: BackendRepository) : ViewModel() {
 
     suspend fun register(username: String, email: String, password: String, birthday: String): String  {
@@ -163,6 +169,4 @@ class BackendViewModel(private val backendRepository: BackendRepository) : ViewM
     suspend fun getNews(sym: String): StockResponseDataClassNews? {
         return backendRepository.getNews(sym)
     }
-
-
 }
