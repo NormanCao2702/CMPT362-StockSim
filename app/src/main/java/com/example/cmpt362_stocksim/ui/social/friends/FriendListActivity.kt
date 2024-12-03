@@ -7,9 +7,11 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.lifecycleScope
 import com.example.cmpt362_stocksim.api.BackendRepository
@@ -28,6 +30,7 @@ class FriendListActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     private lateinit var friendsList: ListView
 
     private lateinit var friendRequestList: ListView
+    private lateinit var backButtonFriendListActivity: AppCompatImageButton
 
     private lateinit var friendSearchAdapter: FriendSearchAdapter
     private lateinit var friendsAdapter: FriendAdapter
@@ -47,6 +50,11 @@ class FriendListActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         searchList = findViewById(R.id.userSearchListview)
         friendsList = findViewById(R.id.friendListView)
         friendRequestList = findViewById(R.id.friendRequestListView)
+        backButtonFriendListActivity = findViewById(R.id.backButtonFriendListActivity)
+
+        backButtonFriendListActivity.setOnClickListener {
+            finish()
+        }
 
         updateFriends()
         updateFriendRequests()

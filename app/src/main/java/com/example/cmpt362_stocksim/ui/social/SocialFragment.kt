@@ -11,6 +11,7 @@ import android.view.WindowManager
 import android.widget.EditText
 import android.widget.ListView
 import android.widget.Toast
+import androidx.appcompat.widget.AppCompatImageButton
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -30,6 +31,7 @@ class SocialFragment: Fragment() {
     private var _binding: FragmentSocialBinding? = null
     private lateinit var postTextBox: EditText
     private lateinit var feedListView: ListView
+    private lateinit var backButtonSocialFragment: AppCompatImageButton
 
     private lateinit var feedAdapter: FeedArrayListAdapter
 
@@ -56,8 +58,6 @@ class SocialFragment: Fragment() {
             val intent = Intent(requireContext(), FriendListActivity::class.java)
             startActivity(intent)
         }
-
-
 
 
         backendViewModel = BackendViewModelFactory(BackendRepository()).create(BackendViewModel::class.java)

@@ -13,6 +13,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.AppCompatImageButton
 import androidx.lifecycle.lifecycleScope
 import com.example.cmpt362_stocksim.api.BackendRepository
 import com.example.cmpt362_stocksim.api.BackendViewModel
@@ -31,6 +32,7 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var addFriendButton: Button
     private lateinit var removeFriendButton: Button
     private lateinit var chatButton: Button
+    private lateinit var backButtonProfileActivity: AppCompatImageButton
 
     private lateinit var backendViewModel: BackendViewModel
 
@@ -53,6 +55,7 @@ class ProfileActivity : AppCompatActivity() {
         addFriendButton = findViewById(R.id.addFriendButton)
         removeFriendButton = findViewById(R.id.removeFriendButton)
         chatButton = findViewById(R.id.chatFriendButton)
+        backButtonProfileActivity = findViewById(R.id.backButtonProfileActivity)
         uid = intent.extras?.getInt("USER_ID").toString()
         backendViewModel = BackendViewModelFactory(BackendRepository()).create(BackendViewModel::class.java)
 
@@ -85,6 +88,10 @@ class ProfileActivity : AppCompatActivity() {
                 }
 
             }
+        }
+
+        backButtonProfileActivity.setOnClickListener {
+            finish()
         }
 
         // Check if you're looking at yourself

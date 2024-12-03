@@ -11,6 +11,17 @@
     android:layout_height="wrap_content"
     tools:context=".ui.social.SocialFragment">
 
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/backButtonSocialFragment"
+        android:layout_width="64dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="48dp"
+        android:background="@drawable/button_background"
+        android:padding="15dp"
+        android:src="@drawable/ic_arrow_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/friend_list_button"
