@@ -28,7 +28,7 @@ import com.example.cmpt362_stocksim.BackendRepository.setMessageResponse
 import com.example.cmpt362_stocksim.BackendRepository.getCheckResponse
 import com.example.cmpt362_stocksim.BackendRepository.getUsersResponse
 import com.example.cmpt362_stocksim.BackendRepository.getStockResponse2
-
+import com.example.cmpt362_stocksim.BackendRepository.StockResponseDataClassNews
 
 
 class BackendViewModel(private val backendRepository: BackendRepository) : ViewModel() {
@@ -159,5 +159,10 @@ class BackendViewModel(private val backendRepository: BackendRepository) : ViewM
     suspend fun getStocks(sym: String): getStockResponse2? {
         return backendRepository.getStocks(sym)
     }
+
+    suspend fun getNews(sym: String): StockResponseDataClassNews? {
+        return backendRepository.getNews(sym)
+    }
+
 
 }

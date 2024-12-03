@@ -98,10 +98,25 @@ class BackendRepository {
 
     data class isFriendResponse(val is_friend: Boolean)
 
-
     data class stock(val symbol: String, val name: String, val price: Float)
     data class getStockResponse2(val tickers: ArrayList<stock>)
 
+
+    data class StockResponseDataClassNews (val results: List<StockResultDataClassNews>)
+
+    data class StockResultDataClassNews (    val id: String,
+                                             val publisher: Publisher,
+                                             val title: String,
+                                             val author: String,
+                                             val published_utc: String,
+                                             val article_url: String,
+                                             val image_url: String,
+                                             val description: String)
+
+    data class Publisher(
+        val name: String,
+        val homepage_url: String
+    )
 
 
 
@@ -138,6 +153,22 @@ class BackendRepository {
         return null
     }
 
+    suspend fun getNews(sym: String): StockResponseDataClassNews? {
+        val builder = HttpRequestBuilder()
+        builder.url.protocol = URLProtocol.HTTPS
+        builder.url.host = HOST
+        builder.url.path(API_PATH, "ticker", "news")
+        builder.url.parameters.append("symbol", sym)
+
+        val response = client.get(builder)
+        if(response.status == HttpStatusCode.OK) {
+            val responseData = Gson().fromJson(response.bodyAsText(), StockResponseDataClassNews::class.java)
+            return responseData
+        } else {
+            handleError(response)
+        }
+        return null
+    }
 
     suspend fun getAllAchievements(): getAllAchResponse? {
         val builder = HttpRequestBuilder()

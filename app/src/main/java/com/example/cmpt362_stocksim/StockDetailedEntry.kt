@@ -151,22 +151,7 @@ class StockDetailedEntry : AppCompatActivity() {
             lineChart = findViewById(R.id.lineChart2) // Make sure you have this ID in your layout
             setupChart(getData)
 
-
-            lifecycleScope.launch {
-                try {
-                    val response = backendViewModel.getInfo(getData)
-                    if (response != null) {
-
-                        val iconUrl = response.icon_url
-
-                        loadImageWithPicasso(iconUrl, iconView, api)
-
-                    }
-                } catch (e: IllegalArgumentException) {
-                    Log.d("MJR", e.message!!)
-                }
-
-            }
+            loadImageWithPicasso("https://stocksim.breadmod.info/api/ticker/icon?symbol=${getData}", iconView)
 
             lifecycleScope.launch {
                 try {
@@ -267,21 +252,30 @@ class StockDetailedEntry : AppCompatActivity() {
 
 
     private fun getNewsData(ticker: String) {
-        stockViewModel.getStockData3(ticker).observe(this, Observer { stockResponse ->
-            stockResponse?.let {
-                it.results.forEach { result ->
-                    idList.add(result.id)
-                    publisherNList.add(result.publisher.name)
-                    publisherURLList.add(result.publisher.homepage_url)
-                    titleList.add(result.title)
-                    authorList.add(result.author)
-                    published_utcList.add(result.published_utc)
-                    article_urlList.add(result.article_url)
-                    image_urlList.add(result.image_url)
-                    descriptionList.add(result.description)
+
+        lifecycleScope.launch {
+            try {
+                val result = backendViewModel.getNews(ticker)
+                if (result != null) {
+
+                    val newsList = result.results
+
+                    for (news in newsList) {
+                        idList.add(news.id)
+                        publisherNList.add(news.publisher.name)
+                        publisherURLList.add(news.publisher.homepage_url)
+                        titleList.add(news.title)
+                        authorList.add(news.author)
+                        published_utcList.add(news.published_utc)
+                        article_urlList.add(news.article_url)
+                        image_urlList.add(news.image_url)
+                        descriptionList.add(news.description)
+                    }
                 }
-            } ?: println("Error: Could not fetch stock data")
-        })
+            } catch (e: IllegalArgumentException) {
+                Log.d("MJR", e.message!!)
+            }
+        }
     }
 
 
@@ -499,25 +493,9 @@ class StockDetailedEntry : AppCompatActivity() {
         }
     }
 
-    fun loadImageWithPicasso(imageUrl: String, imageView: ImageView, apiKey: String) {
-
+    fun loadImageWithPicasso(imageUrl: String, imageView: ImageView,) {
         val client = OkHttpClient.Builder()
-            .addInterceptor(Interceptor { chain ->
-                val originalRequest: okhttp3.Request = chain.request()
-
-                // Adding the Authorization header to the request
-                val newUrl: HttpUrl = originalRequest.url.newBuilder()
-                    .build()
-
-                val newRequest: okhttp3.Request = originalRequest.newBuilder()
-                    .header("Authorization", "Bearer $apiKey") // Add your API key here
-                    .url(newUrl)
-                    .build()
-
-                return@Interceptor chain.proceed(newRequest)
-            })
             .build()
-
 
         // Picasso builder with authentication headers
         val picasso = Picasso.Builder(imageView.context)
