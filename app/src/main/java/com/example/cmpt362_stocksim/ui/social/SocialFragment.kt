@@ -36,7 +36,6 @@ class SocialFragment: Fragment() {
     // Initialize UI elements
     private lateinit var postTextBox: EditText
     private lateinit var feedListView: ListView
-    private lateinit var backButtonSocialFragment: AppCompatImageButton
 
     // Initialize feed adapter
     private lateinit var feedAdapter: FeedArrayListAdapter
@@ -67,9 +66,6 @@ class SocialFragment: Fragment() {
             val intent = Intent(requireContext(), FriendListActivity::class.java)
             startActivity(intent)
         }
-
-
-
 
         // Initialize ViewModel and adapter for the feed
 
