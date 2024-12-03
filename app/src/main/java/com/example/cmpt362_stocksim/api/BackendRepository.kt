@@ -8,11 +8,14 @@ import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.post
 import io.ktor.client.request.get
 import io.ktor.client.request.header
+import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
+import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.ParametersBuilder
 import io.ktor.http.URLProtocol
+import io.ktor.http.contentType
 import io.ktor.http.path
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
@@ -499,6 +502,70 @@ class BackendRepository {
             handleError(response)
         }
         throw IllegalStateException("Failed to get favorites")
+    }
+
+    suspend fun getFavorites(userId: String): List<String> {
+        val builder = HttpRequestBuilder()
+        builder.url.protocol = URLProtocol.HTTPS
+        builder.url.host = HOST
+        builder.url.path(API_PATH, "user", "favorites")
+        builder.url.parameters.append("uid", userId)
+
+        val response = client.get(builder)
+        if (response.status == HttpStatusCode.OK) {
+            val responseData = Gson().fromJson(response.bodyAsText(), FavoritesResponse::class.java)
+            return responseData.favorites
+        } else {
+            handleError(response)
+        }
+        return emptyList()
+    }
+
+    data class FavoritesResponse(
+        val favorites: List<String>
+    )
+
+    suspend fun addFavorite(symbol: String, token: String): Boolean {
+        val builder = HttpRequestBuilder()
+        builder.url.protocol = URLProtocol.HTTPS
+        builder.url.host = HOST
+        builder.url.path(API_PATH, "user", "favorites")
+
+        // Add JWT token to header
+        builder.headers.append("Authorization", "Bearer $token")
+
+        // Add symbol to request body
+        builder.setBody("""{"symbol": "$symbol"}""")
+        builder.contentType(ContentType.Application.Json)
+
+        val response = client.post(builder)
+        if (response.status == HttpStatusCode.Created) {
+            return true
+        } else {
+            handleError(response)
+        }
+        return false
+    }
+
+    suspend fun removeFavorite(symbol: String, token: String): Boolean {
+        val builder = HttpRequestBuilder()
+        builder.url.protocol = URLProtocol.HTTPS
+        builder.url.host = HOST
+        builder.url.path(API_PATH, "user", "favorites", "remove")
+
+        // Add symbol as query parameter
+        builder.url.parameters.append("symbol", symbol)
+
+        // Add JWT token to header
+        builder.headers.append("Authorization", "Bearer $token")
+
+        val response = client.post(builder)
+        if (response.status == HttpStatusCode.OK) {
+            return true
+        } else {
+            handleError(response)
+        }
+        return false
     }
 
     suspend fun getFeed(): ArrayList<feedItem> {

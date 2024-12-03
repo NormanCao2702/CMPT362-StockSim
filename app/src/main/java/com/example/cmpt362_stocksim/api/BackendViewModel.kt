@@ -164,5 +164,15 @@ class BackendViewModel(private val backendRepository: BackendRepository) : ViewM
         return backendRepository.getNews(sym)
     }
 
+    suspend fun removeFavorite(symbol: String, token: String): Boolean {
+        return backendRepository.removeFavorite(symbol, token)
+    }
 
+    suspend fun addFavorite(symbol: String, token: String): Boolean {
+        return backendRepository.addFavorite(symbol, token)
+    }
+
+    suspend fun getFavorites(userId: String): List<String> {
+        return backendRepository.getFavorites(userId)
+    }
 }
