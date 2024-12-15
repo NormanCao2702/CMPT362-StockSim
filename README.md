@@ -16,7 +16,7 @@ Additionally, the app also contain social media for user to create a simple post
 * **Thread Diagram:**
 
 ![Thread Diagram](ThreadDiagram.png)
-**(*) All the information about user is encrypted and saved in MariaDB, and we also communicate with Polygon API and save stocks detail through MariaDB.**
+**(*) All the information about user is encrypted and saved in MariaDB, and we also communicate with Polygon API and save stocks detail through MariaDB, for further detail about database implementation, please check out our [Google Drive folder: `public.zip`](https://drive.google.com/drive/folders/1jC89-eKMG6Sp-rWUzhD6HrZoL2hX3Ntx)!**
 
 ## Live Demo
 https://github.com/user-attachments/assets/51a3768c-c168-468d-abe6-caefd214be2b
@@ -24,7 +24,7 @@ https://github.com/user-attachments/assets/51a3768c-c168-468d-abe6-caefd214be2b
 
 
 ## Contributors:
-1. Arda Cifci
-2. Tran Quang Ngoc Cao
-3. Jayden Brown
-4. Karmanya Khanna
+* Arda Cifci
+* Tran Quang Ngoc Cao
+* Jayden Brown
+* Karmanya Khanna
